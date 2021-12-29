@@ -26,6 +26,25 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+
+
+## Using Docker Compose
+
+```bash
+$ docker-compose up -d dev mongodb
+
+# Check the status of each container
+$ docker ps
+
+# show logs
+$ docker logs server-dev -f
+
+# Into the container shell
+$ docker exec -it server-mongodb bash
+```
+
+
+
 ## Installation
 
 ```bash
