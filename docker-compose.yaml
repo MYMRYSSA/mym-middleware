@@ -1,0 +1,63 @@
+version: '3.7'
+services:
+  dev:
+    container_name: mym-server-dev
+    image: mym-server-dev:1.0.0
+    build:
+      context: .
+      target: development
+      dockerfile: ./Dockerfile
+    command: npm run start:debug
+    ports:
+      - 3000:3000
+      - 9229:9229
+    networks:
+      - server-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+    environment:
+      MONGO_URL: mongodb
+  prod:
+    container_name: mym-server-prod
+    image: mym-server-prod:1.0.0
+    build:
+      context: .
+      target: production
+      dockerfile: ./Dockerfile
+    command: npm run start:prod
+    ports:
+      - 3000:3000
+      - 9229:9229
+    networks:
+      - server-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:5.0.0
+    container_name: mym-middleware-db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - server-network
+    ports:
+      - 27017:27017
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+volumes:
+  mongodb-data:
+    name: mongodb-data
+networks:
+  server-network:
