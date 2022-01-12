@@ -1,21 +1,15 @@
 import { Body, Controller, HttpException, InternalServerErrorException, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { ConsultDebtService } from 'src/core/services/consultDebt.service';
-import { PaymentService } from 'src/core/services/payment.service';
-import { ReturnPaymentService } from 'src/core/services/returnPayment.service';
+import { BankBcpUseCase } from 'src/core/services/banks';
 
 @Controller()
 @ApiTags('BCPController')
 export class BCPController {
-	constructor(
-		private readonly consultDebtService: ConsultDebtService,
-		private readonly paymentService: PaymentService,
-		private readonly returnPaymentService: ReturnPaymentService
-	) {}
+	constructor(private readonly bankBcpUseCase: BankBcpUseCase) {}
 
 	@Post('v1/')
 	async consultDebt(@Body() consultDebtRequestDTO: any) {
-		const response = await this.consultDebtService.execute(consultDebtRequestDTO, '');
+		const response = await this.bankBcpUseCase.consultDebt(consultDebtRequestDTO);
 		if (response.error) {
 			throw new HttpException(response.error, response.error.httpStatus);
 		}
@@ -24,7 +18,7 @@ export class BCPController {
 
 	@Post('v1/')
 	async payment(@Body() paymentRequestDTO: any) {
-		const response = await this.paymentService.execute(paymentRequestDTO, '');
+		const response = await this.bankBcpUseCase.payment(paymentRequestDTO);
 		if (response.error) {
 			throw new InternalServerErrorException(response.error);
 		}
@@ -33,7 +27,7 @@ export class BCPController {
 
 	@Post('v1/')
 	async returnPayment(@Body() returnPaymentRequestDTO: any) {
-		const response = await this.returnPaymentService.execute(returnPaymentRequestDTO, '');
+		const response = await this.bankBcpUseCase.returnPayment(returnPaymentRequestDTO);
 		if (response.error) {
 			throw new InternalServerErrorException(response.error);
 		}

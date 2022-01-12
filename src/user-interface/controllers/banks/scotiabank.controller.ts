@@ -2,22 +2,16 @@ import { Body, Controller, HttpException, InternalServerErrorException, Post } f
 import { LoginRequestDTO, RegisterRequestDTO } from '../../../core/services/auth/dto/auth.dto';
 import { LoginUseCase, RegisterUserUseCase } from '../../../core/services/auth';
 import { ApiTags } from '@nestjs/swagger';
-import { ConsultDebtService } from 'src/core/services/consultDebt.service';
-import { PaymentService } from 'src/core/services/payment.service';
-import { ReturnPaymentService } from 'src/core/services/returnPayment.service';
+import { BankScotiabankUseCase } from 'src/core/services/banks';
 
 @Controller()
 @ApiTags('ScotiabankController')
 export class ScotiabankController {
-	constructor(
-		private readonly consultDebtService: ConsultDebtService,
-		private readonly paymentService: PaymentService,
-		private readonly returnPaymentService: ReturnPaymentService
-	) {}
+	constructor(private readonly bankScotiabankUseCase: BankScotiabankUseCase) {}
 
 	@Post('v1/')
 	async consultDebt(@Body() consultDebtRequestDTO: any) {
-		const response = await this.consultDebtService.execute(consultDebtRequestDTO, '');
+		const response = await this.bankScotiabankUseCase.consultDebt(consultDebtRequestDTO);
 		if (response.error) {
 			throw new HttpException(response.error, response.error.httpStatus);
 		}
@@ -26,7 +20,7 @@ export class ScotiabankController {
 
 	@Post('v1/')
 	async payment(@Body() paymentRequestDTO: any) {
-		const response = await this.paymentService.execute(paymentRequestDTO, '');
+		const response = await this.bankScotiabankUseCase.payment(paymentRequestDTO);
 		if (response.error) {
 			throw new InternalServerErrorException(response.error);
 		}
@@ -35,7 +29,7 @@ export class ScotiabankController {
 
 	@Post('v1/')
 	async returnPayment(@Body() returnPaymentRequestDTO: any) {
-		const response = await this.returnPaymentService.execute(returnPaymentRequestDTO, '');
+		const response = await this.bankScotiabankUseCase.returnPayment(returnPaymentRequestDTO);
 		if (response.error) {
 			throw new InternalServerErrorException(response.error);
 		}
