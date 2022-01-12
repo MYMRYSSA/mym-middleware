@@ -1,3 +1,4 @@
+import { HttpStatus } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, MinLength } from 'class-validator';
 

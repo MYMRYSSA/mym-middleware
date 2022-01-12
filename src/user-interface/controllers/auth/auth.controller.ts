@@ -1,6 +1,6 @@
-import { BadRequestException, Body, Controller, InternalServerErrorException, Post } from '@nestjs/common';
-import { LoginRequestDTO, RegisterRequestDTO } from '../../core/services/auth/dto/auth.dto';
-import { LoginUseCase, RegisterUserUseCase } from '../../core/services/auth';
+import { BadRequestException, Body, Controller, HttpException, InternalServerErrorException, Post } from '@nestjs/common';
+import { LoginRequestDTO, RegisterRequestDTO } from '../../../core/services/auth/dto/auth.dto';
+import { LoginUseCase, RegisterUserUseCase } from '../../../core/services/auth';
 import { ApiTags } from '@nestjs/swagger';
 
 @Controller()
@@ -15,7 +15,7 @@ export class AuthController {
 	async login(@Body() loginRequestDTO: LoginRequestDTO) {
 		const response = await this.loginUseCase.execute(loginRequestDTO);
 		if (response.error) {
-			throw new BadRequestException(response.error);
+			throw new HttpException(response.error, response.error.httpStatus);
 		}
 		return response;
 	}

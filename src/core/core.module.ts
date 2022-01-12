@@ -3,10 +3,26 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { LoginUseCase, RegisterUserUseCase, ValidateUseCase } from './services/auth';
-
+import { BankBbvaUseCase, BankBcpUseCase, BankScotiabankUseCase } from './services/banks';
+import { ConsultDebtService } from './services/consultDebt.service';
+import { PaymentService } from './services/payment.service';
+import { ReturnPaymentService } from './services/returnPayment.service';
 import { InfraestructureModule } from '../infraestructure/infraestructure.module';
 
-const services = [LoginUseCase, RegisterUserUseCase, ValidateUseCase];
+import { BankFactory } from './services/factory/bank.factory';
+
+const services = [
+	LoginUseCase,
+	RegisterUserUseCase,
+	ValidateUseCase,
+	BankBbvaUseCase,
+	BankBcpUseCase,
+	BankScotiabankUseCase,
+	ConsultDebtService,
+	PaymentService,
+	ReturnPaymentService,
+	BankFactory,
+];
 
 @Module({
 	imports: [

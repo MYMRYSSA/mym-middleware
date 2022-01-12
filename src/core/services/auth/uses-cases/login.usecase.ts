@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpCode, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoginRequestDTO } from '../dto/auth.dto';
 import { UserGateway } from '../../../../infraestructure/persistence/gateways/user.gateway';
@@ -26,7 +26,8 @@ export class LoginUseCase {
 			return {
 				error: {
 					code: 'ERRORCODE',
-					message: error,
+					httpStatus: HttpStatus.UNAUTHORIZED,
+					message: error.message || error,
 				},
 			};
 		}
