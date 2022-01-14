@@ -4,12 +4,12 @@ import { LoginUseCase, RegisterUserUseCase } from '../../../core/services/auth';
 import { ApiTags } from '@nestjs/swagger';
 import { BankScotiabankUseCase } from 'src/core/services/banks';
 
-@Controller()
+@Controller('/api/scotiabank')
 @ApiTags('ScotiabankController')
 export class ScotiabankController {
 	constructor(private readonly bankScotiabankUseCase: BankScotiabankUseCase) {}
 
-	@Post('v1/')
+	@Post('v1/inquire')
 	async consultDebt(@Body() consultDebtRequestDTO: any) {
 		const response = await this.bankScotiabankUseCase.consultDebt(consultDebtRequestDTO);
 		if (response.error) {
@@ -18,7 +18,7 @@ export class ScotiabankController {
 		return response;
 	}
 
-	@Post('v1/')
+	@Post('v1/payment')
 	async payment(@Body() paymentRequestDTO: any) {
 		const response = await this.bankScotiabankUseCase.payment(paymentRequestDTO);
 		if (response.error) {
@@ -27,7 +27,7 @@ export class ScotiabankController {
 		return response;
 	}
 
-	@Post('v1/')
+	@Post('v1/return')
 	async returnPayment(@Body() returnPaymentRequestDTO: any) {
 		const response = await this.bankScotiabankUseCase.returnPayment(returnPaymentRequestDTO);
 		if (response.error) {
