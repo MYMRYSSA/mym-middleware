@@ -29,8 +29,8 @@ export class ScotiabankController {
 	}
 
 	@Post('v1/return')
-	async returnPayment(@Body() returnPaymentRequestDTO: any) {
-		const response = await this.bankScotiabankUseCase.returnPayment(returnPaymentRequestDTO);
+	async annulmentPayment(@Body() annulmentPaymentRequestDTO: any) {
+		const response = await this.bankScotiabankUseCase.annulmentPayment(annulmentPaymentRequestDTO);
 		if (response.error) {
 			throw new InternalServerErrorException(response.error);
 		}

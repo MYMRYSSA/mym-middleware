@@ -26,8 +26,8 @@ export class BCPController {
 	}
 
 	@Post('v1/')
-	async returnPayment(@Body() returnPaymentRequestDTO: any) {
-		const response = await this.bankBcpUseCase.returnPayment(returnPaymentRequestDTO);
+	async annulmentPayment(@Body() annulmentPaymentRequestDTO: any) {
+		const response = await this.bankBcpUseCase.annulmentPayment(annulmentPaymentRequestDTO);
 		if (response.error) {
 			throw new InternalServerErrorException(response.error);
 		}

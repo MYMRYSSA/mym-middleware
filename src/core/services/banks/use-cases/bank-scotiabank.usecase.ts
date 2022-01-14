@@ -14,7 +14,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 	payment(payloadRequest: any): any {
 		throw new Error('Method not implemented.');
 	}
-	returnPayment(payloadRequest: any): any {
+	annulmentPayment(payloadRequest: any): any {
 		throw new Error('Method not implemented.');
 	}
 }

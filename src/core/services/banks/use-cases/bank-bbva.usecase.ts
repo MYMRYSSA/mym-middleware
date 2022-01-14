@@ -1,18 +1,27 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { BBVAConsultDebtRequestDTO } from '../dto/bbva/bbva.requests.dto';
+import {
+	BBVAAnnulmentRequestDTO,
+	BBVAConsultDebtRequestDTO,
+	BBVAPaymentRequestDTO,
+} from '../dto/bbva/bbva.requests.dto';
+import {
+	IBBVAAnnulmentResponseDTO,
+	IBBVAConsultDebtResponseDTO,
+	IBBVAPaymentResponseDTO,
+} from '../dto/bbva/bbva.responses.dto';
 import { IBankfactory } from '../interfaces/bank.interface';
 
 @Injectable()
 export class BankBbvaUseCase implements IBankfactory {
 	private logger = new Logger(BankBbvaUseCase.name);
 
-	consultDebt(payloadRequest: BBVAConsultDebtRequestDTO): any {
-		return payloadRequest;
+	consultDebt(payloadRequest: BBVAConsultDebtRequestDTO): IBBVAConsultDebtResponseDTO {
+		return payloadRequest as any;
 	}
-	payment(payloadRequest: any): any {
-		throw new Error('Method not implemented.');
+	payment(payloadRequest: BBVAPaymentRequestDTO): IBBVAPaymentResponseDTO {
+		return payloadRequest as any;
 	}
-	returnPayment(payloadRequest: any): any {
-		throw new Error('Method not implemented.');
+	annulmentPayment(payloadRequest: BBVAAnnulmentRequestDTO): IBBVAAnnulmentResponseDTO {
+		return payloadRequest as any;
 	}
 }

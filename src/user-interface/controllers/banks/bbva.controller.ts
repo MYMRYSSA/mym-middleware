@@ -1,9 +1,9 @@
-import { Body, Controller, HttpException, InternalServerErrorException, Post } from '@nestjs/common';
+import { Body, Controller, InternalServerErrorException, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { BankBbvaUseCase } from 'src/core/services/banks';
-import { BBVAConsultDebtRequestDTO } from 'src/core/services/banks/dto/bbva/bbva.requests.dto';
+import { BBVAAnnulmentRequestDTO, BBVAConsultDebtRequestDTO, BBVAPaymentRequestDTO } from 'src/core/services/banks/dto/bbva/bbva.requests.dto';
 
-@Controller('/api')
+@Controller('/api/bbva')
 @ApiTags('BBVAController')
 export class BBVAController {
 	constructor(private readonly bankBBVAUseCase: BankBbvaUseCase) {}
@@ -15,20 +15,14 @@ export class BBVAController {
 	}
 
 	@Post('v1/payment')
-	async payment(@Body() paymentRequestDTO: any) {
+	async payment(@Body() paymentRequestDTO: BBVAPaymentRequestDTO) {
 		const response = await this.bankBBVAUseCase.payment(paymentRequestDTO);
-		if (response.error) {
-			throw new InternalServerErrorException(response.error);
-		}
 		return response;
 	}
 
-	@Post('v1/')
-	async returnPayment(@Body() returnPaymentRequestDTO: any) {
-		const response = await this.bankBBVAUseCase.returnPayment(returnPaymentRequestDTO);
-		if (response.error) {
-			throw new InternalServerErrorException(response.error);
-		}
+	@Post('v1/annulment')
+	async annulmentPayment(@Body() annulmentPaymentRequestDTO: BBVAAnnulmentRequestDTO) {
+		const response = await this.bankBBVAUseCase.annulmentPayment(annulmentPaymentRequestDTO);
 		return response;
 	}
 }
