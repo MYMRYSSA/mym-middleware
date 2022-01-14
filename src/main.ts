@@ -1,10 +1,14 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { json, raw } from 'body-parser';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
+
 	app.enableCors();
+	app.use(json());
+	app.use(raw({ type: 'application/xml' }));
 
 	app.useGlobalPipes(new ValidationPipe());
 

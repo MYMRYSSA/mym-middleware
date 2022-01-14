@@ -10,8 +10,9 @@ export class ScotiabankController {
 	constructor(private readonly bankScotiabankUseCase: BankScotiabankUseCase) {}
 
 	@Post('v1/inquire')
-	async consultDebt(@Body() consultDebtRequestDTO: any) {
-		const response = await this.bankScotiabankUseCase.consultDebt(consultDebtRequestDTO);
+	async consultDebt(@Body() XML: any) {
+		const xmlStr = Buffer.from(XML).toString();
+		const response = await this.bankScotiabankUseCase.consultDebt(xmlStr);
 		if (response.error) {
 			throw new HttpException(response.error, response.error.httpStatus);
 		}

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString, ValidateNested } from 'class-validator';
 
-class OperationContentDTO {
+export class OperationContentDTO {
 	@ApiProperty({ required: true })
 	@IsNumber()
 	codigoOperacion: number;
