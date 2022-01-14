@@ -11,6 +11,6 @@ import { UserInterfaceModule } from './user-interface/user-interface.module';
 			useUnifiedTopology: true,
 		}),
 		UserInterfaceModule,
-	]
+	],
 })
 export class AppModule {}
