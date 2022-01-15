@@ -1,6 +1,6 @@
-import inquireStructure from '../scotiabank/inquire-structure.json';
-import paymentStructure from '../scotiabank/payment-structure.json';
-import returnStructure from '../scotiabank/return-structure.json';
+import * as inquireStructure from './inquire-structure.json';
+import * as paymentStructure from './payment-structure.json';
+import * as returnStructure from './return-structure.json';
 
 export enum InputEnum {
 	INQUIRE = 'inquire',

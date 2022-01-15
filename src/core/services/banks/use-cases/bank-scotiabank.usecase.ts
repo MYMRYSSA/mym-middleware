@@ -19,11 +19,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 	payment(XML: string): any {
 		throw new Error('Method not implemented.');
 	}
-<<<<<<< Updated upstream
 	annulmentPayment(payloadRequest: any): any {
-=======
-	returnPayment(XML: string): any {
->>>>>>> Stashed changes
 		throw new Error('Method not implemented.');
 	}
 }
