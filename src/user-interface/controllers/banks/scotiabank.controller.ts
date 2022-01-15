@@ -20,8 +20,9 @@ export class ScotiabankController {
 	}
 
 	@Post('v1/payment')
-	async payment(@Body() paymentRequestDTO: any) {
-		const response = await this.bankScotiabankUseCase.payment(paymentRequestDTO);
+	async payment(@Body() XML: any) {
+		const xmlStr = Buffer.from(XML).toString();
+		const response = await this.bankScotiabankUseCase.payment(xmlStr);
 		if (response.error) {
 			throw new InternalServerErrorException(response.error);
 		}
@@ -29,8 +30,9 @@ export class ScotiabankController {
 	}
 
 	@Post('v1/return')
-	async annulmentPayment(@Body() annulmentPaymentRequestDTO: any) {
-		const response = await this.bankScotiabankUseCase.annulmentPayment(annulmentPaymentRequestDTO);
+	async annulmentPayment(@Body() XML: any) {
+		const xmlStr = Buffer.from(XML).toString();
+		const response = await this.bankScotiabankUseCase.annulmentPayment(xmlStr);
 		if (response.error) {
 			throw new InternalServerErrorException(response.error);
 		}

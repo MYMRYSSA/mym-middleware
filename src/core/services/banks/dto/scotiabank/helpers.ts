@@ -14,7 +14,6 @@ export const getInputValues = (input: string, type: InputEnum) => {
 	switch (type) {
 		case InputEnum.INQUIRE:
 			structure = inquireStructure;
-			console.log('🚀 ~ file: helpers.ts ~ line 17 ~ getInputValues ~ inquireStructure', inquireStructure);
 			break;
 		case InputEnum.PAYMENT:
 			structure = paymentStructure;
@@ -24,7 +23,7 @@ export const getInputValues = (input: string, type: InputEnum) => {
 			break;
 	}
 	structure.forEach(item => {
-		obj[item.id] = input.slice(item.start, item.end + 1);
+		obj[item.id] = input.slice(item.start - 1, item.end);
 	});
 	return obj;
 };

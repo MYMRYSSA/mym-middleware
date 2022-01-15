@@ -8,18 +8,42 @@ export class BankScotiabankUseCase implements IBankfactory {
 	private logger = new Logger(BankScotiabankUseCase.name);
 
 	consultDebt(XML: string): any {
-		const jsonRes = convert(XML, { format: 'json' });
-		const objRes: IXmlJson = JSON.parse(jsonRes);
-		const valueJson = getInputValues(
-			objRes['soapenv:Envelope']['soapenv:Body'].ejecutarTransaccionScotiabank.Input,
-			InputEnum.INQUIRE,
-		);
-		return valueJson;
+		try {
+			const jsonRes = convert(XML, { format: 'json' });
+			const objRes: IXmlJson = JSON.parse(jsonRes);
+			const valueJson = getInputValues(
+				objRes['soapenv:Envelope']['soapenv:Body'].ejecutarTransaccionScotiabank.Input,
+				InputEnum.INQUIRE,
+			);
+			return valueJson;
+		} catch (err) {
+			return { error: err.message };
+		}
 	}
 	payment(XML: string): any {
-		throw new Error('Method not implemented.');
+		try {
+			const jsonRes = convert(XML, { format: 'json' });
+			const objRes: IXmlJson = JSON.parse(jsonRes);
+			const valueJson = getInputValues(
+				objRes['soapenv:Envelope']['soapenv:Body'].ejecutarTransaccionScotiabank.Input,
+				InputEnum.PAYMENT,
+			);
+			return valueJson;
+		} catch (err) {
+			return { error: err.message };
+		}
 	}
-	annulmentPayment(payloadRequest: any): any {
-		throw new Error('Method not implemented.');
+	annulmentPayment(XML: string): any {
+		try {
+			const jsonRes = convert(XML, { format: 'json' });
+			const objRes: IXmlJson = JSON.parse(jsonRes);
+			const valueJson = getInputValues(
+				objRes['soapenv:Envelope']['soapenv:Body'].ejecutarTransaccionScotiabank.Input,
+				InputEnum.RETURN,
+			);
+			return valueJson;
+		} catch (err) {
+			return { error: err.message };
+		}
 	}
 }

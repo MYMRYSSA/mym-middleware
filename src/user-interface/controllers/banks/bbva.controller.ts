@@ -1,7 +1,11 @@
 import { Body, Controller, InternalServerErrorException, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { BankBbvaUseCase } from 'src/core/services/banks';
-import { BBVAAnnulmentRequestDTO, BBVAConsultDebtRequestDTO, BBVAPaymentRequestDTO } from 'src/core/services/banks/dto/bbva/bbva.requests.dto';
+import {
+	BBVAAnnulmentRequestDTO,
+	BBVAConsultDebtRequestDTO,
+	BBVAPaymentRequestDTO,
+} from 'src/core/services/banks/dto/bbva/bbva.requests.dto';
 
 @Controller('/api/bbva')
 @ApiTags('BBVAController')
