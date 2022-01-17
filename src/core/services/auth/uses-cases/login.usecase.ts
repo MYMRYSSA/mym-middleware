@@ -19,7 +19,7 @@ export class LoginUseCase {
 
 			const { user, role } = userFound;
 			return {
-				data: { user: { user, role }, access_token: this.jwtService.sign({ userFound, role }) },
+				data: { user: { user, role }, access_token: this.jwtService.sign({ user, role }) },
 			};
 		} catch (error) {
 			this.logger.error(error);

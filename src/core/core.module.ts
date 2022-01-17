@@ -2,14 +2,14 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import { LoginUseCase, RegisterUserUseCase, ValidateUseCase } from './services/auth';
+import { LoginUseCase, RegisterUserUseCase, JwtStrategy } from './services/auth';
 import { BankBbvaUseCase, BankBcpUseCase, BankScotiabankUseCase } from './services/banks';
 import { InfraestructureModule } from '../infraestructure/infraestructure.module';
 
 const services = [
 	LoginUseCase,
 	RegisterUserUseCase,
-	ValidateUseCase,
+	JwtStrategy,
 	BankBbvaUseCase,
 	BankBcpUseCase,
 	BankScotiabankUseCase,

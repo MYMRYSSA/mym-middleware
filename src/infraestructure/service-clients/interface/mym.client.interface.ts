@@ -12,7 +12,7 @@ export interface IDebtInquiresRequest {
 	requestId: string;
 	currencyCode?: string;
 	customerIdentificationCode: string;
-	transactionDate: Date;
+	transactionDate: string;
 	channel: string;
 	serviceId?: string;
 	processId?: string;
