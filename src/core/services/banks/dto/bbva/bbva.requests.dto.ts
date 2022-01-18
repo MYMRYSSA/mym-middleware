@@ -17,7 +17,7 @@ export class OperationContentDTO {
 
 	@ApiProperty({ required: true })
 	@IsNumber()
-	codigoBanco: number;
+	codigoBanco: string;
 
 	@ApiProperty({ required: true })
 	@IsNumber()

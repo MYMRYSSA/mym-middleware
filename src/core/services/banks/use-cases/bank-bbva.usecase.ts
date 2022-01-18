@@ -35,17 +35,18 @@ export class BankBbvaUseCase implements IBankfactory {
 				bankCode: codigoBanco.toString(),
 				channel: canalOperacion,
 				requestId: numeroOperacion.toString(),
-				currencyCode: 'PEN',
+				currencyCode: 'USD',
 				processId: codigoOperacion.toString(),
 				transactionDate: this.processDate(fechaOperacion, horaOperacion),
 				customerIdentificationCode: detalle.transaccion.numeroReferenciaDeuda,
+				serviceId: '000',
 			};
 			const response = await this.mymRestClient.debtInquires(payloadMyMRequest);
-			const result = response.subscribe(data => data);
+
+			const result = response;
 			return result as any;
 		} catch (error) {
-      console.log("🚀 ~ file: bank-bbva.usecase.ts ~ line 46 ~ BankBbvaUseCase ~ consultDebt ~ error", error)
-			
+			console.log('🚀 ~ file: bank-bbva.usecase.ts ~ line 48 ~ BankBbvaUseCase ~ consultDebt ~ error', error);
 		}
 	}
 	payment(payloadRequest: BBVAPaymentRequestDTO): IBBVAPaymentResponseDTO {
