@@ -39,7 +39,7 @@ export class BankBbvaUseCase implements IBankfactory {
 				bankCode: codigoBanco.toString(),
 				channel: canalOperacion,
 				requestId: numeroOperacion.toString(),
-				currencyCode: 'USD',
+				currencyCode: 'PEN',
 				processId: codigoOperacion.toString(),
 				transactionDate: this.processDate(fechaOperacion, horaOperacion),
 				customerIdentificationCode: detalle.transaccion.numeroReferenciaDeuda,
@@ -123,9 +123,9 @@ export class BankBbvaUseCase implements IBankfactory {
 		});
 	}
 
-	private operationStatus(response: IDebtInquiresResponse) {
-		if (!response?.documents) return responseConstants.TRANSACTION_INCOMPLETE;
-		if (!response.documents.length) return responseConstants.NOT_INQUIRE;
-		return responseConstants.SUCCESS;
+	private operationStatus(response: any) {
+		if (response.documents) return responseConstants.SUCCESS;
+		if (response.message === 'CLIENTE SIN DEUDAS') return responseConstants.NOT_INQUIRE;
+		return responseConstants.TRANSACTION_INCOMPLETE;
 	}
 }
