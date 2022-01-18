@@ -1,4 +1,4 @@
-interface IDocumentMyMContent {
+export interface IDocumentMyMContent {
 	documentId: string;
 	description: string;
 	issuanceDate: string;

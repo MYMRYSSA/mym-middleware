@@ -13,7 +13,7 @@ export class MyMRestClient {
 
 	constructor(private readonly configService: ConfigService, private readonly httpService: HttpService) {}
 
-	debtInquires(requestDTO: IDebtInquiresRequest): Promise<AxiosResponse<IDebtInquiresResponse>> {
+	debtInquires(requestDTO: IDebtInquiresRequest): Promise<IDebtInquiresResponse> {
 		if (!this.configService.get<string>('MYM_API_URL')) throw new Error('Error en la configuracion');
 		const token = this.configService.get<string>('TOKEN');
 		const URI = `${this.configService.get<string>('MYM_API_URL')}/api/CustomerDebtInquiries`;

@@ -2,6 +2,7 @@ import {
 	Body,
 	Controller,
 	Get,
+	HttpCode,
 	HttpException,
 	InternalServerErrorException,
 	Post,
@@ -19,6 +20,7 @@ export class AuthController {
 	constructor(private readonly loginUseCase: LoginUseCase, private readonly registerUseCase: RegisterUserUseCase) {}
 
 	@Post('v1/auth/login')
+	@HttpCode(200)
 	async login(@Body() loginRequestDTO: LoginRequestDTO) {
 		const response = await this.loginUseCase.execute(loginRequestDTO);
 		if (response.error) {
@@ -28,6 +30,7 @@ export class AuthController {
 	}
 
 	@Post('v1/auth/register')
+	@HttpCode(200)
 	async register(@Body() registerRequestDTO: RegisterRequestDTO) {
 		const response = await this.registerUseCase.execute(registerRequestDTO);
 		if (response.error) {
@@ -38,6 +41,7 @@ export class AuthController {
 
 	@UseGuards(JwtAuthGuard)
 	@Get('v1/account')
+	@HttpCode(200)
 	async account(@Request() req) {
 		return req.user;
 	}

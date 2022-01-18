@@ -1,0 +1,50 @@
+export const responseConstants = {
+	SUCCESS: {
+		code: '0001',
+		description: 'TRANSACCION REALIZADA CON EXITO',
+	},
+	INVALID: {
+		code: '3000',
+		description: 'FORMATO DE TRAMA NO VALIDO',
+	},
+	TRANSACTION_INCOMPLETE: {
+		code: '3002',
+		description: 'NO SE PUDO REALIZAR LA TRANSACCION',
+	},
+	ANNULMENT_INCORRECT: {
+		code: '3004',
+		description: 'NO SE PUEDE REALIZAR EL REGISTRO DE EXTORNO',
+	},
+	NOT_INQUIRE: {
+		code: '3009',
+		description: 'NO TIENE DEUDAS PENDIENTES',
+	},
+	REFERENCE_NOT_EXIST: {
+		code: '0101',
+		description: 'NUMERO DE REFERENCIA NO EXISTE',
+	},
+	REFERENCE_EXPIRED: {
+		code: '0102',
+		description: 'NUMERO DE REFERENCIA EXPIRADA',
+	},
+	REFERENCE_STATUS_PAID: {
+		code: '0106',
+		description: 'NUMERO DE REFERENCIA CON ESTADO PAGADO',
+	},
+	ERROR_PAY_OLDEST_DOCUMENT: {
+		code: '0290',
+		description: 'ERROR DEBE PAGAR LA CUOTA MAS ANTIGUA',
+	},
+	INVALID_REFERENCE: {
+		code: '3013',
+		description: 'ESTADO DE NRO DE REFERENCIA NO VALIDO',
+	},
+	ANNULMENT_NOT_PROCESS: {
+		code: '3014',
+		description: 'EXTORNO NO PROCESADO PORQUE NO EXISTE REGISTRO DEL PAGO',
+	},
+	AMOUNT_MIN_MAX: {
+		code: '3051',
+		description: 'MONTO DE PAGO DEBE SER MINIMO O MAXIMO',
+	},
+};

@@ -1,7 +1,7 @@
 import { OperationContentDTO } from './bbva.requests.dto';
 
 /** ConsultDebt */
-interface IDocumentContentDTO {
+export interface IDocumentContentDTO {
 	numero: string;
 	descripcion: string;
 	fechaEmision: string;
@@ -22,7 +22,7 @@ interface ITransactionContentDTO {
 	indMasDeuda?: number;
 	cantidadDocsDeuda?: number;
 	datosEmpresa?: string;
-	listaDocuments?: {
+	listaDocumentos?: {
 		documento: IDocumentContentDTO[];
 	};
 	listaSubConceptos?: {
@@ -41,7 +41,7 @@ export interface IBBVAConsultDebtResponseDTO {
 			};
 			detalle: {
 				respuesta: IResponseContent;
-				transaction: ITransactionContentDTO;
+				transaccion: ITransactionContentDTO;
 			};
 		};
 	};
