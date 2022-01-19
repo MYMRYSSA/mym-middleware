@@ -1,8 +1,8 @@
 export interface IDocumentMyMContent {
 	documentId: string;
+	expirationDate: string;
 	description: string;
 	issuanceDate: string;
-	expirationDate: string;
 	totalAmount: string;
 	minimumAmount: string;
 }

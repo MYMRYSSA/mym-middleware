@@ -56,7 +56,7 @@ export class BBVAConsultDebtRequestDTO {
 }
 
 /** Payment */
-class TransactionContentDTO {
+export class TransactionContentDTO {
 	@ApiProperty({ required: true })
 	@IsString()
 	numeroReferenciaDeuda: string;
@@ -105,7 +105,7 @@ export class BBVAPaymentRequestDTO {
 	NotificarPago: {
 		recaudosRq: {
 			cabecera: {
-				operation: OperationContentDTO;
+				operacion: OperationContentDTO;
 			};
 			detalle: {
 				transaccion: TransactionContentDTO;

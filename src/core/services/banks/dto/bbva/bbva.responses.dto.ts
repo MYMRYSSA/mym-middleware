@@ -56,7 +56,7 @@ export interface IBBVAPaymentResponseDTO {
 			};
 			detalle: {
 				respuesta: IResponseContent;
-				transaction: ITransactionContentDTO;
+				transaccion: ITransactionContentDTO;
 			};
 		};
 	};
