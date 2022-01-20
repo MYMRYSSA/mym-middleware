@@ -7,6 +7,7 @@ import { lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AxiosRequestConfig } from 'axios';
 import { IPaymentRequest, IPaymentResponse } from '../interface/mym.payment.interface';
+import { IAnnulmentRequest } from '../interface/mym.annulment.interface';
 
 @Injectable()
 export class MyMRestClient {
@@ -38,6 +39,26 @@ export class MyMRestClient {
 		if (!this.configService.get<string>('MYM_API_URL')) throw new Error('Error en la configuracion');
 		const token = this.configService.get<string>('TOKEN');
 		const URI = `${this.configService.get<string>('MYM_API_URL')}/api/CustomerPayments`;
+		this.logger.log(URI);
+		const agent = new https.Agent({
+			rejectUnauthorized: false,
+		});
+		const config: AxiosRequestConfig = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+			httpsAgent: agent,
+			params: {
+				...requestDTO,
+			},
+		};
+		return lastValueFrom(this.httpService.post(URI, null, config).pipe(map(response => response.data)));
+	}
+
+	annulmentPayment(requestDTO: IAnnulmentRequest): Promise<IPaymentResponse> {
+		if (!this.configService.get<string>('MYM_API_URL')) throw new Error('Error en la configuracion');
+		const token = this.configService.get<string>('TOKEN');
+		const URI = `${this.configService.get<string>('MYM_API_URL')}/api/BankReturnRequest`;
 		this.logger.log(URI);
 		const agent = new https.Agent({
 			rejectUnauthorized: false,

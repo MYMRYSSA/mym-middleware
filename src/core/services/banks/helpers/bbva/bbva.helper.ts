@@ -1,3 +1,4 @@
+import { IAnnulmentRequest } from 'src/infraestructure/service-clients/interface/mym.annulment.interface';
 import {
 	IDebtInquiresRequest,
 	IDebtInquiresResponse,
@@ -7,6 +8,7 @@ import { IPaymentRequest, IPaymentResponse } from 'src/infraestructure/service-c
 import { responseConstants } from '../../constants/bbva/response-values.constants';
 import { EnumCurrency, OperationContentDTO, TransactionContentDTO } from '../../dto/bbva/bbva.requests.dto';
 import {
+	IBBVAAnnulmentResponseDTO,
 	IBBVAConsultDebtResponseDTO,
 	IBBVAPaymentResponseDTO,
 	IDocumentContentDTO,
@@ -152,6 +154,54 @@ export const generatePaymentResponse = (
 						numeroReferenciaDeuda: transaction.numeroReferenciaDeuda,
 						numeroOperacionEmpresa: responseMyMAPI?.operationNumberCompany || '',
 						datosEmpresa: responseMyMAPI?.clientName || '',
+					},
+				},
+			},
+		},
+	};
+};
+
+export const generateAnnulmentRequestMyMAPI = (
+	operation: OperationContentDTO,
+	transaction: TransactionContentDTO,
+): IAnnulmentRequest => {
+	const { codigoBanco, canalOperacion, numeroOperacion, fechaOperacion, horaOperacion, codigoOperacion } = operation;
+	const transactionDate = processDate(fechaOperacion, horaOperacion)?.slice(0, 10);
+	return {
+		bankCode: codigoBanco.toString(),
+		currencyCode: transaction.codigoMoneda,
+		requestId: numeroOperacion.toString(),
+		channel: canalOperacion,
+		customerIdentificationCode: transaction.numeroReferenciaDeuda,
+		serviceId: '000',
+		processId: codigoOperacion.toString(),
+		transactionDate,
+		operationId: '000',
+		operationNumberAnnulment: transaction.numeroDocumento,
+	};
+};
+
+export const generateAnnulmentResponse = (
+	operation: OperationContentDTO,
+	responseMyMAPI: IPaymentResponse,
+	transaction: TransactionContentDTO,
+): IBBVAAnnulmentResponseDTO => {
+	const operationStatus = getOperationStatusPayment(responseMyMAPI);
+
+	return {
+		ExtornarPagoResponse: {
+			recaudosRs: {
+				cabecera: {
+					operacion: operation,
+				},
+				detalle: {
+					respuesta: {
+						codigo: operationStatus.code,
+						descripcion: operationStatus.description,
+					},
+					transaction: {
+						numeroReferenciaDeuda: transaction.numeroReferenciaDeuda,
+						numeroOperacionEmpresa: responseMyMAPI.operationNumberCompany,
 					},
 				},
 			},

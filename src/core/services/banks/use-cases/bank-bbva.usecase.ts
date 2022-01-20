@@ -14,11 +14,14 @@ import {
 import { IBankfactory } from '../interfaces/bank.interface';
 import { IPaymentRequest } from 'src/infraestructure/service-clients/interface/mym.payment.interface';
 import {
+	generateAnnulmentRequestMyMAPI,
+	generateAnnulmentResponse,
 	generatedInquiryResponse,
 	generateInquiryRequestMyMAPI,
 	generatePaymentRequestMyMAPI,
 	generatePaymentResponse,
 } from '../helpers/bbva/bbva.helper';
+import { IAnnulmentRequest } from 'src/infraestructure/service-clients/interface/mym.annulment.interface';
 @Injectable()
 export class BankBbvaUseCase implements IBankfactory {
 	private logger = new Logger(BankBbvaUseCase.name);
@@ -81,7 +84,29 @@ export class BankBbvaUseCase implements IBankfactory {
 			return resultContent;
 		}
 	}
-	annulmentPayment(payloadRequest: BBVAAnnulmentRequestDTO): IBBVAAnnulmentResponseDTO {
-		return payloadRequest as any;
+	async annulmentPayment(payloadRequest: BBVAAnnulmentRequestDTO): Promise<IBBVAAnnulmentResponseDTO> {
+		const {
+			ExtornarPago: {
+				recaudosRq: {
+					cabecera: { operacion },
+					detalle: { transaccion },
+				},
+			},
+		} = payloadRequest;
+		let annulmentPayloadPaymentMyM: IAnnulmentRequest = null;
+		try {
+			annulmentPayloadPaymentMyM = generateAnnulmentRequestMyMAPI(operacion, transaccion);
+			this.logger.log(`body de la consulta a MyM API ${JSON.stringify(payloadRequest)}`);
+
+			const responseClientMyM = await this.mymRestClient.annulmentPayment(annulmentPayloadPaymentMyM);
+			this.logger.log(`respuesta de MyM API ${JSON.stringify(responseClientMyM)}`);
+
+			const response = generateAnnulmentResponse(operacion, responseClientMyM, transaccion);
+			return response;
+		} catch (error) {
+			this.logger.error(`Error al pagar deuda ${error.response.data}`);
+			const resultContent = generateAnnulmentResponse(operacion, error.response.data, transaccion);
+			return resultContent;
+		}
 	}
 }

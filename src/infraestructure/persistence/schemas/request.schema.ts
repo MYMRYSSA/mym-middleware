@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import * as mongoose from 'mongoose';
 
-export type RequestDocument = Request & Document;
+export type RequestDocument = Request & mongoose.Document;
 
 @Schema()
 export class Request {
@@ -20,10 +20,10 @@ export class Request {
 	@Prop()
 	type: string;
 
-	@Prop()
+	@Prop({ type: mongoose.Schema.Types.Mixed })
 	request: any;
 
-	@Prop()
+	@Prop({ type: mongoose.Schema.Types.Mixed })
 	response: any;
 
 	@Prop()
