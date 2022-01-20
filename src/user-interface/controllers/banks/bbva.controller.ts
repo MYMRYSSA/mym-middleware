@@ -1,4 +1,4 @@
-import { Body, Controller, InternalServerErrorException, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { BankBbvaUseCase } from 'src/core/services/banks';
 import {

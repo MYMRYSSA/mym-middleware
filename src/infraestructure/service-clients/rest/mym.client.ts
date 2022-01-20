@@ -1,13 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import * as https from 'https';
 import { ConfigService } from '@nestjs/config';
-import { IDebtInquiresRequest, IDebtInquiresResponse } from '../interface/mym.inquire.interface';
-import { lastValueFrom } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { AxiosRequestConfig } from 'axios';
+import { lastValueFrom, map } from 'rxjs';
+import { IDebtInquiresRequest, IDebtInquiresResponse } from '../interface/mym.inquire.interface';
 import { IPaymentRequest, IPaymentResponse } from '../interface/mym.payment.interface';
 import { IAnnulmentRequest } from '../interface/mym.annulment.interface';
+import * as https from 'https';
 
 @Injectable()
 export class MyMRestClient {

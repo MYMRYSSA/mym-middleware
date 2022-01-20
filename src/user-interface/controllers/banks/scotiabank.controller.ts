@@ -1,6 +1,4 @@
-import { Body, Controller, HttpException, InternalServerErrorException, Post } from '@nestjs/common';
-import { LoginRequestDTO, RegisterRequestDTO } from '../../../core/services/auth/dto/auth.dto';
-import { LoginUseCase, RegisterUserUseCase } from '../../../core/services/auth';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { BankScotiabankUseCase } from 'src/core/services/banks';
 
@@ -13,9 +11,6 @@ export class ScotiabankController {
 	async consultDebt(@Body() XML: any) {
 		const xmlStr = Buffer.from(XML).toString();
 		const response = await this.bankScotiabankUseCase.consultDebt(xmlStr);
-		if (response.error) {
-			throw new HttpException(response.error, response.error.httpStatus);
-		}
 		return response;
 	}
 
@@ -23,9 +18,6 @@ export class ScotiabankController {
 	async payment(@Body() XML: any) {
 		const xmlStr = Buffer.from(XML).toString();
 		const response = await this.bankScotiabankUseCase.payment(xmlStr);
-		if (response.error) {
-			throw new InternalServerErrorException(response.error);
-		}
 		return response;
 	}
 
@@ -33,9 +25,6 @@ export class ScotiabankController {
 	async annulmentPayment(@Body() XML: any) {
 		const xmlStr = Buffer.from(XML).toString();
 		const response = await this.bankScotiabankUseCase.annulmentPayment(xmlStr);
-		if (response.error) {
-			throw new InternalServerErrorException(response.error);
-		}
 		return response;
 	}
 }
