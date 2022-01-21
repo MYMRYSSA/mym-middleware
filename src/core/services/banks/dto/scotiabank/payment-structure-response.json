@@ -28,7 +28,7 @@
 	{ "id": "NUMERO DE OPERAC.ACREEDOR", "start": 200, "end": 211 },
 	{ "id": "NUMERO DE PROD/SERV PAGAD.", "start": 212, "end": 213 },
 	{ "id": "NUMERO TOTAL DE DOC PAGAD.", "start": 214, "end": 216 },
-	{ "id": "FILLER", "start": 217, "end": 226 },
+	{ "id": "FILLER 1", "start": 217, "end": 226 },
 	{ "id": "ORIGEN DE RESPUESTA", "start": 227, "end": 227 },
 	{ "id": "CODIGO DE RESPUESTA EXTEND", "start": 228, "end": 230 },
 	{ "id": "DESCRIPC. DE LA RPTA APLICATIV", "start": 231, "end": 260 },
@@ -36,14 +36,14 @@
 	{ "id": "RUC DEL DEUDOR", "start": 281, "end": 295 },
 	{ "id": "RUC DEL ACREEDOR", "start": 296, "end": 310 },
 	{ "id": "CODIGO DE ZONA DEL DEUDOR", "start": 311, "end": 316 },
-	{ "id": "FILLER", "start": 317, "end": 336 },
+	{ "id": "FILLER 2", "start": 317, "end": 336 },
 	{ "id": "CODIGO DEL PROD/SERVICIO", "start": 337, "end": 339 },
 	{ "id": "DESCRIPC. DEL PROD.SERV", "start": 340, "end": 354 },
 	{ "id": "IMPORTE TOTAL POR PROD/SERV", "start": 355, "end": 365 },
 	{ "id": "MENSAJE 1", "start": 366, "end": 405 },
 	{ "id": "MENSAJE 2", "start": 406, "end": 445 },
 	{ "id": "NUMERO DE DOCUMENTOS", "start": 446, "end": 447 },
-	{ "id": "FILLER", "start": 448, "end": 467 },
+	{ "id": "FILLER 3", "start": 448, "end": 467 },
 	{ "id": "TIPO DE SERVICIO", "start": 468, "end": 470 },
 	{ "id": "DESCRIPCION DEL DOCUMENTO", "start": 471, "end": 485 },
 	{ "id": "NUMERO DEL DOCUMENTO", "start": 486, "end": 501 },
@@ -66,5 +66,5 @@
 	{ "id": "INDICADOR DE FACTURACION", "start": 617, "end": 617 },
 	{ "id": "NUMERO DE FACTURA", "start": 618, "end": 628 },
 	{ "id": "REFERENCIA DE LA DEUDA", "start": 629, "end": 644 },
-	{ "id": "FILLER", "start": 645, "end": 678 }
+	{ "id": "FILLER 4", "start": 645, "end": 678 }
 ]

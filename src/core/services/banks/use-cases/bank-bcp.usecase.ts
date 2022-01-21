@@ -4,8 +4,19 @@ import { IDebtInquiresRequest } from 'src/infraestructure/service-clients/interf
 import { IPaymentRequest } from 'src/infraestructure/service-clients/interface/mym.payment.interface';
 import { MyMRestClient } from 'src/infraestructure/service-clients/rest/mym.client';
 import { BCPAnnulmentRequestDTO, BCPConsultDebtRequestDTO, BCPPaymentRequestDTO } from '../dto/bcp/bcp.requests.dto';
-import { IBCPAnnulmentResponseDTO, IBCPConsultDebtResponseDTO, IBCPPaymentResponseDTO } from '../dto/bcp/bcp.responses.dto';
-import { generateAnnulmentRequestMyMAPI, generateAnnulmentResponse, generatedInquiryResponse, generateInquiryRequestMyMAPI, generatePaymentRequestMyMAPI, generatePaymentResponse } from '../helpers/bcp/bcp.helpers';
+import {
+	IBCPAnnulmentResponseDTO,
+	IBCPConsultDebtResponseDTO,
+	IBCPPaymentResponseDTO,
+} from '../dto/bcp/bcp.responses.dto';
+import {
+	generateAnnulmentRequestMyMAPI,
+	generateAnnulmentResponse,
+	generatedInquiryResponse,
+	generateInquiryRequestMyMAPI,
+	generatePaymentRequestMyMAPI,
+	generatePaymentResponse,
+} from '../helpers/bcp/bcp.helpers';
 import { IBankfactory } from '../interfaces/bank.interface';
 
 @Injectable()

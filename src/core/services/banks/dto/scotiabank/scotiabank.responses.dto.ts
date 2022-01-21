@@ -1,3 +1,4 @@
+/** Consult Debt */
 export interface IScotiabankConsultDebtResponseDTO {
 	'MESSAGE TYPE IDENTIFICATION': string;
 	'PRIMARY BIT MAP': string;
@@ -51,7 +52,76 @@ export interface IScotiabankConsultDebtResponseDTO {
 }
 
 /** Payment */
-// export interface IScotiabankPaymentResponseDTO {}
+export interface IScotiabankPaymentResponseDTO {
+	'MESSAGE TYPE IDENTIFICATION': string;
+	'PRIMARY BIT MAP': string;
+	'SECONDARY BIT MAP': string;
+	'CODIGO DE PROCESO': string;
+	MONTO: string;
+	'FECHA Y HORA DE TRANSACCION': string;
+	TRACE: string;
+	'FECHA DE CAPTURA': string;
+	'IDENTIFICACION EMPRESA': string;
+	'RETRIEVAL REFERENCE - NUMBER': string;
+	'AUTHORIZATION ID RESPONSE': string;
+	'RESPONSE CODE': string;
+	'TERMINAL ID': string;
+	'TRANSACTION CURRENCY CODE': string;
+	'DATOS RESERVADOS': string;
+	'TAMAÑO DEL BLOQUE': string;
+	'CODIGO DE FORMATO': string;
+	'BIN PROCESADOR': string;
+	'CODIGO DE ACREEDOR': string;
+	'CODIGO DE PRODUCTO/SERVICIO': string;
+	'CODIGO DE PLAZA DEL RECAUDADOR': string;
+	'CODIGO DE AGENCIA DEL RECAUDADOR': string;
+	'TIPO DE DATO DE PAGO': string;
+	'DATO DE PAGO': string;
+	'CODIGO DE CIUDAD': string;
+	'NUMERO DE OPERAC.COBRANZA': string;
+	'NUMERO DE OPERAC.ACREEDOR': string;
+	'NUMERO DE PROD/SERV PAGAD.': string;
+	'NUMERO TOTAL DE DOC PAGAD.': string;
+	'FILLER 1': string;
+	'ORIGEN DE RESPUESTA': string;
+	'CODIGO DE RESPUESTA EXTEND': string;
+	'DESCRIPC. DE LA RPTA APLICATIV': string;
+	'NOMBRE DEL DEUDOR': string;
+	'RUC DEL DEUDOR': string;
+	'RUC DEL ACREEDOR': string;
+	'CODIGO DE ZONA DEL DEUDOR': string;
+	'FILLER 2': string;
+	'CODIGO DEL PROD/SERVICIO': string;
+	'DESCRIPC. DEL PROD.SERV': string;
+	'IMPORTE TOTAL POR PROD/SERV': string;
+	'MENSAJE 1': string;
+	'MENSAJE 2': string;
+	'NUMERO DE DOCUMENTOS': string;
+	'FILLER 3': string;
+	'TIPO DE SERVICIO': string;
+	'DESCRIPCION DEL DOCUMENTO': string;
+	'NUMERO DEL DOCUMENTO': string;
+	'PERIODO DE COTIZACION': string;
+	'TIPO DOC IDENTIDAD': string;
+	'NUMERO DOCUMENTO IDENTIDAD': string;
+	'FECHA DE EMISION': string;
+	'FECHA DE VENCIMIENTO': string;
+	'IMPORTE PAGADO': string;
+	'CODIGO DE CONCEPTO 1': string;
+	'IMPORTE CONCEPTO 1': string;
+	'CODIGO DE CONCEPTO 2': string;
+	'IMPORTE CONCEPTO 2': string;
+	'CODIGO DE CONCEPTO 3': string;
+	'IMPORTE CONCEPTO 3': string;
+	'CODIGO DE CONCEPTO 4': string;
+	'IMPORTE CONCEPTO 4': string;
+	'CODIGO DE CONCEPTO 5': string;
+	'IMPORTE CONCEPTO 5': string;
+	'INDICADOR DE FACTURACION': string;
+	'NUMERO DE FACTURA': string;
+	'REFERENCIA DE LA DEUDA': string;
+	'FILLER 4': string;
+}
 
 /** Annulment */
 // export interface IScotiabankAnnulmentResponseDTO {}

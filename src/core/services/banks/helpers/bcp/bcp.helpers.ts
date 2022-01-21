@@ -168,7 +168,8 @@ export const generatePaymentResponse = (
 
 /**Annulment */
 export const generateAnnulmentRequestMyMAPI = (payloadRquest: BCPAnnulmentRequestDTO): IAnnulmentRequest => {
-	const { channel, rqUUID, operationDate, financialEntity, customerId, operationNumber, operationNumberAnnulment } = payloadRquest;
+	const { channel, rqUUID, operationDate, financialEntity, customerId, operationNumber, operationNumberAnnulment } =
+		payloadRquest;
 	const transactionDate = processTransactionDate(operationDate);
 	return {
 		bankCode: financialEntity,
@@ -191,7 +192,7 @@ export const generateAnnulmentResponse = (
 	const operationStatus = getOperationStatusInquiry(responseMyMAPI);
 	return {
 		rqUUID: payloadRequest.rqUUID,
-		operationDate:  processTransactionDateToResponseBank(responseMyMAPI.transactionDate),
+		operationDate: processTransactionDateToResponseBank(responseMyMAPI.transactionDate),
 		resultCode: operationStatus.code,
 		resultDescription: operationStatus.description,
 	};

@@ -5,8 +5,9 @@ import * as returnRequestStructure from './return-structure-request.json';
 import * as inquireResponseStructure from './inquire-structure-response.json';
 import * as paymentResponseStructure from './payment-structure-response.json';
 import * as returnResponseStructure from './return-structure-response.json';
-import { ScotiabankConsultDebtRequestDTO } from './scotiabank.requests.dto';
-import { IScotiabankConsultDebtResponseDTO } from './scotiabank.responses.dto';
+import { ScotiabankConsultDebtRequestDTO, ScotiabankPaymentRequestDTO } from './scotiabank.requests.dto';
+import { IScotiabankConsultDebtResponseDTO, IScotiabankPaymentResponseDTO } from './scotiabank.responses.dto';
+import { IPaymentResponse } from 'src/infraestructure/service-clients/interface/mym.payment.interface';
 
 export enum InputEnum {
 	INQUIRE = 'inquire',
@@ -56,9 +57,9 @@ export const setOutputValues = (input: any, type: InputEnum): string => {
 		}
 		if (input[item.id].length < MAX) {
 			if (!!item.padleft) {
-				portion = Array(MAX - input[item.id].length + 1).join('*') + input[item.id];
+				portion = Array(MAX - input[item.id].length + 1).join(' ') + input[item.id];
 			} else {
-				portion = input[item.id] + Array(MAX - input[item.id].length + 1).join('*');
+				portion = input[item.id] + Array(MAX - input[item.id].length + 1).join(' ');
 			}
 		}
 		output += portion;
@@ -117,12 +118,9 @@ export const setConsultDebtResponse = (
 		'TIPO DE SERVICIO 1': '001',
 		'NUMERO DE DOCUMENTO 1':
 			response.documents.length > 0
-				? `${response.documents[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].description}`
-				: '',
-		'REFERENCIA DE LA DEUDA 1':
-			response.documents.length > 0
 				? `${response.documents[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].documentId}`
 				: '',
+		'REFERENCIA DE LA DEUDA 1': response.documents.length > 0 ? response.customerIdentificationCode : '',
 		'FECHA DE VENCIMIENTO 1':
 			response.documents.length > 0
 				? `${response.documents[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].expirationDate}`
@@ -135,5 +133,81 @@ export const setConsultDebtResponse = (
 			response.documents.length > 0
 				? `${response.documents[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].totalAmount}`
 				: '',
+	};
+};
+
+export const setPaymentResponse = (
+	valueJson: ScotiabankPaymentRequestDTO,
+	response: IPaymentResponse,
+): IScotiabankPaymentResponseDTO => {
+	return {
+		'MESSAGE TYPE IDENTIFICATION': '0210',
+		'PRIMARY BIT MAP': 'F220848188E08000',
+		'SECONDARY BIT MAP': '0000000000000018',
+		'CODIGO DE PROCESO': valueJson['CODIGO DE PROCESO'],
+		MONTO: valueJson.MONTO,
+		'FECHA Y HORA DE TRANSACCION': valueJson['FECHA Y HORA DE TRANSACCION'],
+		TRACE: valueJson.TRACE,
+		'FECHA DE CAPTURA': valueJson['FECHA DE CAPTURA'],
+		'IDENTIFICACION EMPRESA': valueJson['BIN ADQUIRIENTE'],
+		'RETRIEVAL REFERENCE - NUMBER': valueJson['RETRIEVAL REFERENCE NUMBER'],
+		'AUTHORIZATION ID RESPONSE': '4',
+		'RESPONSE CODE': '00',
+		'TERMINAL ID': valueJson['TERMINAL ID'],
+		'TRANSACTION CURRENCY CODE': valueJson['TRANSACTION CURRENCY'],
+		'DATOS RESERVADOS': valueJson['DATOS RESERVADOS'],
+		'TAMAÑO DEL BLOQUE': '',
+		'CODIGO DE FORMATO': '01',
+		'BIN PROCESADOR': '000000',
+		'CODIGO DE ACREEDOR': '000000',
+		'CODIGO DE PRODUCTO/SERVICIO': 'REC',
+		'CODIGO DE PLAZA DEL RECAUDADOR': '0000',
+		'CODIGO DE AGENCIA DEL RECAUDADOR': valueJson['CODIGO DE AGENCIA DEL RECAUDADOR'],
+		'TIPO DE DATO DE PAGO': valueJson['TIPO DE DATO DE PAGO'],
+		'DATO DE PAGO': valueJson['DATO DE PAGO'],
+		'CODIGO DE CIUDAD': '',
+		'NUMERO DE OPERAC.COBRANZA': '4',
+		'NUMERO DE OPERAC.ACREEDOR': response.operationNumberCompany,
+		'NUMERO DE PROD/SERV PAGAD.': '01',
+		'NUMERO TOTAL DE DOC PAGAD.': '001',
+		'FILLER 1': '',
+		'ORIGEN DE RESPUESTA': '0',
+		'CODIGO DE RESPUESTA EXTEND': '000',
+		'DESCRIPC. DE LA RPTA APLICATIV': 'TRANSACCION PROCESADA OK',
+		'NOMBRE DEL DEUDOR': response.clientName,
+		'RUC DEL DEUDOR': '',
+		'RUC DEL ACREEDOR': '',
+		'CODIGO DE ZONA DEL DEUDOR': '',
+		'FILLER 2': '',
+		'CODIGO DEL PROD/SERVICIO': '001',
+		'DESCRIPC. DEL PROD.SERV': `RECAUDACION ${valueJson['TRANSACTION CURRENCY CODE'] === '604' ? 'SOL' : 'DOL'}`,
+		'IMPORTE TOTAL POR PROD/SERV': valueJson['IMPORTE TOTAL X PROD/SERV'],
+		'MENSAJE 1': `RECAUDACION ${valueJson['TRANSACTION CURRENCY CODE'] === '604' ? 'SOLES' : 'DOLARES'}`,
+		'MENSAJE 2': '',
+		'NUMERO DE DOCUMENTOS': '01',
+		'FILLER 3': '',
+		'TIPO DE SERVICIO': '001',
+		'DESCRIPCION DEL DOCUMENTO': 'Recibo de Servi',
+		'NUMERO DEL DOCUMENTO': valueJson['NUMERO DE DOCUMENTO DE PAG'],
+		'PERIODO DE COTIZACION': '',
+		'TIPO DOC IDENTIDAD': '',
+		'NUMERO DOCUMENTO IDENTIDAD': '',
+		'FECHA DE EMISION': '00000000',
+		'FECHA DE VENCIMIENTO': '',
+		'IMPORTE PAGADO': valueJson['IMPORTE TOTAL X PROD/SERV'],
+		'CODIGO DE CONCEPTO 1': valueJson['CODIGO DE CONCEPTO 1'],
+		'IMPORTE CONCEPTO 1': valueJson['IMPORTE DE CONCEPTO 1'],
+		'CODIGO DE CONCEPTO 2': '00',
+		'IMPORTE CONCEPTO 2': '00000000000',
+		'CODIGO DE CONCEPTO 3': '00',
+		'IMPORTE CONCEPTO 3': '00000000000',
+		'CODIGO DE CONCEPTO 4': '00',
+		'IMPORTE CONCEPTO 4': '00000000000',
+		'CODIGO DE CONCEPTO 5': '00',
+		'IMPORTE CONCEPTO 5': '00000000000',
+		'INDICADOR DE FACTURACION': '0',
+		'NUMERO DE FACTURA': '',
+		'REFERENCIA DE LA DEUDA': valueJson['REFERENCIA DE LA DEUDA'],
+		'FILLER 4': '',
 	};
 };
