@@ -23,7 +23,7 @@ export interface IDebtInquiresResponse {
 	customerIdentificationCode: string;
 	customerName: string;
 	currencyCode?: string;
-	transactionDate: Date;
+	transactionDate: string;
 	cronologicIndicator: number;
 	statusIndicator: number;
 	paymentRestriction?: string;

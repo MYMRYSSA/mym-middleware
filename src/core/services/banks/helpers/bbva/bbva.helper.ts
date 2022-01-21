@@ -47,6 +47,7 @@ const generateDocumentBody = (documentsResponse: IDocumentMyMContent[]): IDocume
 	});
 };
 
+/**Inquiry */
 export const generateInquiryRequestMyMAPI = (
 	operation: OperationContentDTO,
 	numeroReferenciaDeuda: string,
@@ -56,7 +57,7 @@ export const generateInquiryRequestMyMAPI = (
 		bankCode: codigoBanco.toString(),
 		channel: canalOperacion,
 		requestId: numeroOperacion.toString(),
-		currencyCode: EnumCurrency.USD,
+		currencyCode: EnumCurrency.USD, // TODO validar que mandamos
 		processId: codigoOperacion.toString(),
 		transactionDate: processDate(fechaOperacion, horaOperacion),
 		customerIdentificationCode: numeroReferenciaDeuda,
@@ -96,6 +97,7 @@ export const generatedInquiryResponse = (
 	return resultBody;
 };
 
+/**Payment */
 export const generatePaymentRequestMyMAPI = (
 	operation: OperationContentDTO,
 	transaction: TransactionContentDTO,
@@ -108,19 +110,19 @@ export const generatePaymentRequestMyMAPI = (
 		requestId: numeroOperacion.toString(),
 		channel: canalOperacion,
 		customerIdentificationCode: transaction.numeroReferenciaDeuda,
-		serviceId: '000',
-		operationId: '000',
+		serviceId: '000', // TODO validar que mandamos
+		operationId: '000', // TODO validar que mandamos
 		processId: codigoOperacion.toString(),
 		transactionDate,
 		paymentType: transaction.formaPago,
 		paidDocuments: [
 			{
 				documentId: transaction.numeroDocumento,
-				expirationDate: transactionDate,
-				documentReference: '',
+				expirationDate: transactionDate, // TODO validar que mandamos
+				documentReference: '', // TODO validar que mandamos
 				amounts: [
 					{
-						amount: transaction.importeDeudaPagada,
+						amount: transaction.importeDeudaPagada.toString(),
 						amountType: 'totalAmont',
 					},
 				],
@@ -161,6 +163,7 @@ export const generatePaymentResponse = (
 	};
 };
 
+/**Annulment */
 export const generateAnnulmentRequestMyMAPI = (
 	operation: OperationContentDTO,
 	transaction: TransactionContentDTO,
@@ -173,10 +176,10 @@ export const generateAnnulmentRequestMyMAPI = (
 		requestId: numeroOperacion.toString(),
 		channel: canalOperacion,
 		customerIdentificationCode: transaction.numeroReferenciaDeuda,
-		serviceId: '000',
+		serviceId: '000', // TODO validar que mandamos
 		processId: codigoOperacion.toString(),
 		transactionDate,
-		operationId: '000',
+		operationId: '000', // TODO validar que mandamos
 		operationNumberAnnulment: transaction.numeroDocumento,
 	};
 };

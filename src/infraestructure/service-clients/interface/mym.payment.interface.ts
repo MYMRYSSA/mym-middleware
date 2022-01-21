@@ -1,6 +1,6 @@
 export interface IAmountsContent {
 	amountType: string;
-	amount: number;
+	amount: string;
 }
 
 export interface IDocumentPaymentMyMContent {
