@@ -17,9 +17,9 @@ export interface IPaymentRequest {
 	requestId: string;
 	channel: string;
 	customerIdentificationCode: string;
-	serviceId?: string;
-	operationId?: string;
-	processId?: string;
+	serviceId?: string | number;
+	operationId?: string | number;
+	processId?: string | number;
 	transactionDate: string;
 	paymentType: string;
 	paidDocuments: IDocumentPaymentMyMContent[];

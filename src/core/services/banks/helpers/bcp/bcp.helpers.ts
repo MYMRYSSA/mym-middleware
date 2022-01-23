@@ -27,9 +27,12 @@ import {
 } from '../../dto/bcp/bcp.responses.dto';
 
 const getOperationStatusInquiry = (response: any) => {
-	if (response.documents) return responseConstants.SUCCESS;
-	if (response.message === 'CLIENTE SIN DEUDAS') return responseConstants.NOT_INQUIRE;
-	return responseConstants.TRANSACTION_INCOMPLETE;
+	if (response.documents || response.operationNumberCompany) return responseConstants.SUCCESS;
+	return responseConstants[response.message] || responseConstants.TRANSACTION_INCOMPLETE;
+};
+
+const getAgreementCode = (code: string, agreementCodes: string[]) => {
+	return agreementCodes[code] || EnumCurrency.PEN;
 };
 
 const processTransactionDate = (requestDate: string) => {
@@ -76,36 +79,41 @@ const generateBodyPaymentRequest = (documents: DocumentContent[]): IDocumentPaym
 	return documents.map((document: DocumentContent): IDocumentPaymentMyMContent => {
 		return {
 			documentId: document.documentId,
-			documentReference: document.documentReference || '', // TODO al consultar la deuda no lo enviamos
-			expirationDate: document.expirationDate,
+			documentReference: document.documentReference || '',
 			amounts: document.amounts,
 		};
 	});
 };
 
 /** inquiry */
-export const generateInquiryRequestMyMAPI = (payloadRequest: BCPConsultDebtRequestDTO): IDebtInquiresRequest => {
+export const generateInquiryRequestMyMAPI = (
+	payloadRequest: BCPConsultDebtRequestDTO,
+	agreementCodes: any,
+): IDebtInquiresRequest => {
 	const { rqUUID, channel, serviceId, operationDate, customerId, financialEntity, operationNumber } = payloadRequest;
 	const transactionDate = processTransactionDate(operationDate);
+	const currencyCode = getAgreementCode(serviceId, agreementCodes);
+
 	return {
-		processId: operationNumber,
-		requestId: rqUUID,
 		bankCode: financialEntity,
+		currencyCode,
+		requestId: rqUUID,
 		channel,
 		customerIdentificationCode: customerId,
-		transactionDate,
 		serviceId,
-		currencyCode: EnumCurrency.USD, // TODO validar que mandamos
+		processId: operationNumber,
+		transactionDate,
 	};
 };
 
 export const generatedInquiryResponse = (
 	responseMyM: IDebtInquiresResponse,
 	payloadRequest: BCPConsultDebtRequestDTO,
+	errorResponse: { message: string },
 ): IBCPConsultDebtResponseDTO => {
-	const operationStatus = getOperationStatusInquiry(responseMyM);
+	const operationStatus = getOperationStatusInquiry(errorResponse || responseMyM);
 	const { rqUUID } = payloadRequest;
-	const dateProcessed = processTransactionDateToResponseBank(responseMyM?.transactionDate); // TODO la fecha llega con ese - suelto al final
+	const dateProcessed = processTransactionDateToResponseBank(responseMyM?.transactionDate);
 	return {
 		rqUUID,
 		resultCode: operationStatus.code,
@@ -118,7 +126,10 @@ export const generatedInquiryResponse = (
 };
 
 /** payment */
-export const generatePaymentRequestMyMAPI = (payloadRequest: BCPPaymentRequestDTO): IPaymentRequest => {
+export const generatePaymentRequestMyMAPI = (
+	payloadRequest: BCPPaymentRequestDTO,
+	agreementCodes: any,
+): IPaymentRequest => {
 	const {
 		financialEntity,
 		rqUUID,
@@ -130,22 +141,25 @@ export const generatePaymentRequestMyMAPI = (payloadRequest: BCPPaymentRequestDT
 		serviceId,
 		operationNumber,
 		amountTotal,
+		check,
 	} = payloadRequest;
 	const transactionDate = processTransactionDate(operationDate);
+	const currencyCode = getAgreementCode(serviceId, agreementCodes);
 	const paidDocuments = generateBodyPaymentRequest(documents);
 
 	return {
 		bankCode: financialEntity,
-		currencyCode: EnumCurrency.USD, // TODO consultar
+		currencyCode,
 		requestId: rqUUID,
 		channel,
 		customerIdentificationCode: customerId,
 		serviceId,
 		processId: operationNumber,
+		operationId: check.checkNumber || 1234,
 		transactionDate,
-		paymentType: EnumPaymentType[paymentType],
+		paymentType: EnumPaymentType[paymentType] || 'EF',
 		paidDocuments,
-		transactionCurrencyCode: EnumCurrency.USD,
+		transactionCurrencyCode: currencyCode,
 		currencyExchange: 0,
 		totalAmount: Number(amountTotal),
 	};
@@ -154,15 +168,16 @@ export const generatePaymentRequestMyMAPI = (payloadRequest: BCPPaymentRequestDT
 export const generatePaymentResponse = (
 	responseMyMAPI: IPaymentResponse,
 	payloadRequest: BCPPaymentRequestDTO,
+	errorResponse: { message: string },
 ): IBCPPaymentResponseDTO => {
-	const operationStatus = getOperationStatusInquiry(responseMyMAPI);
+	const operationStatus = getOperationStatusInquiry(errorResponse || responseMyMAPI);
 	return {
 		rqUUID: payloadRequest.rqUUID,
-		operationDate: processTransactionDateToResponseBank(responseMyMAPI.transactionDate),
-		operationNumberCompany: responseMyMAPI.operationNumberCompany,
+		operationDate: processTransactionDateToResponseBank(responseMyMAPI?.transactionDate),
+		operationNumberCompany: responseMyMAPI?.operationNumberCompany || '',
 		resultCode: operationStatus.code,
 		resultDescription: operationStatus.description,
-		endorsement: responseMyMAPI.description,
+		endorsement: responseMyMAPI?.description || '',
 	};
 };
 
@@ -188,11 +203,12 @@ export const generateAnnulmentRequestMyMAPI = (payloadRquest: BCPAnnulmentReques
 export const generateAnnulmentResponse = (
 	responseMyMAPI: IPaymentResponse,
 	payloadRequest: BCPAnnulmentRequestDTO,
+	errorResponse: { message: string }
 ): IBCPAnnulmentResponseDTO => {
-	const operationStatus = getOperationStatusInquiry(responseMyMAPI);
+	const operationStatus = getOperationStatusInquiry(errorResponse || responseMyMAPI);
 	return {
 		rqUUID: payloadRequest.rqUUID,
-		operationDate: processTransactionDateToResponseBank(responseMyMAPI.transactionDate),
+		operationDate: processTransactionDateToResponseBank(responseMyMAPI?.transactionDate),
 		resultCode: operationStatus.code,
 		resultDescription: operationStatus.description,
 	};

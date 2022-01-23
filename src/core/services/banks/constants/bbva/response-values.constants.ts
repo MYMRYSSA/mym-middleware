@@ -3,7 +3,7 @@ export const responseConstants = {
 		code: '0001',
 		description: 'TRANSACCION REALIZADA CON EXITO',
 	},
-	INVALID: {
+	'Error: Falta array de documentos pagados': {
 		code: '3000',
 		description: 'FORMATO DE TRAMA NO VALIDO',
 	},
@@ -15,19 +15,19 @@ export const responseConstants = {
 		code: '3004',
 		description: 'NO SE PUEDE REALIZAR EL REGISTRO DE EXTORNO',
 	},
-	NOT_INQUIRE: {
+	'CLIENTE SIN DEUDAS': {
 		code: '3009',
 		description: 'NO TIENE DEUDAS PENDIENTES',
 	},
-	REFERENCE_NOT_EXIST: {
+	'NÚMERO DE REFERENCIA NO EXISTE': {
 		code: '0101',
 		description: 'NUMERO DE REFERENCIA NO EXISTE',
 	},
-	REFERENCE_EXPIRED: {
+	'AGOTADO EL TIEMPO PARA SOLICITAR EXTORNO': {
 		code: '0102',
 		description: 'NUMERO DE REFERENCIA EXPIRADA',
 	},
-	REFERENCE_STATUS_PAID: {
+	'DOCUMENTO YA FUE PAGADO': {
 		code: '0106',
 		description: 'NUMERO DE REFERENCIA CON ESTADO PAGADO',
 	},
@@ -39,11 +39,19 @@ export const responseConstants = {
 		code: '3013',
 		description: 'ESTADO DE NRO DE REFERENCIA NO VALIDO',
 	},
-	ANNULMENT_NOT_PROCESS: {
+	'DOCUMENTO SOLICITADO PARA EXTORNAR NO ENCONTRADO': {
 		code: '3014',
 		description: 'EXTORNO NO PROCESADO PORQUE NO EXISTE REGISTRO DEL PAGO',
 	},
-	AMOUNT_MIN_MAX: {
+	'MONTO TOTAL PAGADO NO COINCIDE CON MONTO PAGADO POR DOCUMENTO': {
+		code: '3051',
+		description: 'MONTO DE PAGO DEBE SER MINIMO O MAXIMO',
+	},
+	'TOTAL AMOUNT ES MAYOR QUE LOS DOCUMENTOS PAGADOS': {
+		code: '3051',
+		description: 'MONTO DE PAGO DEBE SER MINIMO O MAXIMO',
+	},
+	'ERROR EN MONTO': {
 		code: '3051',
 		description: 'MONTO DE PAGO DEBE SER MINIMO O MAXIMO',
 	},

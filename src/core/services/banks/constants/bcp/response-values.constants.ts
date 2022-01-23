@@ -3,7 +3,7 @@ export const responseConstants = {
 		code: 'CP0000',
 		description: 'PROCESO CONFORME',
 	},
-	INVALID: {
+	'DOCUMENTO SOLICITADO PARA EXTORNAR NO ENCONTRADO': {
 		code: 'CP0010',
 		description: 'DEUDA NO VALIDA',
 	},
@@ -11,15 +11,11 @@ export const responseConstants = {
 		code: 'CP0138',
 		description: 'ERROR AL PROCESAR TRANSACCION',
 	},
-	ERROR_INQUIRE: {
-		code: '3004',
-		description: 'NO SE PUEDE REALIZAR EL REGISTRO DE EXTORNO',
-	},
-	NOT_INQUIRE: {
+	'CLIENTE SIN DEUDAS': {
 		code: 'CP0006',
 		description: 'SIN DEUDA PENDIENTE',
 	},
-	ANNULMENT_NOT_PROCESS: {
+	'AGOTADO EL TIEMPO PARA SOLICITAR EXTORNO': {
 		code: 'CP0139',
 		description: 'NO PROCEDE EXTORNO POR INDIC. DE EMPRESA',
 	},
@@ -35,7 +31,15 @@ export const responseConstants = {
 		code: 'CP0142',
 		description: 'LIMITE DE PAGO SUPERADO',
 	},
-	WRONG_AMOUNT: {
+	'MONTO TOTAL PAGADO NO COINCIDE CON MONTO PAGADO POR DOCUMENTO': {
+		code: 'CP0144',
+		description: 'MONTO A PAGAR ERRADO',
+	},
+	'ERROR EN MONTO': {
+		code: 'CP0144',
+		description: 'MONTO A PAGAR ERRADO',
+	},
+	'TOTAL AMOUNT ES MAYOR QUE LOS DOCUMENTOS PAGADOS': {
 		code: 'CP0144',
 		description: 'MONTO A PAGAR ERRADO',
 	},

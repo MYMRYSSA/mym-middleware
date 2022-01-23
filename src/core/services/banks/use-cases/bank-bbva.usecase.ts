@@ -22,11 +22,17 @@ import {
 	generatePaymentResponse,
 } from '../helpers/bbva/bbva.helper';
 import { IAnnulmentRequest } from 'src/infraestructure/service-clients/interface/mym.annulment.interface';
+import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class BankBbvaUseCase implements IBankfactory {
 	private logger = new Logger(BankBbvaUseCase.name);
+	private agreementCodeUSD: string;
+	private agreementCodePEN: string;
 
-	constructor(private readonly mymRestClient: MyMRestClient) {}
+	constructor(private readonly mymRestClient: MyMRestClient, private readonly configService: ConfigService) {
+		this.agreementCodeUSD = configService.get<string>('AGREEMENT_CODE_USD');
+		this.agreementCodePEN = configService.get<string>('AGREEMENT_CODE_PEN');
+	}
 
 	async consultDebt(payloadRequest: BBVAConsultDebtRequestDTO): Promise<IBBVAConsultDebtResponseDTO> {
 		const {
@@ -34,11 +40,12 @@ export class BankBbvaUseCase implements IBankfactory {
 				recaudosRq: { cabecera, detalle },
 			},
 		} = payloadRequest;
-
 		let payloadMyMRequest: IDebtInquiresRequest = null;
 		try {
-			payloadMyMRequest = generateInquiryRequestMyMAPI(cabecera.operacion, detalle.transaccion.numeroReferenciaDeuda);
-
+			payloadMyMRequest = generateInquiryRequestMyMAPI(cabecera.operacion, detalle.transaccion.numeroReferenciaDeuda, {
+				[this.agreementCodePEN]: 'PEN',
+				[this.agreementCodeUSD]: 'USD',
+			});
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
 
 			const response = await this.mymRestClient.debtInquires(payloadMyMRequest);
@@ -47,14 +54,16 @@ export class BankBbvaUseCase implements IBankfactory {
 				response,
 				cabecera.operacion,
 				payloadMyMRequest.customerIdentificationCode,
+				null,
 			);
 			return resultContent;
 		} catch (error) {
-			this.logger.error(`Error consulta deuda ${error.response.data}`);
+			this.logger.error(`Error consulta deuda ${error.response?.data}`);
 			const resultContent = generatedInquiryResponse(
-				error.response?.data,
+				null,
 				cabecera.operacion,
 				payloadMyMRequest.customerIdentificationCode,
+				{ message: error.response?.data },
 			);
 			return resultContent;
 		}
@@ -76,11 +85,11 @@ export class BankBbvaUseCase implements IBankfactory {
 			const responseClientMyM = await this.mymRestClient.payment(payloadPaymentMyM);
 			this.logger.log(`respuesta de MyM API ${JSON.stringify(responseClientMyM)}`);
 
-			const response = generatePaymentResponse(operacion, responseClientMyM, transaccion);
+			const response = generatePaymentResponse(operacion, responseClientMyM, transaccion, null);
 			return response;
 		} catch (error) {
-			this.logger.error(`Error al pagar deuda ${error.response.data}`);
-			const resultContent = generatePaymentResponse(operacion, error.response.data, transaccion);
+			this.logger.error(`Error al pagar deuda ${error.response?.data}`);
+			const resultContent = generatePaymentResponse(operacion, null, transaccion, { message: error.response?.data });
 			return resultContent;
 		}
 	}
@@ -101,11 +110,11 @@ export class BankBbvaUseCase implements IBankfactory {
 			const responseClientMyM = await this.mymRestClient.annulmentPayment(annulmentPayloadPaymentMyM);
 			this.logger.log(`respuesta de MyM API ${JSON.stringify(responseClientMyM)}`);
 
-			const response = generateAnnulmentResponse(operacion, responseClientMyM, transaccion);
+			const response = generateAnnulmentResponse(operacion, responseClientMyM, transaccion, null);
 			return response;
 		} catch (error) {
 			this.logger.error(`Error al pagar deuda ${error.response.data}`);
-			const resultContent = generateAnnulmentResponse(operacion, error.response.data, transaccion);
+			const resultContent = generateAnnulmentResponse(operacion, null, transaccion, { message: error.response.data });
 			return resultContent;
 		}
 	}
