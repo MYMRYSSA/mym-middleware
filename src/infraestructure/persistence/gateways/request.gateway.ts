@@ -23,12 +23,13 @@ export class RequestGateway {
 
 	async query(query, page = 0, limit = 1000) {
 		if (page > 0) page -= 1;
-		const total = this.requestModel.count(query);
-		const requests = this.requestModel
+		const total = await this.requestModel.count(query);
+		const requests = await this.requestModel
 			.find(query)
 			.sort({ createdAt: -1 })
 			.limit(limit)
-			.skip(page * limit);
+			.skip(page * limit)
+			.lean();
 		return {
 			total,
 			requests,

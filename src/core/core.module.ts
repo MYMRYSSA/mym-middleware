@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { LoginUseCase, RegisterUserUseCase, JwtStrategy } from './services/auth';
 import { BankBbvaUseCase, BankBcpUseCase, BankScotiabankUseCase } from './services/banks';
+import { QueryRequestUseCase } from './services/dashboard/usecases/query-requests.usecase';
 import { InfraestructureModule } from '../infraestructure/infraestructure.module';
 
 const services = [
@@ -13,6 +14,7 @@ const services = [
 	BankBbvaUseCase,
 	BankBcpUseCase,
 	BankScotiabankUseCase,
+	QueryRequestUseCase,
 ];
 
 @Module({

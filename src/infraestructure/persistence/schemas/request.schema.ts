@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose';
 
 export type RequestDocument = Request & mongoose.Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Request {
 	@Prop()
 	requestId: string;
