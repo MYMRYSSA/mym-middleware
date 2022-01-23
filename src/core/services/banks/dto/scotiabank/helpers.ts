@@ -5,8 +5,16 @@ import * as returnRequestStructure from './return-structure-request.json';
 import * as inquireResponseStructure from './inquire-structure-response.json';
 import * as paymentResponseStructure from './payment-structure-response.json';
 import * as returnResponseStructure from './return-structure-response.json';
-import { ScotiabankConsultDebtRequestDTO, ScotiabankPaymentRequestDTO } from './scotiabank.requests.dto';
-import { IScotiabankConsultDebtResponseDTO, IScotiabankPaymentResponseDTO } from './scotiabank.responses.dto';
+import {
+	ScotiabankConsultDebtRequestDTO,
+	ScotiabankPaymentRequestDTO,
+	ScotiabankAnnulmentRequestDTO,
+} from './scotiabank.requests.dto';
+import {
+	IScotiabankAnnulmentResponseDTO,
+	IScotiabankConsultDebtResponseDTO,
+	IScotiabankPaymentResponseDTO,
+} from './scotiabank.responses.dto';
 import { IPaymentResponse } from 'src/infraestructure/service-clients/interface/mym.payment.interface';
 
 export enum InputEnum {
@@ -209,5 +217,80 @@ export const setPaymentResponse = (
 		'NUMERO DE FACTURA': '',
 		'REFERENCIA DE LA DEUDA': valueJson['REFERENCIA DE LA DEUDA'],
 		'FILLER 4': '',
+	};
+};
+
+export const setAnullmentResponse = (
+	valueJson: ScotiabankAnnulmentRequestDTO,
+	response: IPaymentResponse,
+): IScotiabankAnnulmentResponseDTO => {
+	return {
+		'MESSAGE TYPE IDENTIFICATION': '0210',
+		'PRIMARY BIT MAP': 'F220848188E08000',
+		'SECONDARY BIT MAP': '0000004000000018',
+		'CODIGO DE PROCESO': valueJson['CODIGO DE PROCESO'],
+		MONTO: valueJson.MONTO,
+		'FECHA Y HORA DE TRANSACCION': valueJson['FECHA Y HORA DE TRANSACCION'],
+		TRACE: valueJson['TRACE 1'],
+		'FECHA DE CAPTURA': valueJson['FECHA DE CAPTURA'],
+		'IDENTIFICACION EMPRESA': valueJson['FORWARD INSTITUTION CODE 1'],
+		'RETRIEVAL REFERENCE - NUMBER': valueJson['RETRIEVAL REFERENCE NUMBER'],
+		'AUTHORIZATION ID RESPONSE': '4',
+		'RESPONSE CODE': '00',
+		'TERMINAL ID': valueJson['TERMINAL ID'],
+		'TRANSACTION CURRENCY CODE': valueJson['TRANSACTION CURRENCY CODE'],
+		'DATOS RESERVADOS': valueJson['DATOS RESERVADOS'],
+		'DATOS DEL DOCUMENTO A EXTORNAR': '',
+		'LONGITUD DE LA TRAMA': '',
+		'CODIGO DE FORMATO': '',
+		'BIN PROCESADOR': '',
+		'CODIGO DE ACREEDOR': '',
+		'CODIGO DE PRODUCTO/SERVICIO 1': 'REC',
+		'CODIGO DE PLAZA DEL RECAUDADOR': '',
+		'CODIGO DE AGENCIA DEL RECAUDADOR': '',
+		'TIPO DE DATO DE PAGO': '',
+		'DATO DE PAGO': '',
+		'CODIGO DE CIUDAD': '',
+		'NOMBRE DEL CLIENTE': '',
+		'RUC DEL DEUDOR': '',
+		'RUC DEL ACREEDOR': '',
+		'NUMERO DE TRANS. DE COB.ORI': '',
+		'NUMERO OPE. ORIGINAL ACREED': '',
+		'FILLER 1': '',
+		'ORIGEN DE RESPUESTA': '0',
+		'CODIGO DE RESPUESTA EXTEND': '000',
+		'DESCRIPC DE LA RPTA APLICA': 'TRANSACCION PROCESADA OK',
+		'CODIGO DE PRODUCTO/SERVICIO 2': '001',
+		'DESCRIPC DEL PROD/SERVICIO': `RECAUDACION ${
+			valueJson['TRANSACTION CURRENCY CODE'] === '604' ? 'SOLES' : 'DOLARES'
+		}`,
+		'IMPORTE DEL PROD./SERVICIO': valueJson.MONTO,
+		'MENSAJE 1 MARKETING': `RECAUDACION ${valueJson['TRANSACTION CURRENCY CODE'] === '604' ? 'SOLES' : 'DOLARES'}`,
+		'MENSAJE 2 MARKETING': '',
+		'NUMERO DE DOCUMENTOS': '01',
+		'FILLER 2': '',
+		'TIPO DE DOCUMENTO/SERVICIO': 'REC',
+		'DESCRIPCION DEL DOCUMENTO': '',
+		'NUMERO DE DOCUMENTO': '',
+		'PERIODO DE COTIZACION': '',
+		'TIPO DE DOC IDENTIDAD': '',
+		'NRO DE DOC IDENTIDAD': '',
+		'FECHA DE EMISION': '',
+		'FECHA DE VENCIMIENTO': '',
+		'IMPORTE ANULADO DEL DCTO.': valueJson.MONTO,
+		'CODIGO DE CONCEPTO 1': '',
+		'IMPORTE CONCEPTO 1': '',
+		'CODIGO DE CONCEPTO 2': '',
+		'IMPORTE CONCEPTO 2': '',
+		'CODIGO DE CONCEPTO 3': '',
+		'IMPORTE CONCEPTO 3': '',
+		'CODIGO DE CONCEPTO 4': '',
+		'IMPORTE CONCEPTO 4': '',
+		'CODIGO DE CONCEPTO 5': '',
+		'IMPORTE CONCEPTO 5': '',
+		'INDICADOR DE COMPROBANTE': '',
+		'NUMERO DE FACTURA ANULADA': '',
+		'REFERENCIA DE LA DEUDA': '',
+		'FILLER 3': '',
 	};
 };

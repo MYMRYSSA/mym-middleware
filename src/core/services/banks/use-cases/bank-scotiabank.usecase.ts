@@ -4,23 +4,27 @@ import { convert } from 'xmlbuilder2';
 import {
 	getInputValues,
 	InputEnum,
+	setAnullmentResponse,
 	setConsultDebtResponse,
 	setOutputValues,
 	setPaymentResponse,
 } from '../dto/scotiabank/helpers';
-import { IDebtInquiresRequest } from 'src/infraestructure/service-clients/interface/mym.inquire.interface';
-import { MyMRestClient } from 'src/infraestructure/service-clients/rest/mym.client';
 import {
 	CurrencyDTO,
 	PaymentTypeDTO,
+	ScotiabankAnnulmentRequestDTO,
 	ScotiabankConsultDebtRequestDTO,
 	ScotiabankPaymentRequestDTO,
 } from '../dto/scotiabank/scotiabank.requests.dto';
 import {
+	IScotiabankAnnulmentResponseDTO,
 	IScotiabankConsultDebtResponseDTO,
 	IScotiabankPaymentResponseDTO,
 } from '../dto/scotiabank/scotiabank.responses.dto';
+import { MyMRestClient } from 'src/infraestructure/service-clients/rest/mym.client';
+import { IDebtInquiresRequest } from 'src/infraestructure/service-clients/interface/mym.inquire.interface';
 import { IPaymentRequest } from 'src/infraestructure/service-clients/interface/mym.payment.interface';
+import { IAnnulmentRequest } from 'src/infraestructure/service-clients/interface/mym.annulment.interface';
 
 @Injectable()
 export class BankScotiabankUseCase implements IBankfactory {
@@ -40,8 +44,8 @@ export class BankScotiabankUseCase implements IBankfactory {
 				bankCode: '009',
 				channel: valueJson.CANAL.trim(),
 				requestId: valueJson['NUMERO DE OPERACIÓN'].trim(),
-				currencyCode: CurrencyDTO[valueJson['TRANSACTION CURRENCY CODE']],
-				processId: valueJson['CODIGO DE PROCESO'],
+				currencyCode: CurrencyDTO[valueJson['TRANSACTION CURRENCY CODE'].trim()],
+				processId: valueJson['CODIGO DE PROCESO'].trim(),
 				transactionDate: this.processDate(valueJson['FECHA Y HORA DE TRANSACCION']),
 				customerIdentificationCode: valueJson['DATO DE CONSULTA'].trim(),
 				serviceId: valueJson['CODIGO DE PRODUCTO/SERVICIO'].trim(),
@@ -65,31 +69,31 @@ export class BankScotiabankUseCase implements IBankfactory {
 			);
 			const payloadMyMRequest: IPaymentRequest = {
 				bankCode: '009',
-				currencyCode: CurrencyDTO[valueJson['MONEDA DE PAGO']],
+				currencyCode: CurrencyDTO[valueJson['TRANSACTION CURRENCY CODE'].trim()],
 				requestId: valueJson['RETRIEVAL REFERENCE NUMBER'].trim(),
 				channel: valueJson.CANAL.trim(),
 				customerIdentificationCode: valueJson['DATO DE PAGO'].trim(),
-				serviceId: valueJson['CODIGO DE PRODUCTO'],
+				serviceId: valueJson['CODIGO DE PRODUCTO'].trim(),
 				operationId: '000',
 				processId: valueJson['CODIGO DE PRODUCTO'].trim(),
 				transactionDate: this.processDate(valueJson['FECHA Y HORA DE TRANSACCION']),
-				paymentType: PaymentTypeDTO[valueJson['MEDIO DE PAGO']],
+				paymentType: PaymentTypeDTO[valueJson['MEDIO DE PAGO'].trim()],
 				paidDocuments: [
 					{
-						documentId: valueJson['NUMERO DE DOCUMENTO DE PAG'],
+						documentId: valueJson['NUMERO DE DOCUMENTO DE PAG'].trim(),
 						expirationDate: '',
-						documentReference: valueJson['NRO DE REFERENCIA DEL ABONO'],
+						documentReference: valueJson['NRO DE REFERENCIA DEL ABONO'].trim(),
 						amounts: [
 							{
-								amount: valueJson['IMPORTE PAGADO EFECTIVO'],
+								amount: valueJson['IMPORTE PAGADO EFECTIVO'].trim(),
 								amountType: 'totalAmont',
 							},
 						],
 					},
 				],
-				transactionCurrencyCode: CurrencyDTO[valueJson['TRANSACTION CURRENCY CODE']],
-				currencyExchange: this.formatCurrencyExchange(valueJson['TIPO DE CAMBIO APLICADO']),
-				totalAmount: Number(valueJson['IMPORTE PAGADO EFECTIVO']),
+				transactionCurrencyCode: CurrencyDTO[valueJson['TRANSACTION CURRENCY CODE'].trim()],
+				currencyExchange: this.formatCurrencyExchange(valueJson['TIPO DE CAMBIO APLICADO'].trim()),
+				totalAmount: Number(valueJson['IMPORTE PAGADO EFECTIVO'].trim()),
 			};
 			const response = await this.mymRestClient.payment(payloadMyMRequest);
 			const result: IScotiabankPaymentResponseDTO = setPaymentResponse(valueJson, response);
@@ -99,17 +103,33 @@ export class BankScotiabankUseCase implements IBankfactory {
 			return null;
 		}
 	}
-	annulmentPayment(XML: string): any {
+
+	async annulmentPayment(XML: string): Promise<string> {
 		try {
 			const jsonRes = convert(XML, { format: 'json' });
 			const objRes: IXmlJson = JSON.parse(jsonRes);
-			const valueJson = getInputValues(
+			const valueJson: ScotiabankAnnulmentRequestDTO = getInputValues(
 				objRes['soapenv:Envelope']['soapenv:Body'].ejecutarTransaccionScotiabank.Input,
 				InputEnum.RETURN,
 			);
-			return valueJson;
+			const payloadMyMRequest: IAnnulmentRequest = {
+				bankCode: '009',
+				currencyCode: CurrencyDTO[valueJson['TRANSACTION CURRENCY CODE']],
+				requestId: valueJson['RETRIEVAL REFERENCE NUMBER'].trim(),
+				channel: valueJson.CANAL.trim(),
+				customerIdentificationCode: valueJson['DATO DE PAGO'].trim(),
+				serviceId: valueJson['CODIGO DE PRODUCTO'].trim(),
+				processId: valueJson['CODIGO DE PRODUCTO'].trim(),
+				transactionDate: this.processDate(valueJson['FECHA Y HORA DE TRANSACCION']),
+				operationId: '000',
+				operationNumberAnnulment: valueJson['NUMERO DE DOCUMENTO'].trim(),
+			};
+			const response = await this.mymRestClient.annulmentPayment(payloadMyMRequest);
+			const result: IScotiabankAnnulmentResponseDTO = setAnullmentResponse(valueJson, response);
+			const stringResult = setOutputValues(result, InputEnum.RETURN);
+			return stringResult;
 		} catch (error) {
-			return { error: error.message };
+			return null;
 		}
 	}
 	private processDate(date: string): string {

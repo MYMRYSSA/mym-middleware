@@ -124,4 +124,70 @@ export interface IScotiabankPaymentResponseDTO {
 }
 
 /** Annulment */
-// export interface IScotiabankAnnulmentResponseDTO {}
+export interface IScotiabankAnnulmentResponseDTO {
+	'MESSAGE TYPE IDENTIFICATION': string;
+	'PRIMARY BIT MAP': string;
+	'SECONDARY BIT MAP': string;
+	'CODIGO DE PROCESO': string;
+	MONTO: string;
+	'FECHA Y HORA DE TRANSACCION': string;
+	TRACE: string;
+	'FECHA DE CAPTURA': string;
+	'IDENTIFICACION EMPRESA': string;
+	'RETRIEVAL REFERENCE - NUMBER': string;
+	'AUTHORIZATION ID RESPONSE': string;
+	'RESPONSE CODE': string;
+	'TERMINAL ID': string;
+	'TRANSACTION CURRENCY CODE': string;
+	'DATOS RESERVADOS': string;
+	'DATOS DEL DOCUMENTO A EXTORNAR': string;
+	'LONGITUD DE LA TRAMA': string;
+	'CODIGO DE FORMATO': string;
+	'BIN PROCESADOR': string;
+	'CODIGO DE ACREEDOR': string;
+	'CODIGO DE PRODUCTO/SERVICIO 1': string;
+	'CODIGO DE PLAZA DEL RECAUDADOR': string;
+	'CODIGO DE AGENCIA DEL RECAUDADOR': string;
+	'TIPO DE DATO DE PAGO': string;
+	'DATO DE PAGO': string;
+	'CODIGO DE CIUDAD': string;
+	'NOMBRE DEL CLIENTE': string;
+	'RUC DEL DEUDOR': string;
+	'RUC DEL ACREEDOR': string;
+	'NUMERO DE TRANS. DE COB.ORI': string;
+	'NUMERO OPE. ORIGINAL ACREED': string;
+	'FILLER 1': string;
+	'ORIGEN DE RESPUESTA': string;
+	'CODIGO DE RESPUESTA EXTEND': string;
+	'DESCRIPC DE LA RPTA APLICA': string;
+	'CODIGO DE PRODUCTO/SERVICIO 2': string;
+	'DESCRIPC DEL PROD/SERVICIO': string;
+	'IMPORTE DEL PROD./SERVICIO': string;
+	'MENSAJE 1 MARKETING': string;
+	'MENSAJE 2 MARKETING': string;
+	'NUMERO DE DOCUMENTOS': string;
+	'FILLER 2': string;
+	'TIPO DE DOCUMENTO/SERVICIO': string;
+	'DESCRIPCION DEL DOCUMENTO': string;
+	'NUMERO DE DOCUMENTO': string;
+	'PERIODO DE COTIZACION': string;
+	'TIPO DE DOC IDENTIDAD': string;
+	'NRO DE DOC IDENTIDAD': string;
+	'FECHA DE EMISION': string;
+	'FECHA DE VENCIMIENTO': string;
+	'IMPORTE ANULADO DEL DCTO.': string;
+	'CODIGO DE CONCEPTO 1': string;
+	'IMPORTE CONCEPTO 1': string;
+	'CODIGO DE CONCEPTO 2': string;
+	'IMPORTE CONCEPTO 2': string;
+	'CODIGO DE CONCEPTO 3': string;
+	'IMPORTE CONCEPTO 3': string;
+	'CODIGO DE CONCEPTO 4': string;
+	'IMPORTE CONCEPTO 4': string;
+	'CODIGO DE CONCEPTO 5': string;
+	'IMPORTE CONCEPTO 5': string;
+	'INDICADOR DE COMPROBANTE': string;
+	'NUMERO DE FACTURA ANULADA': string;
+	'REFERENCIA DE LA DEUDA': string;
+	'FILLER 3': string;
+}
