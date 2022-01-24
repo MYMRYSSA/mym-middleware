@@ -19,7 +19,7 @@ export const responseConstants = {
 		code: '3009',
 		description: 'NO TIENE DEUDAS PENDIENTES',
 	},
-	'NÚMERO DE REFERENCIA NO EXISTE': {
+	'NUMERO DE REFERENCIA NO EXISTE': {
 		code: '0101',
 		description: 'NUMERO DE REFERENCIA NO EXISTE',
 	},

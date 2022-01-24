@@ -80,7 +80,7 @@ export class BankBbvaUseCase implements IBankfactory {
 		let payloadPaymentMyM: IPaymentRequest = null;
 		try {
 			payloadPaymentMyM = generatePaymentRequestMyMAPI(operacion, transaccion);
-			this.logger.log(`body de la consulta a MyM API ${JSON.stringify(payloadRequest)}`);
+			this.logger.log(`body de la consulta a MyM API ${JSON.stringify(payloadPaymentMyM)}`);
 
 			const responseClientMyM = await this.mymRestClient.payment(payloadPaymentMyM);
 			this.logger.log(`respuesta de MyM API ${JSON.stringify(responseClientMyM)}`);
@@ -89,7 +89,9 @@ export class BankBbvaUseCase implements IBankfactory {
 			return response;
 		} catch (error) {
 			this.logger.error(`Error al pagar deuda ${error.response?.data}`);
-			const resultContent = generatePaymentResponse(operacion, null, transaccion, { message: error.response?.data });
+			const resultContent = generatePaymentResponse(operacion, null, transaccion, {
+				message: error.response?.data,
+			});
 			return resultContent;
 		}
 	}

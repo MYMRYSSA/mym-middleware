@@ -27,9 +27,7 @@ export class MyMRestClient {
 				Authorization: `Bearer ${token}`,
 			},
 			httpsAgent: agent,
-			params: {
-				...requestDTO,
-			},
+			params: requestDTO,
 		};
 		return lastValueFrom(this.httpService.post(URI, null, config).pipe(map(response => response.data)));
 	}
@@ -49,9 +47,10 @@ export class MyMRestClient {
 			httpsAgent: agent,
 			params: {
 				...requestDTO,
+				paidDocuments: JSON.stringify(requestDTO.paidDocuments),
 			},
 		};
-		return lastValueFrom(this.httpService.post(URI, null, config).pipe(map(response => response.data)));
+		return lastValueFrom(this.httpService.post(URI, {}, config).pipe(map(response => response.data)));
 	}
 
 	annulmentPayment(requestDTO: IAnnulmentRequest): Promise<IPaymentResponse> {
@@ -67,9 +66,7 @@ export class MyMRestClient {
 				Authorization: `Bearer ${token}`,
 			},
 			httpsAgent: agent,
-			params: {
-				...requestDTO,
-			},
+			params: requestDTO,
 		};
 		return lastValueFrom(this.httpService.post(URI, null, config).pipe(map(response => response.data)));
 	}

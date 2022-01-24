@@ -155,7 +155,7 @@ export const generatePaymentRequestMyMAPI = (
 		customerIdentificationCode: customerId,
 		serviceId,
 		processId: operationNumber,
-		operationId: check.checkNumber || 1234,
+		operationId: check?.checkNumber,
 		transactionDate,
 		paymentType: EnumPaymentType[paymentType] || 'EF',
 		paidDocuments,
@@ -193,10 +193,7 @@ export const generateAnnulmentRequestMyMAPI = (payloadRquest: BCPAnnulmentReques
 		operationNumberAnnulment,
 		requestId: rqUUID,
 		transactionDate,
-		currencyCode: '', // TODO validar que se envia
-		operationId: '', // TODO validar
 		processId: operationNumber,
-		serviceId: '', // TODO validar que s env[ia]
 	};
 };
 

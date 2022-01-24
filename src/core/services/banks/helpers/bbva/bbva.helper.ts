@@ -25,7 +25,7 @@ export const processDate = (date: string, hour: string): string => {
 };
 const getOperationStatus = (response: any) => {
 	if (response.documents || response.operationNumberCompany) return responseConstants.SUCCESS;
-	return responseConstants[response.message] || responseConstants['NÚMERO DE REFERENCIA NO EXISTE'];
+	return responseConstants[response.message || response[0]] || responseConstants.TRANSACTION_INCOMPLETE;
 };
 const generateDocumentBody = (documentsResponse: IDocumentMyMContent[]): IDocumentContentDTO[] => {
 	return documentsResponse.map((document: IDocumentMyMContent): IDocumentContentDTO => {
@@ -118,23 +118,20 @@ export const generatePaymentRequestMyMAPI = (
 		channel: canalOperacion,
 		customerIdentificationCode: transaction.numeroReferenciaDeuda,
 		serviceId: 1001, // TODO validar que mandamos
-		operationId: 1234, // TODO validar que mandamos
 		processId: codigoOperacion,
 		transactionDate,
 		paymentType: transaction.formaPago,
-		paidDocuments: JSON.parse(
-			JSON.stringify([
-				{
-					documentId: transaction.numeroDocumento,
-					amounts: [
-						{
-							amountType: 'totalAmount',
-							amount: transaction.importeDeudaPagada.toString(),
-						},
-					],
-				},
-			]),
-		),
+		paidDocuments: [
+			{
+				documentId: transaction.numeroDocumento,
+				amounts: [
+					{
+						amountType: 'totalAmount',
+						amount: transaction.importeDeudaPagada.toString(),
+					},
+				],
+			},
+		],
 		transactionCurrencyCode: transaction.codigoMoneda,
 		currencyExchange: 0,
 		totalAmount: transaction.importeDeudaPagada,
@@ -184,10 +181,8 @@ export const generateAnnulmentRequestMyMAPI = (
 		requestId: numeroOperacion.toString(),
 		channel: canalOperacion,
 		customerIdentificationCode: transaction.numeroReferenciaDeuda,
-		serviceId: '1000', // TODO validar que mandamos
 		processId: codigoOperacion.toString(),
 		transactionDate,
-		operationId: '1000', // TODO validar que mandamos
 		operationNumberAnnulment: transaction.numeroDocumento,
 	};
 };
@@ -213,7 +208,7 @@ export const generateAnnulmentResponse = (
 					},
 					transaction: {
 						numeroReferenciaDeuda: transaction.numeroReferenciaDeuda,
-						numeroOperacionEmpresa: responseMyMAPI.operationNumberCompany,
+						numeroOperacionEmpresa: responseMyMAPI?.operationNumberCompany || '',
 					},
 				},
 			},
