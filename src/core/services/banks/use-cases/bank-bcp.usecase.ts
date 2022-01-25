@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { RequestGateway } from 'src/infraestructure/persistence/gateways/request.gateway';
 import { IAnnulmentRequest } from 'src/infraestructure/service-clients/interface/mym.annulment.interface';
 import { IDebtInquiresRequest } from 'src/infraestructure/service-clients/interface/mym.inquire.interface';
 import { IPaymentRequest } from 'src/infraestructure/service-clients/interface/mym.payment.interface';
@@ -26,7 +27,11 @@ export class BankBcpUseCase implements IBankfactory {
 	private agreementCodeUSD: string;
 	private agreementCodePEN: string;
 
-	constructor(private readonly mymRestClient: MyMRestClient, private readonly configService: ConfigService) {
+	constructor(
+		private readonly mymRestClient: MyMRestClient,
+		private readonly configService: ConfigService,
+		private readonly requestGateway: RequestGateway,
+	) {
 		this.agreementCodeUSD = configService.get<string>('AGREEMENT_CODE_USD');
 		this.agreementCodePEN = configService.get<string>('AGREEMENT_CODE_PEN');
 	}
@@ -39,11 +44,22 @@ export class BankBcpUseCase implements IBankfactory {
 				[this.agreementCodeUSD]: 'USD',
 			});
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
+			const responseGateway = await this.requestGateway.create({
+				bank: payloadMyMRequest.bankCode,
+				currency: payloadMyMRequest.currencyCode,
+				customerId: payloadMyMRequest.customerIdentificationCode,
+				requestId: payloadMyMRequest.requestId,
+				type: 'INQUIRY',
+				request: payloadRequest,
+				serviceId: payloadMyMRequest.serviceId,
+				processId: payloadMyMRequest.processId,
+			});
 			const responseMyMAPI = await this.mymRestClient.debtInquires(payloadMyMRequest);
 
 			this.logger.log(`resultado de la consulta ${JSON.stringify(responseMyMAPI)}`);
 			const result = generatedInquiryResponse(responseMyMAPI, payloadRequest, null);
 			this.logger.log(`Body para retornar al banco ${JSON.stringify(result)}`);
+			await this.requestGateway.update(responseGateway._id, { response: result });
 
 			return result;
 		} catch (error) {
@@ -60,11 +76,26 @@ export class BankBcpUseCase implements IBankfactory {
 				[this.agreementCodeUSD]: 'USD',
 			});
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
+			const responseGateway = await this.requestGateway.create({
+				bank: payloadMyMRequest.bankCode,
+				currency: payloadMyMRequest.currencyCode,
+				customerId: payloadMyMRequest.customerIdentificationCode,
+				requestId: payloadMyMRequest.requestId,
+				requestPaymentId: payloadMyMRequest.requestId,
+				documentIds: payloadMyMRequest.paidDocuments.map(document => document.documentId),
+				paymentMethod: payloadMyMRequest.paymentType,
+				type: 'PAYMENT',
+				request: payloadRequest,
+				processId: payloadMyMRequest.processId,
+				serviceId: payloadMyMRequest.serviceId,
+				operationId: payloadMyMRequest.operationId, // check number
+			});
 			const responseMyMAPI = await this.mymRestClient.payment(payloadMyMRequest);
 
 			this.logger.log(`resultado de la consulta ${JSON.stringify(responseMyMAPI)}`);
-			const result = generatePaymentResponse(responseMyMAPI, payloadRequest,null);
+			const result = generatePaymentResponse(responseMyMAPI, payloadRequest, null);
 			this.logger.log(`Body para retornar al banco ${JSON.stringify(result)}`);
+			await this.requestGateway.update(responseGateway._id, { response: result });
 
 			return result;
 		} catch (error) {
@@ -78,11 +109,23 @@ export class BankBcpUseCase implements IBankfactory {
 		try {
 			payloadMyMRequest = generateAnnulmentRequestMyMAPI(payloadRequest);
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
+			const responseGateway = await this.requestGateway.create({
+				bank: payloadMyMRequest.bankCode,
+				currency: payloadMyMRequest.currencyCode,
+				customerId: payloadMyMRequest.customerIdentificationCode,
+				requestId: payloadMyMRequest.requestId,
+				requestPaymentId: payloadMyMRequest.operationNumberAnnulment,
+				type: 'ANNULMENT',
+				request: payloadRequest,
+				processId: payloadMyMRequest.processId,
+				serviceId: payloadMyMRequest.serviceId,
+			});
 			const responseMyMAPI = await this.mymRestClient.annulmentPayment(payloadMyMRequest);
 
 			this.logger.log(`resultado de la consulta ${JSON.stringify(responseMyMAPI)}`);
 			const result = generateAnnulmentResponse(responseMyMAPI, payloadRequest, null);
 			this.logger.log(`Body para retornar al banco ${JSON.stringify(result)}`);
+			await this.requestGateway.update(responseGateway._id, { response: result });
 
 			return result;
 		} catch (error) {

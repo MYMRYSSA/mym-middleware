@@ -9,11 +9,10 @@ export class RequestGateway {
 	constructor(@InjectModel(Request.name) private requestModel: Model<RequestDocument>) {}
 
 	async create(createRequestDTO: CreateRequestDTO): Promise<Request> {
-		const model = new this.requestModel(createRequestDTO);
-		return model.save();
+		return this.requestModel.create(createRequestDTO);
 	}
 
-	async update(id: ObjectId, updateRequestDTO: UpdateRequestDTO): Promise<Request> {
+	async update(id: string, updateRequestDTO: UpdateRequestDTO): Promise<Request> {
 		return this.requestModel.findByIdAndUpdate({ _id: id }, updateRequestDTO);
 	}
 

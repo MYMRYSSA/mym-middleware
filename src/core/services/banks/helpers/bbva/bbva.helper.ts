@@ -117,8 +117,8 @@ export const generatePaymentRequestMyMAPI = (
 		requestId: numeroOperacion.toString(),
 		channel: canalOperacion,
 		customerIdentificationCode: transaction.numeroReferenciaDeuda,
-		serviceId: 1001, // TODO validar que mandamos
-		processId: codigoOperacion,
+		serviceId: '1001', // TODO validar que mandamos
+		processId: codigoOperacion.toString(),
 		transactionDate,
 		paymentType: transaction.formaPago,
 		paidDocuments: [
@@ -183,7 +183,7 @@ export const generateAnnulmentRequestMyMAPI = (
 		customerIdentificationCode: transaction.numeroReferenciaDeuda,
 		processId: codigoOperacion.toString(),
 		transactionDate,
-		operationNumberAnnulment: transaction.numeroDocumento,
+		operationNumberAnnulment: transaction.numeroOperacionOriginal.toString(),
 	};
 };
 
@@ -191,7 +191,7 @@ export const generateAnnulmentResponse = (
 	operation: OperationContentDTO,
 	responseMyMAPI: IPaymentResponse,
 	transaction: TransactionContentDTO,
-	errorResponse: { message: string }
+	errorResponse: { message: string },
 ): IBBVAAnnulmentResponseDTO => {
 	const operationStatus = getOperationStatus(errorResponse || responseMyMAPI);
 

@@ -652,7 +652,7 @@ export const PaymentTypeDTO = {
 	'01': 'EF',
 	'02': 'CP',
 	'03': 'CJ',
-	'04': 'TD', // TODO: revisar tarjeta de debito
+	'04': 'TD',
 	'05': 'CT',
 	'06': 'EF',
 	'07': 'EF',

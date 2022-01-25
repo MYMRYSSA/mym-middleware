@@ -5,11 +5,19 @@ export type RequestDocument = Request & mongoose.Document;
 
 @Schema({ timestamps: true })
 export class Request {
+	_id?: string;
+
 	@Prop()
 	requestId: string;
 
 	@Prop()
+	requestPaymentId: string;
+
+	@Prop()
 	processId: string;
+
+	@Prop()
+	operationId?: string;
 
 	@Prop()
 	documentIds: string[];
