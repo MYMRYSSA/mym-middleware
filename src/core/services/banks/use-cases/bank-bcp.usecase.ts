@@ -64,7 +64,7 @@ export class BankBcpUseCase implements IBankfactory {
 			return result;
 		} catch (error) {
 			this.logger.error(`Error consulta deuda ${error.response?.data}`);
-			const resultContent = generatedInquiryResponse(null, payloadRequest, { message: error.response?.data});
+			const resultContent = generatedInquiryResponse(null, payloadRequest, { message: error.response?.data });
 			return resultContent;
 		}
 	}
