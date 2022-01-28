@@ -26,12 +26,13 @@ import { MyMRestClient } from 'src/infraestructure/service-clients/rest/mym.clie
 import { IDebtInquiresRequest } from 'src/infraestructure/service-clients/interface/mym.inquire.interface';
 import { IPaymentRequest } from 'src/infraestructure/service-clients/interface/mym.payment.interface';
 import { IAnnulmentRequest } from 'src/infraestructure/service-clients/interface/mym.annulment.interface';
+import { RequestGateway } from 'src/infraestructure/persistence/gateways/request.gateway';
 
 @Injectable()
 export class BankScotiabankUseCase implements IBankfactory {
 	private logger = new Logger(BankScotiabankUseCase.name);
 
-	constructor(private readonly mymRestClient: MyMRestClient) {}
+	constructor(private readonly mymRestClient: MyMRestClient, private readonly requestGateway: RequestGateway) {}
 
 	async consultDebt(XML: string): Promise<string> {
 		let valueJson: ScotiabankConsultDebtRequestDTO = null;
@@ -53,6 +54,14 @@ export class BankScotiabankUseCase implements IBankfactory {
 				serviceId: valueJson['CODIGO DE PRODUCTO/SERVICIO'].trim(),
 			};
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
+			const responseGateway = await this.requestGateway.create({
+				bank: payloadMyMRequest.bankCode,
+				currency: payloadMyMRequest.currencyCode,
+				customerId: payloadMyMRequest.customerIdentificationCode,
+				requestId: payloadMyMRequest.requestId,
+				type: 'INQUIRY',
+				request: payloadMyMRequest,
+			});
 			const responseMyMAPI = await this.mymRestClient.debtInquires(payloadMyMRequest);
 			this.logger.log(`resultado de la consulta ${JSON.stringify(responseMyMAPI)}`);
 			if (ScotiabankErrorCodes.includes(responseMyMAPI?.[0])) {
@@ -60,6 +69,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 			}
 			const result: IScotiabankConsultDebtResponseDTO = setConsultDebtResponse(valueJson, responseMyMAPI);
 			this.logger.log(`Body para retornar al banco ${JSON.stringify(result)}`);
+			await this.requestGateway.update(responseGateway._id, { response: result });
 			const stringResult = setOutputValues(result, InputEnum.INQUIRE);
 			return stringResult;
 		} catch (error) {
@@ -108,6 +118,19 @@ export class BankScotiabankUseCase implements IBankfactory {
 				totalAmount: Number(valueJson['IMPORTE PAGADO EFECTIVO'].trim()),
 			};
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
+			const responseGateway = await this.requestGateway.create({
+				bank: payloadMyMRequest.bankCode,
+				currency: payloadMyMRequest.currencyCode,
+				customerId: payloadMyMRequest.customerIdentificationCode,
+				requestId: payloadMyMRequest.requestId,
+				requestPaymentId: payloadMyMRequest.requestId,
+				documentIds: payloadMyMRequest.paidDocuments.map(document => document.documentId),
+				paymentMethod: payloadMyMRequest.paymentType,
+				type: 'PAYMENT',
+				request: valueJson,
+				processId: payloadMyMRequest.processId,
+				serviceId: payloadMyMRequest.serviceId,
+			});
 			const responseMyMAPI = await this.mymRestClient.payment(payloadMyMRequest);
 			this.logger.log(`resultado de la consulta ${JSON.stringify(responseMyMAPI)}`);
 			if (ScotiabankErrorCodes.includes(responseMyMAPI?.[0])) {
@@ -115,6 +138,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 			}
 			const result: IScotiabankPaymentResponseDTO = setPaymentResponse(valueJson, responseMyMAPI);
 			this.logger.log(`Body para retornar al banco ${JSON.stringify(result)}`);
+			await this.requestGateway.update(responseGateway._id, { response: result });
 			const stringResult = setOutputValues(result, InputEnum.PAYMENT);
 			return stringResult;
 		} catch (error) {
@@ -144,9 +168,21 @@ export class BankScotiabankUseCase implements IBankfactory {
 				processId: valueJson['CODIGO DE PRODUCTO/SERVICIO'].trim(),
 				transactionDate: this.processDate(valueJson['FECHA Y HORA DE TRANSACCION 1']),
 				operationId: '000',
-				operationNumberAnnulment: valueJson['NUMERO DE DOCUMENTO'].trim(),
+				operationNumberAnnulment: valueJson['NUMERO DE TRANS. DE COB.ORI'].trim(),
 			};
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
+			const responseGateway = await this.requestGateway.create({
+				bank: payloadMyMRequest.bankCode,
+				currency: payloadMyMRequest.currencyCode,
+				customerId: payloadMyMRequest.customerIdentificationCode,
+				requestId: payloadMyMRequest.requestId,
+				requestPaymentId: payloadMyMRequest.operationNumberAnnulment,
+				documentIds: [valueJson['NUMERO DE DOCUMENTO'].trim()],
+				type: 'ANNULMENT',
+				request: valueJson,
+				processId: payloadMyMRequest.processId,
+				serviceId: payloadMyMRequest.serviceId,
+			});
 			const responseMyMAPI = await this.mymRestClient.annulmentPayment(payloadMyMRequest);
 			this.logger.log(`resultado de la consulta ${JSON.stringify(responseMyMAPI)}`);
 			if (ScotiabankErrorCodes.includes(responseMyMAPI?.[0])) {
@@ -154,6 +190,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 			}
 			const result: IScotiabankAnnulmentResponseDTO = setAnullmentResponse(valueJson, responseMyMAPI);
 			this.logger.log(`Body para retornar al banco ${JSON.stringify(result)}`);
+			await this.requestGateway.update(responseGateway._id, { response: result });
 			const stringResult = setOutputValues(result, InputEnum.RETURN);
 			return stringResult;
 		} catch (error) {
@@ -163,6 +200,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 			return stringResult;
 		}
 	}
+
 	private processDate(date: string): string {
 		const actual = new Date();
 		const MM = date.slice(0, 2);
