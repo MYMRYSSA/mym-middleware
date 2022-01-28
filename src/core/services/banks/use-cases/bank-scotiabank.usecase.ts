@@ -34,10 +34,11 @@ export class BankScotiabankUseCase implements IBankfactory {
 	constructor(private readonly mymRestClient: MyMRestClient) {}
 
 	async consultDebt(XML: string): Promise<string> {
+		let valueJson: ScotiabankConsultDebtRequestDTO = null;
 		try {
 			const jsonRes = convert(XML, { format: 'json' });
 			const objRes: IXmlJson = JSON.parse(jsonRes);
-			const valueJson: ScotiabankConsultDebtRequestDTO = getInputValues(
+			valueJson = getInputValues(
 				objRes['soapenv:Envelope']['soapenv:Body'].ejecutarTransaccionScotiabank.Input,
 				InputEnum.INQUIRE,
 			);
@@ -63,15 +64,18 @@ export class BankScotiabankUseCase implements IBankfactory {
 			return stringResult;
 		} catch (error) {
 			this.logger.error(`Error consulta deuda ${error.response?.data || error.message}`);
-			return null;
+			const result: IScotiabankConsultDebtResponseDTO = setConsultDebtResponse(valueJson, null);
+			const stringResult = setOutputValues(result, InputEnum.INQUIRE);
+			return stringResult;
 		}
 	}
 
 	async payment(XML: string): Promise<string> {
+		let valueJson: ScotiabankPaymentRequestDTO = null;
 		try {
 			const jsonRes = convert(XML, { format: 'json' });
 			const objRes: IXmlJson = JSON.parse(jsonRes);
-			const valueJson: ScotiabankPaymentRequestDTO = getInputValues(
+			valueJson = getInputValues(
 				objRes['soapenv:Envelope']['soapenv:Body'].ejecutarTransaccionScotiabank.Input,
 				InputEnum.PAYMENT,
 			);
@@ -115,15 +119,18 @@ export class BankScotiabankUseCase implements IBankfactory {
 			return stringResult;
 		} catch (error) {
 			this.logger.error(`Error notificar pago ${error.response?.data || error.message}`);
-			return null;
+			const result: IScotiabankPaymentResponseDTO = setPaymentResponse(valueJson, null);
+			const stringResult = setOutputValues(result, InputEnum.PAYMENT);
+			return stringResult;
 		}
 	}
 
 	async annulmentPayment(XML: string): Promise<string> {
+		let valueJson: ScotiabankAnnulmentRequestDTO = null;
 		try {
 			const jsonRes = convert(XML, { format: 'json' });
 			const objRes: IXmlJson = JSON.parse(jsonRes);
-			const valueJson: ScotiabankAnnulmentRequestDTO = getInputValues(
+			valueJson = getInputValues(
 				objRes['soapenv:Envelope']['soapenv:Body'].ejecutarTransaccionScotiabank.Input,
 				InputEnum.RETURN,
 			);
@@ -151,7 +158,9 @@ export class BankScotiabankUseCase implements IBankfactory {
 			return stringResult;
 		} catch (error) {
 			this.logger.error(`Error extorno pago ${error.response?.data || error.message}`);
-			return null;
+			const result: IScotiabankAnnulmentResponseDTO = setAnullmentResponse(valueJson, null);
+			const stringResult = setOutputValues(result, InputEnum.RETURN);
+			return stringResult;
 		}
 	}
 	private processDate(date: string): string {
