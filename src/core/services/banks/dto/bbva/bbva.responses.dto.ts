@@ -18,7 +18,7 @@ interface ISubconceptoContent {
 interface ITransactionContentDTO {
 	numeroReferenciaDeuda: string;
 	nombreCliente?: string;
-	numeroOperacionEmpresa?: string;
+	numeroOperacionEmpresa?: number;
 	indMasDeuda?: number;
 	cantidadDocsDeuda?: number;
 	datosEmpresa?: string;

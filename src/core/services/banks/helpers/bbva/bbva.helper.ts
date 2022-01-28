@@ -24,7 +24,7 @@ export const processDate = (date: string, hour: string): string => {
 	return `${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}`;
 };
 const getOperationStatus = (response: any) => {
-	if (response.documents || response.operationNumberCompany) return responseConstants.SUCCESS;
+	if (response.documents || response.operationNumberCompany || response === 'EXTORNO REALIZADO') return responseConstants.SUCCESS;
 	return responseConstants[response.message || response[0]] || responseConstants.TRANSACTION_INCOMPLETE;
 };
 const generateDocumentBody = (documentsResponse: IDocumentMyMContent[]): IDocumentContentDTO[] => {
@@ -43,7 +43,7 @@ const getAgreementCode = (code: number, agreementCodes: string[]) => {
 	return agreementCodes[code] || 'PEN';
 };
 
-/**Inquiry */
+/**Inquiry */   
 export const generateInquiryRequestMyMAPI = (
 	operation: OperationContentDTO,
 	numeroReferenciaDeuda: string,
@@ -94,7 +94,7 @@ export const generatedInquiryResponse = (
 						numeroReferenciaDeuda,
 						cantidadDocsDeuda: documentsContent.length,
 						nombreCliente: response?.customerName || '',
-						numeroOperacionEmpresa: response?.operationId || '',
+						numeroOperacionEmpresa: Number(response?.operationId) || 0,
 						listaDocumentos: { documento: generateDocumentBody(documentsContent) },
 					},
 				},
@@ -159,7 +159,7 @@ export const generatePaymentResponse = (
 					},
 					transaccion: {
 						numeroReferenciaDeuda: transaction.numeroReferenciaDeuda,
-						numeroOperacionEmpresa: responseMyMAPI?.operationNumberCompany || '',
+						numeroOperacionEmpresa: Number(responseMyMAPI?.operationNumberCompany) || 0,
 						datosEmpresa: responseMyMAPI?.clientName || '',
 					},
 				},
@@ -208,7 +208,7 @@ export const generateAnnulmentResponse = (
 					},
 					transaction: {
 						numeroReferenciaDeuda: transaction.numeroReferenciaDeuda,
-						numeroOperacionEmpresa: responseMyMAPI?.operationNumberCompany || '',
+						numeroOperacionEmpresa: Number(responseMyMAPI?.operationNumberCompany) || 0,
 					},
 				},
 			},

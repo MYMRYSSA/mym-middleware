@@ -27,7 +27,7 @@ import {
 } from '../../dto/bcp/bcp.responses.dto';
 
 const getOperationStatusInquiry = (response: any) => {
-	if (response.documents || response.operationNumberCompany) return responseConstants.SUCCESS;
+	if (response.documents || response.operationNumberCompany || response === 'EXTORNO REALIZADO') return responseConstants.SUCCESS;
 	return responseConstants[response.message] || responseConstants.TRANSACTION_INCOMPLETE;
 };
 
@@ -150,11 +150,11 @@ export const generatePaymentRequestMyMAPI = (
 	return {
 		bankCode: financialEntity,
 		currencyCode,
-		requestId: rqUUID,
+		requestId: operationNumber,
 		channel,
 		customerIdentificationCode: customerId,
 		serviceId,
-		processId: operationNumber,
+		processId: rqUUID,
 		operationId: check?.checkNumber,
 		transactionDate,
 		paymentType: EnumPaymentType[paymentType] || 'EF',
@@ -191,9 +191,9 @@ export const generateAnnulmentRequestMyMAPI = (payloadRquest: BCPAnnulmentReques
 		channel,
 		customerIdentificationCode: customerId,
 		operationNumberAnnulment,
-		requestId: rqUUID,
+		requestId: operationNumber,
 		transactionDate,
-		processId: operationNumber,
+		processId: rqUUID,
 	};
 };
 

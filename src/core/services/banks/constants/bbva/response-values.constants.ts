@@ -23,6 +23,10 @@ export const responseConstants = {
 		code: '0101',
 		description: 'NUMERO DE REFERENCIA NO EXISTE',
 	},
+	'NÚMERO DE REFERENCIA NO EXISTE': {
+		code: '0101',
+		description: 'NUMERO DE REFERENCIA NO EXISTE',
+	},
 	'AGOTADO EL TIEMPO PARA SOLICITAR EXTORNO': {
 		code: '0102',
 		description: 'NUMERO DE REFERENCIA EXPIRADA',
