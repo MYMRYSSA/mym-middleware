@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export enum EnumCurrency {
 	USD = 'USD',
@@ -649,6 +649,7 @@ export const CurrencyDTO = {
 };
 
 export const PaymentTypeDTO = {
+	'00': 'EF',
 	'01': 'EF',
 	'02': 'CP',
 	'03': 'CJ',
@@ -658,3 +659,9 @@ export const PaymentTypeDTO = {
 	'07': 'EF',
 	'10': 'EF',
 };
+
+export const ScotiabankErrorCodes = [
+	'DOCUMENTO YA FUE PAGADO',
+	'DOCUMENTO SOLICITADO PARA EXTORNAR NO ENCONTRADO',
+	'CONSULTA DE DEUDA REALIZADA PREVIAMENTE',
+];

@@ -200,7 +200,7 @@ export const generateAnnulmentRequestMyMAPI = (payloadRquest: BCPAnnulmentReques
 export const generateAnnulmentResponse = (
 	responseMyMAPI: IPaymentResponse,
 	payloadRequest: BCPAnnulmentRequestDTO,
-	errorResponse: { message: string }
+	errorResponse: { message: string },
 ): IBCPAnnulmentResponseDTO => {
 	const operationStatus = getOperationStatusInquiry(errorResponse || responseMyMAPI);
 	return {

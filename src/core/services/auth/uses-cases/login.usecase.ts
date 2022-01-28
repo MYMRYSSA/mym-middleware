@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { HttpCode, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoginRequestDTO } from '../dto/auth.dto';
 import { UserGateway } from '../../../../infraestructure/persistence/gateways/user.gateway';

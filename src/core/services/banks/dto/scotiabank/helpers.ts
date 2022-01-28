@@ -91,7 +91,7 @@ export const setConsultDebtResponse = (
 		'BIN ADQUIRIENTE': valueJson['BIN ADQUIRIENTE'],
 		'RETRIEVAL REFERENCE - NUMBER': valueJson['RETRIEVAL REFERENCE NUMBER'],
 		'AUTHORIZATION ID RESPONSE': '000000',
-		'RESPONSE CODE': '0',
+		'RESPONSE CODE': response ? '00' : '99',
 		'TERMINAL ID': valueJson['TERMINAL ID'],
 		'TRANSACTION CURRENCY CODE': valueJson['TRANSACTION CURRENCY CODE'],
 		'DATOS RESERVADOS': valueJson['DATOS RESERVADOS'],
@@ -103,43 +103,43 @@ export const setConsultDebtResponse = (
 		AGENCIA: valueJson['CODIGO DE AGENCIA DEL RECAUDADOR'],
 		'TIPO DE IDENTIFICACION': valueJson['TIPO DE DATO DE CONSULTA'],
 		'NUMERO DE IDENTIFICACION': valueJson['DATO DE CONSULTA'],
-		'NOMBRE DEL DEUDOR': response.customerName,
+		'NOMBRE DEL DEUDOR': response?.customerName || '',
 		'NUMERO DE SERVICIOS DEVUELTOS': '01',
 		'NUMERO DE OPERACIÓN DE COBRANZA': '000008133016',
-		'INDICADOR SI HAY MAS DOCUMENTOS': response.documents.length > 1 ? '1' : '0',
+		'INDICADOR SI HAY MAS DOCUMENTOS': response?.documents?.length > 1 ? '1' : '0',
 		'TAMAÑO MAXIMO DE BLOQUE': '01000',
-		'POSICION DEL ULTIMO DOCUMENTO': response.documents.length > 1 ? `${response.documents.length}` : '000',
+		'POSICION DEL ULTIMO DOCUMENTO': response?.documents?.length > 1 ? `${response?.documents?.length}` : '000',
 		'PUNTERO DE LA BASE DE DATOS': '0000000000',
 		'ORIGEN DE RESPUESTA': '0',
 		'CODIGO DE RESPUESTA': '000',
 		'FILLER 1': '',
 		'CODIGO DE PRODUCTO/SERVICIO': valueJson['CODIGO DE PRODUCTO/SERVICIO'],
 		MONEDA: valueJson['TRANSACTION CURRENCY CODE'],
-		'ESTADO DEL DEUDOR': response.documents.length > 0 ? 'M' : 'V',
+		'ESTADO DEL DEUDOR': response?.documents?.length > 0 ? 'M' : 'V',
 		'MENSAJE 1 AL DEUDOR': `PENDIENTE ${valueJson['TRANSACTION CURRENCY CODE'] === '604' ? 'SOLES' : 'DOLARES'}`,
 		'MENSAJE 2 AL DEUDOR': '',
 		'INDICADOR DE CRONOLOGIA': '1',
 		'INDICADOR DE PAGOS VENCIDOS': '0',
 		'RESTRICCION DE PAGO': '0',
-		'DOCUMENTOS POR SERVICIO': `${response.documents.length}`,
+		'DOCUMENTOS POR SERVICIO': `${response?.documents?.length || '0'}`,
 		'FILLER 2': '',
 		'TIPO DE SERVICIO 1': '001',
 		'NUMERO DE DOCUMENTO 1':
-			response.documents.length > 0
-				? `${response.documents[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].documentId}`
+			response?.documents?.length > 0
+				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].documentId}`
 				: '',
-		'REFERENCIA DE LA DEUDA 1': response.documents.length > 0 ? response.customerIdentificationCode : '',
+		'REFERENCIA DE LA DEUDA 1': response?.documents?.length > 0 ? response?.customerIdentificationCode : '',
 		'FECHA DE VENCIMIENTO 1':
-			response.documents.length > 0
-				? `${response.documents[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].expirationDate}`
+			response?.documents?.length > 0
+				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].expirationDate}`
 				: '',
 		'IMPORTE MINIMO 1':
-			response.documents.length > 0
-				? `${response.documents[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].minimumAmount}`
+			response?.documents?.length > 0
+				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].minimumAmount}`
 				: '',
 		'IMPORTE A TOTAL 1':
-			response.documents.length > 0
-				? `${response.documents[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].totalAmount}`
+			response?.documents?.length > 0
+				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].totalAmount}`
 				: '',
 	};
 };
@@ -160,9 +160,9 @@ export const setPaymentResponse = (
 		'IDENTIFICACION EMPRESA': valueJson['BIN ADQUIRIENTE'],
 		'RETRIEVAL REFERENCE - NUMBER': valueJson['RETRIEVAL REFERENCE NUMBER'],
 		'AUTHORIZATION ID RESPONSE': '4',
-		'RESPONSE CODE': '00',
+		'RESPONSE CODE': response ? '00' : '99',
 		'TERMINAL ID': valueJson['TERMINAL ID'],
-		'TRANSACTION CURRENCY CODE': valueJson['TRANSACTION CURRENCY'],
+		'TRANSACTION CURRENCY CODE': valueJson['TRANSACTION CURRENCY CODE'],
 		'DATOS RESERVADOS': valueJson['DATOS RESERVADOS'],
 		'TAMAÑO DEL BLOQUE': '',
 		'CODIGO DE FORMATO': '01',
@@ -175,14 +175,14 @@ export const setPaymentResponse = (
 		'DATO DE PAGO': valueJson['DATO DE PAGO'],
 		'CODIGO DE CIUDAD': '',
 		'NUMERO DE OPERAC.COBRANZA': '4',
-		'NUMERO DE OPERAC.ACREEDOR': response.operationNumberCompany,
+		'NUMERO DE OPERAC.ACREEDOR': response?.operationNumberCompany || '',
 		'NUMERO DE PROD/SERV PAGAD.': '01',
 		'NUMERO TOTAL DE DOC PAGAD.': '001',
 		'FILLER 1': '',
 		'ORIGEN DE RESPUESTA': '0',
 		'CODIGO DE RESPUESTA EXTEND': '000',
 		'DESCRIPC. DE LA RPTA APLICATIV': 'TRANSACCION PROCESADA OK',
-		'NOMBRE DEL DEUDOR': response.clientName,
+		'NOMBRE DEL DEUDOR': response?.clientName || '',
 		'RUC DEL DEUDOR': '',
 		'RUC DEL ACREEDOR': '',
 		'CODIGO DE ZONA DEL DEUDOR': '',
@@ -236,7 +236,7 @@ export const setAnullmentResponse = (
 		'IDENTIFICACION EMPRESA': valueJson['FORWARD INSTITUTION CODE 1'],
 		'RETRIEVAL REFERENCE - NUMBER': valueJson['RETRIEVAL REFERENCE NUMBER'],
 		'AUTHORIZATION ID RESPONSE': '4',
-		'RESPONSE CODE': '00',
+		'RESPONSE CODE': response ? '00' : '99',
 		'TERMINAL ID': valueJson['TERMINAL ID'],
 		'TRANSACTION CURRENCY CODE': valueJson['TRANSACTION CURRENCY CODE'],
 		'DATOS RESERVADOS': valueJson['DATOS RESERVADOS'],
