@@ -23,8 +23,11 @@ export const processDate = (date: string, hour: string): string => {
 	const ss = date.slice(4, 6);
 	return `${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}`;
 };
-const getOperationStatus = (response: any) => {
-	if (response.documents || response.operationNumberCompany || response === 'EXTORNO REALIZADO') return responseConstants.SUCCESS;
+const getOperationStatus = (response: any, origin = 'OTHERS') => {
+	if (response.documents || response.operationNumberCompany || response === 'EXTORNO REALIZADO')
+		return responseConstants.SUCCESS;
+	if (origin === 'PAYMENT' && response?.message?.[0] === 'NUMERO DE REFERENCIA NO EXISTE')
+		return responseConstants.TRANSACTION_INCOMPLETE;
 	return responseConstants[response.message || response[0]] || responseConstants.TRANSACTION_INCOMPLETE;
 };
 const generateDocumentBody = (documentsResponse: IDocumentMyMContent[]): IDocumentContentDTO[] => {
@@ -43,7 +46,7 @@ const getAgreementCode = (code: number, agreementCodes: string[]) => {
 	return agreementCodes[code] || 'PEN';
 };
 
-/**Inquiry */   
+/**Inquiry */
 export const generateInquiryRequestMyMAPI = (
 	operation: OperationContentDTO,
 	numeroReferenciaDeuda: string,
@@ -60,7 +63,7 @@ export const generateInquiryRequestMyMAPI = (
 	} = operation;
 	const currencyCode = getAgreementCode(codigoConvenio, agreementCodes);
 	return {
-		bankCode: codigoBanco.toString(),
+		bankCode: `0${codigoBanco.toString()}`,
 		channel: canalOperacion,
 		requestId: numeroOperacion.toString(),
 		currencyCode,
@@ -112,7 +115,7 @@ export const generatePaymentRequestMyMAPI = (
 	const { codigoBanco, canalOperacion, numeroOperacion, codigoOperacion, fechaOperacion, horaOperacion } = operation;
 	const transactionDate = processDate(fechaOperacion, horaOperacion);
 	return {
-		bankCode: codigoBanco.toString(),
+		bankCode: `0${codigoBanco.toString()}`,
 		currencyCode: transaction.codigoMoneda,
 		requestId: numeroOperacion.toString(),
 		channel: canalOperacion,
@@ -144,7 +147,7 @@ export const generatePaymentResponse = (
 	transaction: TransactionContentDTO,
 	errorResponse: { message: string },
 ): IBBVAPaymentResponseDTO => {
-	const operationStatus = getOperationStatus(errorResponse || responseMyMAPI);
+	const operationStatus = getOperationStatus(errorResponse || responseMyMAPI, 'PAYMENT');
 
 	return {
 		NotificarPagoResponse: {
@@ -176,7 +179,7 @@ export const generateAnnulmentRequestMyMAPI = (
 	const { codigoBanco, canalOperacion, numeroOperacion, fechaOperacion, horaOperacion, codigoOperacion } = operation;
 	const transactionDate = processDate(fechaOperacion, horaOperacion);
 	return {
-		bankCode: codigoBanco.toString(),
+		bankCode: `0${codigoBanco.toString()}`,
 		currencyCode: transaction.codigoMoneda,
 		requestId: numeroOperacion.toString(),
 		channel: canalOperacion,

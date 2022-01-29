@@ -73,7 +73,7 @@ export class BankBbvaUseCase implements IBankfactory {
 			await this.requestGateway.update(responseGateway._id, { response: resultContent });
 			return resultContent;
 		} catch (error) {
-			this.logger.error(`Error consulta deuda ${error.response?.data}`);
+			this.logger.error(`Error consulta deuda ${error.response?.data || error}`);
 			const resultContent = generatedInquiryResponse(
 				null,
 				cabecera.operacion,

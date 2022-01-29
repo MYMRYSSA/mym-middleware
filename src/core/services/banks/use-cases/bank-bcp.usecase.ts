@@ -32,8 +32,8 @@ export class BankBcpUseCase implements IBankfactory {
 		private readonly configService: ConfigService,
 		private readonly requestGateway: RequestGateway,
 	) {
-		this.agreementCodeUSD = configService.get<string>('AGREEMENT_CODE_USD');
-		this.agreementCodePEN = configService.get<string>('AGREEMENT_CODE_PEN');
+		this.agreementCodeUSD = configService.get<string>('AGREEMENT_CODE_USD_BCP');
+		this.agreementCodePEN = configService.get<string>('AGREEMENT_CODE_PEN_BCP');
 	}
 
 	async consultDebt(payloadRequest: BCPConsultDebtRequestDTO): Promise<IBCPConsultDebtResponseDTO> {
