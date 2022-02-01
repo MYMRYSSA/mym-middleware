@@ -123,6 +123,7 @@ export const generatePaymentRequestMyMAPI = (
 		serviceId: '1001', // TODO validar que mandamos
 		processId: codigoOperacion.toString(),
 		transactionDate,
+		operationNumber: transaction.numeroOperacionRecaudos,
 		paymentType: transaction.formaPago,
 		paidDocuments: [
 			{

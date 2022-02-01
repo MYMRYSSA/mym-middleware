@@ -18,6 +18,7 @@ export interface IPaymentRequest {
 	channel: string;
 	customerIdentificationCode: string;
 	serviceId?: string;
+	operationNumber?: string;
 	operationId?: string;
 	processId?: string;
 	transactionDate: string;
