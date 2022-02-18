@@ -34,15 +34,10 @@ export class BankScotiabankUseCase implements IBankfactory {
 
 	constructor(private readonly mymRestClient: MyMRestClient, private readonly requestGateway: RequestGateway) {}
 
-	async consultDebt(XML: string): Promise<string> {
+	async consultDebt(input: string): Promise<string> {
 		let valueJson: ScotiabankConsultDebtRequestDTO = null;
 		try {
-			const jsonRes = convert(XML, { format: 'json' });
-			const objRes: IXmlJson = JSON.parse(jsonRes);
-			valueJson = getInputValues(
-				objRes['soapenv:Envelope']['soapenv:Body'].ejecutarTransaccionScotiabank.Input,
-				InputEnum.INQUIRE,
-			);
+			valueJson = getInputValues(input, InputEnum.INQUIRE);
 			const payloadMyMRequest: IDebtInquiresRequest = {
 				bankCode: '009',
 				channel: valueJson.CANAL.trim(),
@@ -80,15 +75,10 @@ export class BankScotiabankUseCase implements IBankfactory {
 		}
 	}
 
-	async payment(XML: string): Promise<string> {
+	async payment(input: string): Promise<string> {
 		let valueJson: ScotiabankPaymentRequestDTO = null;
 		try {
-			const jsonRes = convert(XML, { format: 'json' });
-			const objRes: IXmlJson = JSON.parse(jsonRes);
-			valueJson = getInputValues(
-				objRes['soapenv:Envelope']['soapenv:Body'].ejecutarTransaccionScotiabank.Input,
-				InputEnum.PAYMENT,
-			);
+			valueJson = getInputValues(input, InputEnum.PAYMENT);
 			const payloadMyMRequest: IPaymentRequest = {
 				bankCode: '009',
 				currencyCode: CurrencyDTO[valueJson['TRANSACTION CURRENCY CODE'].trim()],
@@ -149,15 +139,10 @@ export class BankScotiabankUseCase implements IBankfactory {
 		}
 	}
 
-	async annulmentPayment(XML: string): Promise<string> {
+	async annulmentPayment(input: string): Promise<string> {
 		let valueJson: ScotiabankAnnulmentRequestDTO = null;
 		try {
-			const jsonRes = convert(XML, { format: 'json' });
-			const objRes: IXmlJson = JSON.parse(jsonRes);
-			valueJson = getInputValues(
-				objRes['soapenv:Envelope']['soapenv:Body'].ejecutarTransaccionScotiabank.Input,
-				InputEnum.RETURN,
-			);
+			valueJson = getInputValues(input, InputEnum.RETURN);
 			const payloadMyMRequest: IAnnulmentRequest = {
 				bankCode: '009',
 				currencyCode: CurrencyDTO[valueJson['TRANSACTION CURRENCY CODE']],
@@ -201,6 +186,17 @@ export class BankScotiabankUseCase implements IBankfactory {
 		}
 	}
 
+	async redirector(XML: string): Promise<string> {
+		const jsonRes = convert(XML, { format: 'json' });
+		const objRes: IXmlJson = JSON.parse(jsonRes);
+		const input = objRes['soapenv:Envelope']['soapenv:Body'].ejecutarTransaccionScotiabank.Input;
+		const process = this.getProcess(objRes['soapenv:Envelope']['soapenv:Body'].ejecutarTransaccionScotiabank.Input);
+		if (process === '355000') return await this.consultDebt(input);
+		if (process === '945000') return await this.payment(input);
+		if (process === '965000') return await this.annulmentPayment(input);
+		return '';
+	}
+
 	private processDate(date: string): string {
 		const actual = new Date();
 		const MM = date.slice(0, 2);
@@ -216,5 +212,9 @@ export class BankScotiabankUseCase implements IBankfactory {
 		const entire = myStringNumber.slice(0, 7);
 		const decimals = myStringNumber.slice(7, myStringNumber.length);
 		return Number(`${Number(entire)}.${Number(decimals)}`);
+	}
+
+	private getProcess(content: string) {
+		return content.slice(54, 60);
 	}
 }

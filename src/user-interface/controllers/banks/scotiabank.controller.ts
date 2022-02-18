@@ -8,24 +8,10 @@ import { prepareXml } from 'src/core/services/banks/helpers/scotiabank';
 export class ScotiabankController {
 	constructor(private readonly bankScotiabankUseCase: BankScotiabankUseCase) {}
 
-	@Post('v1/inquire')
+	@Post('v1')
 	async consultDebt(@Body() XML: any) {
 		const xmlStr = Buffer.from(XML).toString();
-		const result = await this.bankScotiabankUseCase.consultDebt(xmlStr);
-		return prepareXml(result);
-	}
-
-	@Post('v1/payment')
-	async payment(@Body() XML: any) {
-		const xmlStr = Buffer.from(XML).toString();
-		const result = await this.bankScotiabankUseCase.payment(xmlStr);
-		return prepareXml(result);
-	}
-
-	@Post('v1/return')
-	async annulmentPayment(@Body() XML: any) {
-		const xmlStr = Buffer.from(XML).toString();
-		const result = await this.bankScotiabankUseCase.annulmentPayment(xmlStr);
+		const result = await this.bankScotiabankUseCase.redirector(xmlStr);
 		return prepareXml(result);
 	}
 }
