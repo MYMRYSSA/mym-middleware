@@ -33,12 +33,14 @@ const getOperationStatus = (response: any, origin = 'OTHERS') => {
 const generateDocumentBody = (documentsResponse: IDocumentMyMContent[]): IDocumentContentDTO[] => {
 	return documentsResponse.map((document: IDocumentMyMContent): IDocumentContentDTO => {
 		return {
+			numero: document.documentId,
 			descripcion: document.description,
 			fechaEmision: document.issuanceDate,
 			fechaVencimiento: document.expirationDate,
 			importeDeuda: parseFloat(document.totalAmount),
 			importeDeudaMinima: parseFloat(document.minimumAmount),
-			numero: document.documentId,
+			indicadorRestriccPago: 0,
+			cantidadSubconceptos: 0,
 		};
 	});
 };
@@ -95,15 +97,18 @@ export const generatedInquiryResponse = (
 					},
 					transaccion: {
 						numeroReferenciaDeuda,
-						cantidadDocsDeuda: documentsContent.length,
 						nombreCliente: response?.customerName || '',
 						numeroOperacionEmpresa: Number(response?.operationId) || 0,
+						indMasDeuda: '0',
+						cantidadDocsDeuda: documentsContent.length,
+						datosEmpresa: '',
 						listaDocumentos: { documento: generateDocumentBody(documentsContent) },
 					},
 				},
 			},
 		},
 	};
+	if (!documentsContent.length) delete resultBody.ConsultarDeudaResponse.recaudosRs.detalle.transaccion;
 	return resultBody;
 };
 
@@ -150,7 +155,7 @@ export const generatePaymentResponse = (
 ): IBBVAPaymentResponseDTO => {
 	const operationStatus = getOperationStatus(errorResponse || responseMyMAPI, 'PAYMENT');
 
-	return {
+	const response = {
 		NotificarPagoResponse: {
 			recaudosRs: {
 				cabecera: {
@@ -164,12 +169,14 @@ export const generatePaymentResponse = (
 					transaccion: {
 						numeroReferenciaDeuda: transaction.numeroReferenciaDeuda,
 						numeroOperacionEmpresa: Number(responseMyMAPI?.operationNumberCompany) || 0,
-						datosEmpresa: responseMyMAPI?.clientName || '',
+						datosEmpresa: '',
 					},
 				},
 			},
 		},
 	};
+	if (!responseMyMAPI?.operationNumberCompany) delete response.NotificarPagoResponse.recaudosRs.detalle.transaccion;
+	return response;
 };
 
 /**Annulment */
@@ -199,7 +206,7 @@ export const generateAnnulmentResponse = (
 ): IBBVAAnnulmentResponseDTO => {
 	const operationStatus = getOperationStatus(errorResponse || responseMyMAPI);
 
-	return {
+	const response = {
 		ExtornarPagoResponse: {
 			recaudosRs: {
 				cabecera: {
@@ -210,7 +217,7 @@ export const generateAnnulmentResponse = (
 						codigo: operationStatus.code,
 						descripcion: operationStatus.description,
 					},
-					transaction: {
+					transaccion: {
 						numeroReferenciaDeuda: transaction.numeroReferenciaDeuda,
 						numeroOperacionEmpresa: Number(responseMyMAPI?.operationNumberCompany) || 0,
 					},
@@ -218,4 +225,6 @@ export const generateAnnulmentResponse = (
 			},
 		},
 	};
+	if (!responseMyMAPI?.operationNumberCompany) delete response.ExtornarPagoResponse.recaudosRs.detalle.transaccion;
+	return response;
 };

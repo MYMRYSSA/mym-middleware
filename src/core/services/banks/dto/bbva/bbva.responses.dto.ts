@@ -8,7 +8,7 @@ export interface IDocumentContentDTO {
 	fechaVencimiento: string;
 	importeDeuda: number;
 	importeDeudaMinima: number;
-	indicadorRestriccPago?: string;
+	indicadorRestriccPago?: number;
 	cantidadSubconceptos?: number;
 }
 interface ISubconceptoContent {
@@ -19,7 +19,7 @@ interface ITransactionContentDTO {
 	numeroReferenciaDeuda: string;
 	nombreCliente?: string;
 	numeroOperacionEmpresa?: number;
-	indMasDeuda?: number;
+	indMasDeuda?: string;
 	cantidadDocsDeuda?: number;
 	datosEmpresa?: string;
 	listaDocumentos?: {
@@ -71,7 +71,7 @@ export interface IBBVAAnnulmentResponseDTO {
 			};
 			detalle: {
 				respuesta: IResponseContent;
-				transaction: ITransactionContentDTO;
+				transaccion: ITransactionContentDTO;
 			};
 		};
 	};
