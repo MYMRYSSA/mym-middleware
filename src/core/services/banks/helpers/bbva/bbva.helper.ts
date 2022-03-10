@@ -23,6 +23,10 @@ export const processDate = (date: string, hour: string): string => {
 	const ss = date.slice(4, 6);
 	return `${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}`;
 };
+const parseNumberDecimal = (valor: string) => {
+	if (!(parseFloat(valor) % 1)) return `${valor}.00`;
+	return valor;
+};
 const getOperationStatus = (response: any, origin = 'OTHERS') => {
 	if (response.documents || response.operationNumberCompany || response === 'EXTORNO REALIZADO')
 		return responseConstants.SUCCESS;
@@ -37,8 +41,8 @@ const generateDocumentBody = (documentsResponse: IDocumentMyMContent[]): IDocume
 			descripcion: document.description,
 			fechaEmision: document.issuanceDate,
 			fechaVencimiento: document.expirationDate,
-			importeDeuda: parseFloat(document.totalAmount),
-			importeDeudaMinima: parseFloat(document.minimumAmount),
+			importeDeuda: document.totalAmount,
+			importeDeudaMinima: document.minimumAmount,
 			indicadorRestriccPago: 0,
 			cantidadSubconceptos: 0,
 		};

@@ -6,8 +6,8 @@ export interface IDocumentContentDTO {
 	descripcion: string;
 	fechaEmision: string;
 	fechaVencimiento: string;
-	importeDeuda: number;
-	importeDeudaMinima: number;
+	importeDeuda: string;
+	importeDeudaMinima: string;
 	indicadorRestriccPago?: number;
 	cantidadSubconceptos?: number;
 }
