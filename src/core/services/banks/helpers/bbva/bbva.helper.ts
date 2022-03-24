@@ -23,9 +23,10 @@ export const processDate = (date: string, hour: string): string => {
 	const ss = date.slice(4, 6);
 	return `${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}`;
 };
-const parseNumberDecimal = (valor: string) => {
-	if (!(parseFloat(valor) % 1)) return `${valor}.00`;
-	return valor;
+const processNumberReference = (processNumber: string) => {
+	const numberConverted = parseInt(processNumber).toString();
+	if (numberConverted.length < 8) return numberConverted.padStart(8, '0');
+	return numberConverted;
 };
 const getOperationStatus = (response: any, origin = 'OTHERS') => {
 	if (response.documents || response.operationNumberCompany || response === 'EXTORNO REALIZADO')
@@ -75,8 +76,8 @@ export const generateInquiryRequestMyMAPI = (
 		currencyCode,
 		processId: codigoOperacion.toString(),
 		transactionDate: processDate(fechaOperacion, horaOperacion),
-		customerIdentificationCode: numeroReferenciaDeuda,
-		serviceId: '1001', // TODO validar es opcional
+		customerIdentificationCode: processNumberReference(numeroReferenciaDeuda),
+		serviceId: '1001', // TODO debe de ser opcional, si mandas el codigoConvenio sale error
 	};
 };
 export const generatedInquiryResponse = (
@@ -128,8 +129,8 @@ export const generatePaymentRequestMyMAPI = (
 		currencyCode: transaction.codigoMoneda,
 		requestId: numeroOperacion.toString(),
 		channel: canalOperacion,
-		customerIdentificationCode: transaction.numeroReferenciaDeuda,
-		serviceId: '1001', // TODO validar que mandamos
+		customerIdentificationCode: processNumberReference(transaction.numeroReferenciaDeuda),
+		serviceId: '1001', // TODO debe de ser opcional, si mandas el codigoConvenio sale error
 		processId: codigoOperacion.toString(),
 		transactionDate,
 		operationNumber: transaction.numeroOperacionRecaudos,
@@ -195,7 +196,7 @@ export const generateAnnulmentRequestMyMAPI = (
 		currencyCode: transaction.codigoMoneda,
 		requestId: numeroOperacion.toString(),
 		channel: canalOperacion,
-		customerIdentificationCode: transaction.numeroReferenciaDeuda,
+		customerIdentificationCode: processNumberReference(transaction.numeroReferenciaDeuda),
 		processId: codigoOperacion.toString(),
 		transactionDate,
 		operationNumberAnnulment: transaction.numeroOperacionOriginal.toString(),
