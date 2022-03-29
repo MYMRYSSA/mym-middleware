@@ -76,7 +76,7 @@ export const generateInquiryRequestMyMAPI = (
 		currencyCode,
 		processId: codigoOperacion.toString(),
 		transactionDate: processDate(fechaOperacion, horaOperacion),
-		customerIdentificationCode: processNumberReference(numeroReferenciaDeuda),
+		customerIdentificationCode: numeroReferenciaDeuda,
 		serviceId: '1001', // TODO debe de ser opcional, si mandas el codigoConvenio sale error
 	};
 };
@@ -129,7 +129,7 @@ export const generatePaymentRequestMyMAPI = (
 		currencyCode: transaction.codigoMoneda,
 		requestId: numeroOperacion.toString(),
 		channel: canalOperacion,
-		customerIdentificationCode: processNumberReference(transaction.numeroReferenciaDeuda),
+		customerIdentificationCode: transaction.numeroReferenciaDeuda,
 		serviceId: '1001', // TODO debe de ser opcional, si mandas el codigoConvenio sale error
 		processId: codigoOperacion.toString(),
 		transactionDate,
@@ -196,7 +196,7 @@ export const generateAnnulmentRequestMyMAPI = (
 		currencyCode: transaction.codigoMoneda,
 		requestId: numeroOperacion.toString(),
 		channel: canalOperacion,
-		customerIdentificationCode: processNumberReference(transaction.numeroReferenciaDeuda),
+		customerIdentificationCode: transaction.numeroReferenciaDeuda,
 		processId: codigoOperacion.toString(),
 		transactionDate,
 		operationNumberAnnulment: transaction.numeroOperacionOriginal.toString(),
