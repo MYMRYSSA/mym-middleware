@@ -55,7 +55,7 @@ export class BankBbvaUseCase implements IBankfactory {
 			const responseGateway = await this.requestGateway.create({
 				bank: payloadMyMRequest.bankCode,
 				currency: payloadMyMRequest.currencyCode,
-				customerId: payloadMyMRequest.customerIdentificationCode,
+				customerId: detalle.transaccion.numeroReferenciaDeuda,
 				requestId: payloadMyMRequest.requestId,
 				type: 'INQUIRY',
 				request: payloadRequest,
@@ -67,7 +67,7 @@ export class BankBbvaUseCase implements IBankfactory {
 			const resultContent = generatedInquiryResponse(
 				response,
 				cabecera.operacion,
-				payloadMyMRequest.customerIdentificationCode,
+				detalle.transaccion.numeroReferenciaDeuda,
 				null,
 			);
 			await this.requestGateway.update(responseGateway._id, { response: resultContent });
@@ -98,7 +98,7 @@ export class BankBbvaUseCase implements IBankfactory {
 			const responseGateway = await this.requestGateway.create({
 				bank: payloadPaymentMyM.bankCode,
 				currency: payloadPaymentMyM.currencyCode,
-				customerId: payloadPaymentMyM.customerIdentificationCode,
+				customerId: transaccion.numeroReferenciaDeuda,
 				requestId: payloadPaymentMyM.requestId,
 				requestPaymentId: payloadPaymentMyM.requestId,
 				documentIds: payloadPaymentMyM.paidDocuments.map(document => document.documentId),
@@ -142,7 +142,7 @@ export class BankBbvaUseCase implements IBankfactory {
 			const responseGateway = await this.requestGateway.create({
 				bank: annulmentPayloadPaymentMyM.bankCode,
 				currency: annulmentPayloadPaymentMyM.currencyCode,
-				customerId: annulmentPayloadPaymentMyM.customerIdentificationCode,
+				customerId: transaccion.numeroReferenciaDeuda,
 				requestId: annulmentPayloadPaymentMyM.requestId,
 				requestPaymentId: annulmentPayloadPaymentMyM.operationNumberAnnulment,
 				documentIds: [transaccion.numeroDocumento],
