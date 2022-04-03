@@ -19,8 +19,8 @@ export const processDate = (date: string, hour: string): string => {
 	const MM = date.slice(4, 6);
 	const dd = date.slice(6, 8);
 	const hh = hour.slice(0, 2);
-	const mm = date.slice(2, 4);
-	const ss = date.slice(4, 6);
+	const mm = hour.slice(2, 4);
+	const ss = hour.slice(4, 6);
 	return `${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}`;
 };
 const processNumberReference = (processNumber: string) => {
