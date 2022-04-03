@@ -47,7 +47,7 @@ export class BankBcpUseCase implements IBankfactory {
 			const responseGateway = await this.requestGateway.create({
 				bank: payloadMyMRequest.bankCode,
 				currency: payloadMyMRequest.currencyCode,
-				customerId: payloadMyMRequest.customerIdentificationCode,
+				customerId: payloadRequest.customerId,
 				requestId: payloadMyMRequest.requestId,
 				type: 'INQUIRY',
 				request: payloadRequest,
@@ -79,7 +79,7 @@ export class BankBcpUseCase implements IBankfactory {
 			const responseGateway = await this.requestGateway.create({
 				bank: payloadMyMRequest.bankCode,
 				currency: payloadMyMRequest.currencyCode,
-				customerId: payloadMyMRequest.customerIdentificationCode,
+				customerId: payloadRequest.customerId,
 				requestId: payloadMyMRequest.requestId,
 				requestPaymentId: payloadMyMRequest.requestId,
 				documentIds: payloadMyMRequest.paidDocuments.map(document => document.documentId),
@@ -112,7 +112,7 @@ export class BankBcpUseCase implements IBankfactory {
 			const responseGateway = await this.requestGateway.create({
 				bank: payloadMyMRequest.bankCode,
 				currency: payloadMyMRequest.currencyCode,
-				customerId: payloadMyMRequest.customerIdentificationCode,
+				customerId: payloadRequest.customerId,
 				requestId: payloadMyMRequest.requestId,
 				requestPaymentId: payloadMyMRequest.operationNumberAnnulment,
 				type: 'ANNULMENT',

@@ -85,6 +85,11 @@ const generateBodyPaymentRequest = (documents: DocumentContent[]): IDocumentPaym
 	});
 };
 
+const processCustomerIdentificationCode = (identificationCode: string) => {
+	if (identificationCode.length < 8) return identificationCode.padStart(8, '0');
+	return identificationCode;
+};
+
 /** inquiry */
 export const generateInquiryRequestMyMAPI = (
 	payloadRequest: BCPConsultDebtRequestDTO,
@@ -99,7 +104,7 @@ export const generateInquiryRequestMyMAPI = (
 		currencyCode,
 		requestId: rqUUID,
 		channel,
-		customerIdentificationCode: customerId,
+		customerIdentificationCode: processCustomerIdentificationCode(customerId),
 		serviceId,
 		processId: operationNumber,
 		transactionDate,
@@ -152,7 +157,7 @@ export const generatePaymentRequestMyMAPI = (
 		currencyCode,
 		requestId: operationNumber,
 		channel,
-		customerIdentificationCode: customerId,
+		customerIdentificationCode: processCustomerIdentificationCode(customerId),
 		serviceId,
 		processId: rqUUID,
 		operationId: check?.checkNumber,
@@ -189,7 +194,7 @@ export const generateAnnulmentRequestMyMAPI = (payloadRquest: BCPAnnulmentReques
 	return {
 		bankCode: financialEntity,
 		channel,
-		customerIdentificationCode: customerId,
+		customerIdentificationCode: processCustomerIdentificationCode(customerId),
 		operationNumberAnnulment,
 		requestId: operationNumber,
 		transactionDate,
