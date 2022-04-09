@@ -36,6 +36,7 @@
     "body-parser": "^1.19.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
+    "express-xml-bodyparser": "^0.3.0",
     "https": "^1.0.0",
     "luxon": "^2.3.0",
     "mongoose": "^6.1.4",

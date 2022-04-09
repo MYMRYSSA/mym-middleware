@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { json, raw } from 'body-parser';
+import * as xmlparser from 'express-xml-bodyparser';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -9,6 +10,7 @@ async function bootstrap() {
 	app.enableCors();
 	app.use(json());
 	app.use(raw({ type: 'application/xml' }));
+	app.use(xmlparser());
 
 	app.useGlobalPipes(new ValidationPipe());
 
