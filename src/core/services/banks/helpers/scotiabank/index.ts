@@ -5,7 +5,7 @@ export const prepareXml = (value: string) => {
 	const obj = {
 		's:Envelope': {
 			$: {
-				'xmlns:s': 'http://schemas.xmlsoap.org/soap/http',
+				'xmlns:s': 'http://schemas.xmlsoap.org/soap/envelope/',
 			},
 			's:Body': {
 				$: {
