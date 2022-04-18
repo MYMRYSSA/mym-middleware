@@ -41,7 +41,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 			const payloadMyMRequest: IDebtInquiresRequest = {
 				bankCode: '009',
 				channel: valueJson.CANAL.trim(),
-				requestId: valueJson['NUMERO DE OPERACIÓN'].trim(),
+				requestId: '1',
 				currencyCode: CurrencyDTO[valueJson['TRANSACTION CURRENCY CODE'].trim()],
 				processId: valueJson['CODIGO DE PROCESO'].trim(),
 				transactionDate: this.processDate(valueJson['FECHA Y HORA DE TRANSACCION']),
