@@ -126,20 +126,20 @@ export const setConsultDebtResponse = (
 		'TIPO DE SERVICIO 1': '001',
 		'NUMERO DE DOCUMENTO 1':
 			response?.documents?.length > 0
-				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].documentId}`
+				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO']) - 1].documentId}`
 				: '',
 		'REFERENCIA DE LA DEUDA 1': response?.documents?.length > 0 ? response?.customerIdentificationCode : '',
 		'FECHA DE VENCIMIENTO 1':
 			response?.documents?.length > 0
-				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].expirationDate}`
+				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO']) - 1].expirationDate}`
 				: '',
 		'IMPORTE MINIMO 1':
 			response?.documents?.length > 0
-				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].minimumAmount}`
+				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO']) - 1].minimumAmount}`
 				: '',
 		'IMPORTE A TOTAL 1':
 			response?.documents?.length > 0
-				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO'])].totalAmount}`
+				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO']) - 1].totalAmount}`
 				: '',
 	};
 };
