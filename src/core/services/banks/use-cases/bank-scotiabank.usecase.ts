@@ -2,8 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { IBankfactory, IXmlJson } from '../interfaces/bank.interface';
 import { convert } from 'xmlbuilder2';
 import {
+	cutStringResult,
 	getInputValues,
 	InputEnum,
+	positions,
 	setAnullmentResponse,
 	setConsultDebtResponse,
 	setOutputValues,
@@ -65,7 +67,14 @@ export class BankScotiabankUseCase implements IBankfactory {
 			const result: IScotiabankConsultDebtResponseDTO = setConsultDebtResponse(valueJson, responseMyMAPI);
 			this.logger.log(`Body para retornar al banco ${JSON.stringify(result)}`);
 			await this.requestGateway.update(responseGateway._id, { response: result });
-			const stringResult = setOutputValues(result, InputEnum.INQUIRE);
+			let stringResult = setOutputValues(result, InputEnum.INQUIRE);
+			stringResult = cutStringResult(stringResult, responseMyMAPI.documents.length);
+			this.logger.log(`String recortado: ${JSON.stringify(result)}`);
+			this.logger.log(
+				`Número de docs: ${responseMyMAPI.documents.length} / posición: ${
+					responseMyMAPI.documents.length ? positions[responseMyMAPI.documents.length - 1] : null
+				}`,
+			);
 			return stringResult;
 		} catch (error) {
 			this.logger.error(`Error consulta deuda ${error.response?.data || error.message}`);

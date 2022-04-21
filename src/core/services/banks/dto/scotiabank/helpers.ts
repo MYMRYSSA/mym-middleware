@@ -23,6 +23,13 @@ export enum InputEnum {
 	RETURN = 'return',
 }
 
+export const positions = [410, 475, 540, 605, 670, 735, 800, 865, 930, 995];
+
+export const cutStringResult = (result: string, numberOfDocuments: number): string => {
+	if (numberOfDocuments) return result.slice(0, positions[numberOfDocuments - 1]);
+	else return result.slice(0, 410);
+};
+
 export const getInputValues = (input: string, type: InputEnum): any => {
 	const obj = {};
 	let structure: Array<{ id: string; start: number; end: number }> = [];
@@ -79,7 +86,7 @@ export const setConsultDebtResponse = (
 	valueJson: ScotiabankConsultDebtRequestDTO,
 	response: IDebtInquiresResponse,
 ): IScotiabankConsultDebtResponseDTO => {
-	return {
+	const temp = {
 		'MESSAGE TYPE IDENTIFICATION': '0210',
 		'PRIMARY BIT MAP': 'F22080010E808000',
 		'SECONDARY BIT MAP': '0000000000000018',
@@ -123,25 +130,76 @@ export const setConsultDebtResponse = (
 		'RESTRICCION DE PAGO': '0',
 		'DOCUMENTOS POR SERVICIO': `${response?.documents?.length || '0'}`,
 		'FILLER 2': '',
-		'TIPO DE SERVICIO 1': '001',
-		'NUMERO DE DOCUMENTO 1':
-			response?.documents?.length > 0
-				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO']) - 1].documentId}`
-				: '',
-		'REFERENCIA DE LA DEUDA 1': response?.documents?.length > 0 ? response?.customerIdentificationCode : '',
-		'FECHA DE VENCIMIENTO 1':
-			response?.documents?.length > 0
-				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO']) - 1].expirationDate}`
-				: '',
-		'IMPORTE MINIMO 1':
-			response?.documents?.length > 0
-				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO']) - 1].minimumAmount}`
-				: '',
-		'IMPORTE A TOTAL 1':
-			response?.documents?.length > 0
-				? `${response?.documents?.[Number(valueJson['POSICION DEL ULTIMO DOCUMENTO']) - 1].totalAmount}`
-				: '',
+		'TIPO DE SERVICIO 1': '',
+		'NUMERO DE DOCUMENTO 1': '',
+		'REFERENCIA DE LA DEUDA 1': '',
+		'FECHA DE VENCIMIENTO 1': '',
+		'IMPORTE MINIMO 1': '',
+		'IMPORTE A TOTAL 1': '',
+		'TIPO DE SERVICIO 2': '',
+		'NUMERO DE DOCUMENTO 2': '',
+		'REFERENCIA DE LA DEUDA 2': '',
+		'FECHA DE VENCIMIENTO 2': '',
+		'IMPORTE MINIMO 2': '',
+		'IMPORTE A TOTAL 2': '',
+		'TIPO DE SERVICIO 3': '',
+		'NUMERO DE DOCUMENTO 3': '',
+		'REFERENCIA DE LA DEUDA 3': '',
+		'FECHA DE VENCIMIENTO 3': '',
+		'IMPORTE MINIMO 3': '',
+		'IMPORTE A TOTAL 3': '',
+		'TIPO DE SERVICIO 4': '',
+		'NUMERO DE DOCUMENTO 4': '',
+		'REFERENCIA DE LA DEUDA 4': '',
+		'FECHA DE VENCIMIENTO 4': '',
+		'IMPORTE MINIMO 4': '',
+		'IMPORTE A TOTAL 4': '',
+		'TIPO DE SERVICIO 5': '',
+		'NUMERO DE DOCUMENTO 5': '',
+		'REFERENCIA DE LA DEUDA 5': '',
+		'FECHA DE VENCIMIENTO 5': '',
+		'IMPORTE MINIMO 5': '',
+		'IMPORTE A TOTAL 5': '',
+		'TIPO DE SERVICIO 6': '',
+		'NUMERO DE DOCUMENTO 6': '',
+		'REFERENCIA DE LA DEUDA 6': '',
+		'FECHA DE VENCIMIENTO 6': '',
+		'IMPORTE MINIMO 6': '',
+		'IMPORTE A TOTAL 6': '',
+		'TIPO DE SERVICIO 7': '',
+		'NUMERO DE DOCUMENTO 7': '',
+		'REFERENCIA DE LA DEUDA 7': '',
+		'FECHA DE VENCIMIENTO 7': '',
+		'IMPORTE MINIMO 7': '',
+		'IMPORTE A TOTAL 7': '',
+		'TIPO DE SERVICIO 8': '',
+		'NUMERO DE DOCUMENTO 8': '',
+		'REFERENCIA DE LA DEUDA 8': '',
+		'FECHA DE VENCIMIENTO 8': '',
+		'IMPORTE MINIMO 8': '',
+		'IMPORTE A TOTAL 8': '',
+		'TIPO DE SERVICIO 9': '',
+		'NUMERO DE DOCUMENTO 9': '',
+		'REFERENCIA DE LA DEUDA 9': '',
+		'FECHA DE VENCIMIENTO 9': '',
+		'IMPORTE MINIMO 9': '',
+		'IMPORTE A TOTAL 9': '',
+		'TIPO DE SERVICIO 10': '',
+		'NUMERO DE DOCUMENTO 10': '',
+		'REFERENCIA DE LA DEUDA 10': '',
+		'FECHA DE VENCIMIENTO 10': '',
+		'IMPORTE MINIMO 10': '',
+		'IMPORTE A TOTAL 10': '',
 	};
+	response?.documents.forEach((document, index) => {
+		temp[`TIPO DE SERVICIO ${index + 1}`] = '001';
+		temp[`NUMERO DE DOCUMENTO ${index + 1}`] = document?.documentId || '';
+		temp[`REFERENCIA DE LA DEUDA ${index + 1}`] = response?.customerIdentificationCode || '';
+		temp[`FECHA DE VENCIMIENTO ${index + 1}`] = document?.expirationDate || '';
+		temp[`IMPORTE MINIMO ${index + 1}`] = document?.minimumAmount || '';
+		temp[`IMPORTE A TOTAL ${index + 1}`] = document?.totalAmount || '';
+	});
+	return temp;
 };
 
 export const setPaymentResponse = (
