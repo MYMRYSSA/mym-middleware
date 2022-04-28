@@ -79,7 +79,8 @@ export class BankScotiabankUseCase implements IBankfactory {
 		} catch (error) {
 			this.logger.error(`Error consulta deuda ${error.response?.data || error.message}`);
 			const result: IScotiabankConsultDebtResponseDTO = setConsultDebtResponse(valueJson, null);
-			const stringResult = setOutputValues(result, InputEnum.INQUIRE);
+			let stringResult = setOutputValues(result, InputEnum.INQUIRE);
+			stringResult = cutStringResult(stringResult, 1);
 			return stringResult;
 		}
 	}
