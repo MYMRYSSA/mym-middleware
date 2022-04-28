@@ -196,8 +196,8 @@ export const setConsultDebtResponse = (
 		temp[`NUMERO DE DOCUMENTO ${index + 1}`] = document?.documentId || '';
 		temp[`REFERENCIA DE LA DEUDA ${index + 1}`] = response?.customerIdentificationCode || '';
 		temp[`FECHA DE VENCIMIENTO ${index + 1}`] = document?.expirationDate || '';
-		temp[`IMPORTE MINIMO ${index + 1}`] = document?.minimumAmount || '';
-		temp[`IMPORTE A TOTAL ${index + 1}`] = document?.totalAmount || '';
+		temp[`IMPORTE MINIMO ${index + 1}`] = removePoint(document?.minimumAmount) || '';
+		temp[`IMPORTE A TOTAL ${index + 1}`] = removePoint(document?.totalAmount) || '';
 	});
 	return temp;
 };
@@ -351,4 +351,11 @@ export const setAnullmentResponse = (
 		'REFERENCIA DE LA DEUDA': '',
 		'FILLER 3': '',
 	};
+};
+
+export const removePoint = (num: string) => {
+	const arr = num.split('');
+	const position = arr.findIndex(n => n === '.');
+	if (position) arr.splice(position, 1);
+	return arr.join('');
 };

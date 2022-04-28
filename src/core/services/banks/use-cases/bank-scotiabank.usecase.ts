@@ -69,7 +69,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 			await this.requestGateway.update(responseGateway._id, { response: result });
 			let stringResult = setOutputValues(result, InputEnum.INQUIRE);
 			stringResult = cutStringResult(stringResult, responseMyMAPI.documents.length);
-			this.logger.log(`String recortado: ${JSON.stringify(result)}`);
+			this.logger.log(`String recortado: ${stringResult}`);
 			this.logger.log(
 				`Número de docs: ${responseMyMAPI.documents.length} / posición: ${
 					responseMyMAPI.documents.length ? positions[responseMyMAPI.documents.length - 1] : null
@@ -107,7 +107,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 						documentReference: valueJson['NRO DE REFERENCIA DEL ABONO'].trim(),
 						amounts: [
 							{
-								amount: String(Number(valueJson['IMPORTE PAGADO EFECTIVO'].trim())),
+								amount: String(Number(this.formatAmounts(valueJson['IMPORTE PAGADO EFECTIVO'].trim()))),
 								amountType: 'totalAmont',
 							},
 						],
@@ -115,7 +115,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 				],
 				transactionCurrencyCode: CurrencyDTO[valueJson['TRANSACTION CURRENCY CODE'].trim()],
 				currencyExchange: this.formatCurrencyExchange(valueJson['TIPO DE CAMBIO APLICADO'].trim()),
-				totalAmount: Number(valueJson['IMPORTE PAGADO EFECTIVO'].trim()),
+				totalAmount: Number(this.formatAmounts(valueJson['IMPORTE PAGADO EFECTIVO'].trim())),
 			};
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
 			const responseGateway = await this.requestGateway.create({
@@ -216,6 +216,13 @@ export class BankScotiabankUseCase implements IBankfactory {
 		const mm = date.slice(6, 8);
 		const ss = date.slice(8, 10);
 		return `${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}`;
+	}
+
+	private formatAmounts(myStringNumber: string): number {
+		const temp = myStringNumber.trim();
+		const entire = temp.slice(0, temp.length - 2);
+		const decimals = temp.slice(temp.length - 2, temp.length);
+		return Number(`${Number(entire)}.${Number(decimals)}`);
 	}
 
 	private formatCurrencyExchange(myStringNumber: string): number {
