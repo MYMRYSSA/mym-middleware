@@ -89,6 +89,8 @@ export class BankScotiabankUseCase implements IBankfactory {
 		let valueJson: ScotiabankPaymentRequestDTO = null;
 		try {
 			valueJson = getInputValues(input, InputEnum.PAYMENT);
+			this.logger.log(`valueJson ${JSON.stringify(valueJson)}`);
+			const amountString = String(Number(this.formatAmounts(valueJson['IMPORTE PAGADO EFECTIVO'].trim())));
 			const payloadMyMRequest: IPaymentRequest = {
 				bankCode: '009',
 				currencyCode: CurrencyDTO[valueJson['TRANSACTION CURRENCY CODE'].trim()],
@@ -96,7 +98,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 				channel: valueJson.CANAL.trim(),
 				customerIdentificationCode: valueJson['DATO DE PAGO'].trim(),
 				serviceId: '1001', // TODO validar que mandamos
-				operationId: '000',
+				operationId: '001',
 				processId: valueJson['CODIGO DE PRODUCTO'].trim(),
 				transactionDate: this.processDate(valueJson['FECHA Y HORA DE TRANSACCION']),
 				paymentType: PaymentTypeDTO[valueJson['MEDIO DE PAGO'].trim()],
@@ -104,10 +106,10 @@ export class BankScotiabankUseCase implements IBankfactory {
 					{
 						documentId: valueJson['NUMERO DE DOCUMENTO DE PAG'].trim(),
 						expirationDate: '',
-						documentReference: valueJson['NRO DE REFERENCIA DEL ABONO'].trim(),
+						documentReference: valueJson['DATO DE PAGO'].trim(),
 						amounts: [
 							{
-								amount: String(Number(this.formatAmounts(valueJson['IMPORTE PAGADO EFECTIVO'].trim()))),
+								amount: amountString.includes('.') ? amountString : `${amountString}.00`,
 								amountType: 'totalAmont',
 							},
 						],

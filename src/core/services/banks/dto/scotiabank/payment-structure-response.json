@@ -27,7 +27,7 @@
 	{ "id": "NUMERO DE OPERAC.COBRANZA", "start": 188, "end": 199 },
 	{ "id": "NUMERO DE OPERAC.ACREEDOR", "start": 200, "end": 211 },
 	{ "id": "NUMERO DE PROD/SERV PAGAD.", "start": 212, "end": 213 },
-	{ "id": "NUMERO TOTAL DE DOC PAGAD.", "start": 214, "end": 216 },
+	{ "id": "NUMERO TOTAL DE DOC PAGADO", "start": 214, "end": 216 },
 	{ "id": "FILLER 1", "start": 217, "end": 226 },
 	{ "id": "ORIGEN DE RESPUESTA", "start": 227, "end": 227 },
 	{ "id": "CODIGO DE RESPUESTA EXTEND", "start": 228, "end": 230 },

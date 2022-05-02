@@ -65,16 +65,15 @@ export const setOutputValues = (input: any, type: InputEnum): string => {
 			break;
 	}
 	structure.forEach(item => {
-		let portion = input[item.id];
-		const MAX = item.end - item.start + 1;
-		if (input[item.id].length > MAX) {
-			portion = input[item.id].slice(0, MAX);
-		}
-		if (input[item.id].length < MAX) {
+		let portion = String(input[item.id]);
+		const MAX = 1 + (item.end - item.start);
+		if (portion.length > MAX) {
+			portion = portion.slice(0, MAX);
+		} else if (portion.length < MAX) {
 			if (!!item.padleft) {
-				portion = Array(MAX - input[item.id].length + 1).join(' ') + input[item.id];
+				portion = Array(1 + (MAX - portion.length)).join(' ') + portion;
 			} else {
-				portion = input[item.id] + Array(MAX - input[item.id].length + 1).join(' ');
+				portion = portion + Array(1 + (MAX - portion.length)).join(' ');
 			}
 		}
 		output += portion;
@@ -231,11 +230,11 @@ export const setPaymentResponse = (
 		'CODIGO DE AGENCIA DEL RECAUDADOR': valueJson['CODIGO DE AGENCIA DEL RECAUDADOR'],
 		'TIPO DE DATO DE PAGO': valueJson['TIPO DE DATO DE PAGO'],
 		'DATO DE PAGO': valueJson['DATO DE PAGO'],
-		'CODIGO DE CIUDAD': '',
+		'CODIGO DE CIUDAD': valueJson['CODIGO DE CIUDAD'],
 		'NUMERO DE OPERAC.COBRANZA': '4',
 		'NUMERO DE OPERAC.ACREEDOR': response?.operationNumberCompany || '',
-		'NUMERO DE PROD/SERV PAGAD.': '01',
-		'NUMERO TOTAL DE DOC PAGAD.': '001',
+		'NUMERO DE PROD/SERV PAGAD.': valueJson['NUMERO DE PROD/SERV PAGADO'],
+		'NUMERO TOTAL DE DOC PAGADO': valueJson['NUMERO TOTAL DE DOC PAGADO'],
 		'FILLER 1': '',
 		'ORIGEN DE RESPUESTA': '0',
 		'CODIGO DE RESPUESTA EXTEND': '000',
@@ -308,7 +307,7 @@ export const setAnullmentResponse = (
 		'CODIGO DE AGENCIA DEL RECAUDADOR': '',
 		'TIPO DE DATO DE PAGO': '',
 		'DATO DE PAGO': '',
-		'CODIGO DE CIUDAD': '',
+		'CODIGO DE CIUDAD': valueJson['CODIGO DE CIUDAD'],
 		'NOMBRE DEL CLIENTE': '',
 		'RUC DEL DEUDOR': '',
 		'RUC DEL ACREEDOR': '',

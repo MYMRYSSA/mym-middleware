@@ -81,7 +81,7 @@ export interface IScotiabankPaymentResponseDTO {
 	'NUMERO DE OPERAC.COBRANZA': string;
 	'NUMERO DE OPERAC.ACREEDOR': string;
 	'NUMERO DE PROD/SERV PAGAD.': string;
-	'NUMERO TOTAL DE DOC PAGAD.': string;
+	'NUMERO TOTAL DE DOC PAGADO': string;
 	'FILLER 1': string;
 	'ORIGEN DE RESPUESTA': string;
 	'CODIGO DE RESPUESTA EXTEND': string;
