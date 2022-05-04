@@ -94,7 +94,7 @@ describe('output payment', () => {
 		const stringResult = setOutputValues(result, InputEnum.PAYMENT);
 		console.log('🚀 ~ test ~ stringResult', stringResult);
 		expect(stringResult).toBe(
-			'0210F220848188E08000000000000000001894500000000000025305020110000243490125065209000000002191914     000056    84000220   01000000     000000     REC     0000890 0120131368152          8904           48          01001          0000TRANSACCION PROCESADA OK                                                                                  001RECAUDACION DOL00000000253RECAUDACION DOLARES                                                             01                    001Recibo de ServiPED-01-8102                            00000000        00000000253070000000025300000000000000000000000000000000000000000000000000000           12345678912                                       ',
+			'0210F220848188E08000000000000000001894500000000000025305020110000243490125065209000000002191914     000056    84000220   01000000     000000     REC     0000890 0120131368152          8904           48          01001          0000TRANSACCION PROCESADA OK                                                                                  001RECAUDACION DOL00000000253RECAUDACION DOLARES                                                             01                    001Recibo de ServiPED-01-8102                            00000000        00000000253010000000025300000000000000000000000000000000000000000000000000000           12345678912                                       ',
 		);
 		expect(stringResult).toHaveLength(678);
 	});
