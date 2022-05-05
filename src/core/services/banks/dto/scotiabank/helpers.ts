@@ -124,7 +124,7 @@ export const setConsultDebtResponse = (
 		'ESTADO DEL DEUDOR': response?.documents?.length > 0 ? 'M' : 'V',
 		'MENSAJE 1 AL DEUDOR': `PENDIENTE ${valueJson['TRANSACTION CURRENCY CODE'] === '604' ? 'SOLES' : 'DOLARES'}`,
 		'MENSAJE 2 AL DEUDOR': '',
-		'INDICADOR DE CRONOLOGIA': '1',
+		'INDICADOR DE CRONOLOGIA': String(response.cronologicIndicator),
 		'INDICADOR DE PAGOS VENCIDOS': '0',
 		'RESTRICCION DE PAGO': '0',
 		'DOCUMENTOS POR SERVICIO': `${response?.documents?.length || '0'}`,
@@ -280,6 +280,7 @@ export const setPaymentResponse = (
 export const setAnullmentResponse = (
 	valueJson: ScotiabankAnnulmentRequestDTO,
 	response: IPaymentResponse,
+	isExpired = true,
 ): IScotiabankAnnulmentResponseDTO => {
 	return {
 		'MESSAGE TYPE IDENTIFICATION': '0210',
@@ -302,7 +303,7 @@ export const setAnullmentResponse = (
 		'CODIGO DE FORMATO': '',
 		'BIN PROCESADOR': valueJson['BIN PROCESADOR'],
 		'CODIGO DE ACREEDOR': valueJson['CODIGO DE ACREEDOR'],
-		'CODIGO DE PRODUCTO/SERVICIO 1': valueJson['CODIGO DE SERVICIO'],
+		'CODIGO DE PRODUCTO/SERVICIO 1': valueJson['CODIGO DE PRODUCTO/SERVICIO'],
 		'CODIGO DE PLAZA DEL RECAUDADOR': '',
 		'CODIGO DE AGENCIA DEL RECAUDADOR': valueJson['CODIGO DE AGENCIA DEL RECAUDADOR'],
 		'TIPO DE DATO DE PAGO': '',
@@ -315,7 +316,7 @@ export const setAnullmentResponse = (
 		'NUMERO OPE. ORIGINAL ACREED': '',
 		'FILLER 1': '',
 		'ORIGEN DE RESPUESTA': '0',
-		'CODIGO DE RESPUESTA EXTEND': '000',
+		'CODIGO DE RESPUESTA EXTEND': isExpired ? '080' : '000',
 		'DESCRIPC DE LA RPTA APLICA': response ? 'TRANSACCION PROCESADA OK' : 'TRANSACCION NO PROCESADA',
 		'CODIGO DE PRODUCTO/SERVICIO 2': '001',
 		'DESCRIPC DEL PROD/SERVICIO': `RECAUDACION ${

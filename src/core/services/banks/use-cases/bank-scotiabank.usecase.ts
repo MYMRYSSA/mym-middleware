@@ -191,8 +191,13 @@ export class BankScotiabankUseCase implements IBankfactory {
 			const stringResult = setOutputValues(result, InputEnum.RETURN);
 			return stringResult;
 		} catch (error) {
-			this.logger.error(`Error extorno pago ${error.response?.data || error.message}`);
-			const result: IScotiabankAnnulmentResponseDTO = setAnullmentResponse(valueJson, null);
+			const errorMessage = error.response?.data || error.message;
+			this.logger.error(`Error extorno pago ${errorMessage}`);
+			const result: IScotiabankAnnulmentResponseDTO = setAnullmentResponse(
+				valueJson,
+				null,
+				errorMessage === 'AGOTADO EL TIEMPO PARA SOLICITAR EXTORNO',
+			);
 			const stringResult = setOutputValues(result, InputEnum.RETURN);
 			return stringResult;
 		}
