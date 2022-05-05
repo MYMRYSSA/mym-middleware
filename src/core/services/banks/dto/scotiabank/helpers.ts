@@ -280,7 +280,7 @@ export const setPaymentResponse = (
 export const setAnullmentResponse = (
 	valueJson: ScotiabankAnnulmentRequestDTO,
 	response: IPaymentResponse,
-	isExpired = true,
+	isExpired = false,
 ): IScotiabankAnnulmentResponseDTO => {
 	return {
 		'MESSAGE TYPE IDENTIFICATION': '0210',
