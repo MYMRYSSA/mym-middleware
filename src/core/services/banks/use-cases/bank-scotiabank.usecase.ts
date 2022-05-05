@@ -165,7 +165,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 				processId: valueJson['CODIGO DE PRODUCTO/SERVICIO'].trim(),
 				transactionDate: this.processDate(valueJson['FECHA Y HORA DE TRANSACCION 1']),
 				operationId: '000',
-				operationNumberAnnulment: valueJson['NUMERO DE TRANS. DE COB.ORI'].trim(),
+				operationNumberAnnulment: valueJson['RETRIEVAL REFERENCE NUMBER'].trim(),
 			};
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
 			const responseGateway = await this.requestGateway.create({
