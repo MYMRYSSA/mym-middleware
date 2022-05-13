@@ -322,7 +322,7 @@ export const setAnullmentResponse = (
 		'DESCRIPC DEL PROD/SERVICIO': `RECAUDACION ${
 			valueJson['TRANSACTION CURRENCY CODE'] === '604' ? 'SOLES' : 'DOLARES'
 		}`,
-		'IMPORTE DEL PROD./SERVICIO': String(Number(valueJson.MONTO)),
+		'IMPORTE DEL PROD./SERVICIO': valueJson.MONTO.slice(valueJson.MONTO.length - 11, valueJson.MONTO.length),
 		'MENSAJE 1 MARKETING': `RECAUDACION ${valueJson['TRANSACTION CURRENCY CODE'] === '604' ? 'SOLES' : 'DOLARES'}`,
 		'MENSAJE 2 MARKETING': '',
 		'NUMERO DE DOCUMENTOS': '01',
@@ -335,9 +335,9 @@ export const setAnullmentResponse = (
 		'NRO DE DOC IDENTIDAD': '',
 		'FECHA DE EMISION': '',
 		'FECHA DE VENCIMIENTO': '',
-		'IMPORTE ANULADO DEL DCTO.': String(Number(valueJson.MONTO)),
+		'IMPORTE ANULADO DEL DCTO.': valueJson.MONTO.slice(valueJson.MONTO.length - 11, valueJson.MONTO.length),
 		'CODIGO DE CONCEPTO 1': '01',
-		'IMPORTE CONCEPTO 1': String(Number(valueJson.MONTO)),
+		'IMPORTE CONCEPTO 1': valueJson.MONTO.slice(valueJson.MONTO.length - 11, valueJson.MONTO.length),
 		'CODIGO DE CONCEPTO 2': '',
 		'IMPORTE CONCEPTO 2': '',
 		'CODIGO DE CONCEPTO 3': '',
