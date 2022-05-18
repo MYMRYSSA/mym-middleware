@@ -1,11 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
-export enum EnumCurrency {
-	USD = 'USD',
-	PEN = 'PEN',
-}
-
 /** ConsultDebt */
 export class ScotiabankConsultDebtRequestDTO {
 	@ApiProperty({ required: true })
@@ -643,35 +638,504 @@ export class ScotiabankAnnulmentRequestDTO {
 	'NUMERO OPE. ORIGINAL ACREED': string;
 }
 
-export const CurrencyDTO = {
-	604: 'PEN',
-	840: 'USD',
-};
+/** Reversal payment */
+export class ScotiabankReversalPaymentRequestDTO {
+	@ApiProperty({ required: true })
+	@IsString()
+	'MESSAGE TYPE IDENTIFICATION 1': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'PRIMARY BIT MAP': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(01) SECONDARY BIT MAP': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(02) NUMERO DE TARJETA': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(03) CODIGO DE PROCESO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(04) MONTO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(07) FECHA Y HORA DE TRANSACCION': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(11) TRACE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(17) FECHA DE CAPTURA': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(22) MODO DE INGRESO DE DATOS': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(25) CANAL': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(32) BIN ADQUIRIENTE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(33) FORWARD INSTITUTION CODE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(37) RETRIEVAL REFERENCE -NUMBER': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(39) RESPONSE CODE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(41) TERMINAL ID': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(42) COMERCIO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(43) CARD ACCEPTOR LOCATION': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(49) TRANSACTION CURRENCY CODE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'MESSAGE TYPE IDENTIFICATION 2': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'TRACE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'FECHA Y HORA DE TRANSACCION': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'BIN ADQUIRIENTE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'FORWARD INSTITUTION CODE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(124) DATOS RESERVADOS': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'LONGITUD DE LA TRAMA': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE FORMATO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'BIN PROCESADOR': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE ACREEDOR': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE PRODUCTO/SERVICIO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE PLAZA DEL RECAUDADOR': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE AGENCIA DEL RECAUDADOR': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'TIPO DE DATO DE PAGO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DATO DE PAGO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE CIUDAD': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'NUMERO DE PROD/SERV PAGAD.': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'NUMERO TOTAL DE DOC PAGAD.': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'FILLER 1': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'MEDIO DE PAGO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'IMPORTE PAGADO EFECTIVO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'IMPORTE PAG.C.CTA.': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'NRO CHEQUE1': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'BCO GIRADOR1': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'IMPORTE CHEQUE1': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'PLAZA CHEQUE1 ': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'NRO CHEQUE2': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'BCO GIRADOR2': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'IMPORTE CHEQUE2': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'PLAZA CHEQUE2': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'NRO CHEQUE3': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'BCO GIRADOR3': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'IMPORTE CHEQUE3': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'PLAZA CHEQUE3': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'MONEDA DE PAGO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'TIPO DE CAMBIO APLICADO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'PAGO TOTAL REALIZADO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'FILLER 2': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DEL SERVICIO PAGADO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'ESTADO DEL DEUDOR': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'IMPORTE TOTAL X PROD/SERV': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'NRO DE CUENTA DE ABONO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'NRO DE REFERENCIA DEL ABONO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'NRO DE DOCUMENTOS PAGADOS': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'FILLER 3': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'TIPO DE DOCUMENTO DE PAGO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'NUMERO DE DOCUMENTO DE PAG': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'PERIODO DE COTIZACION': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'TIPO DOC ID. DEUDOR': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'NUMERO DOC ID DEL DEUDOR': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'IMPORTE ORIGINAL DE LA DEUDA': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'IMPORTE PAGADO DEL DOCTO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE CONCEPTO 1': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'IMPORTE DE CONCEPTO1': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE CONCEPTO 2': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'IMPORTE DE CONCEPTO2': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE CONCEPTO 3': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'IMPORTE DE CONCEPTO3': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE CONCEPTO 4': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'IMPORTE DE CONCEPTO4': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE CONCEPTO 5': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'IMPORTE DE CONCEPTO5': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'REFERENCIA DE LA DEUDA': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'FILLER 4': string;
+}
 
-export const PaymentTypeDTO = {
-	'00': 'EF',
-	'01': 'EF',
-	'02': 'CP',
-	'03': 'CJ',
-	'04': 'TD',
-	'05': 'CT',
-	'06': 'EF',
-	'07': 'EF',
-	'10': 'EF',
-};
-
-export const ScotiabankErrorCodes = [
-	'DOCUMENTO SOLICITADO PARA EXTORNAR NO ENCONTRADO',
-	'CONSULTA DE DEUDA REALIZADA PREVIAMENTE',
-	'NO HAY DEUDAS DE CLIENTES REGISTRADAS',
-	'NÚMERO DE REFERENCIA NO EXISTE',
-	'TRANSACCIÓN REGISTRADA PREVIAMENTE',
-	'MONTO TOTAL PAGADO NO COINCIDE CON MONTO PAGADO POR DOCUMENTO',
-	'ERROR EN MONTO',
-	'TOTAL AMOUNT ES MAYOR QUE LOS DOCUMENTOS PAGADOS',
-	'AGOTADO EL TIEMPO PARA SOLICITAR EXTORNO',
-	'DOCUMENTO YA FUE PAGADO',
-	'AGOTADO EL TIEMPO PARA SOLICITAR EXTORNO',
-];
-
-export const ScotiabankOtherCodes = ['DOCUMENTO YA FUE PAGADO', 'CLIENTE SIN DEUDAS', 'EXTORNO REALIZADO'];
+/** Reversal annulment */
+export class ScotiabankReversalAnnulmentRequestDTO {
+	@ApiProperty({ required: true })
+	@IsString()
+	'MESSAGE TYPE IDENTIFICATION 1': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'PRIMARY BIT MAP': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(01) SECONDARY BIT MAP': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(02) NUMERO DE TARJETA': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(03) CODIGO DE PROCESO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(04) MONTO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(07) FECHA Y HORA DE TRANSACCION': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(11) TRACE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(17) FECHA DE CAPTURA': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(22) MODO DE INGRESO DE DATOS': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(25) CANAL': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(32) BIN ADQUIRIENTE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(33) FORWARD INSTITUTION CODE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(37) RETRIEVAL REFERENCE -NUMBER': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(39) RESPONSE CODE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(41) TERMINAL ID': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(42) COMERCIO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(43) CARD ACCEPTOR LOCATION': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(49) TRANSACTION CURRENCY CODE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'MESSAGE TYPE IDENTIFICATION 2': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'TRACE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'FECHA Y HORA DE TRANSACCION': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'BIN ADQUIRIENTE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'FORWARD INSTITUTION CODE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DE(124) DATOS RESERVADOS': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'LONGITUD DE DATO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE FORMATO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'BIN PROCESADOR': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE ACREEDOR': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE PRODUCTO/SERVICIO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE PLAZA DEL RECAUDADOR': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE AGENCIA DEL RECAUDADOR': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'TIPO DE DATO DE PAGO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DATO DE PAGO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'CODIGO DE CIUDAD': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'FILLER': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'TIPO DE SERVICIO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'NUMERO DE DOCUMENTO': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'DISPONIBLE': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'NUMERO DE TRANS. DE COB.ORI': string;
+  
+	@ApiProperty({ required: true })
+	@IsString()
+	'NUMERO OPE. ORIGINAL ACREED': string;
+}
