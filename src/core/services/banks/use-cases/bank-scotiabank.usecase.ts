@@ -358,13 +358,13 @@ export class BankScotiabankUseCase implements IBankfactory {
 		const temp = myStringNumber.trim();
 		const entire = temp.slice(0, temp.length - 2);
 		const decimals = temp.slice(temp.length - 2, temp.length);
-		return Number(`${Number(entire)}.${Number(decimals)}`);
+		return Number(`${Number(entire)}.${decimals}`);
 	}
 
 	private formatCurrencyExchange(myStringNumber: string): number {
 		const entire = myStringNumber.slice(0, 7);
 		const decimals = myStringNumber.slice(7, myStringNumber.length);
-		return Number(`${Number(entire)}.${Number(decimals)}`);
+		return Number(`${Number(entire)}.${decimals}`);
 	}
 
 	private getProcess(content: string) {
