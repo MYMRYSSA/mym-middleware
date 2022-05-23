@@ -214,34 +214,17 @@ export class BankScotiabankUseCase implements IBankfactory {
 		try {
 			valueJson = getInputValues(input, InputEnum.EXT_PAYMENT);
 			this.logger.log(`valueJson ${JSON.stringify(valueJson)}`);
-			const amountString = String(Number(this.formatAmounts(valueJson['IMPORTE PAGADO EFECTIVO'].trim())));
-			const payloadMyMRequest: IPaymentRequest = {
+			const payloadMyMRequest: IAnnulmentRequest = {
 				bankCode: '009',
 				currencyCode: CurrencyDTO[valueJson['DE(49) TRANSACTION CURRENCY CODE'].trim()],
 				requestId: valueJson['DE(37) RETRIEVAL REFERENCE -NUMBER'].trim(),
 				channel: valueJson['DE(25) CANAL'].trim(),
 				customerIdentificationCode: valueJson['DATO DE PAGO'].trim(),
 				serviceId: '1001', // TODO validar que mandamos
-				operationId: '001',
+				operationId: '000',
 				processId: valueJson['CODIGO DE PRODUCTO/SERVICIO'].trim(),
 				transactionDate: this.processDate(valueJson['DE(07) FECHA Y HORA DE TRANSACCION']),
-				paymentType: PaymentTypeDTO[valueJson['MEDIO DE PAGO'].trim()],
-				paidDocuments: [
-					{
-						documentId: valueJson['NUMERO DE DOCUMENTO DE PAG'].trim(),
-						expirationDate: '',
-						documentReference: valueJson['DATO DE PAGO'].trim(),
-						amounts: [
-							{
-								amount: amountString.includes('.') ? amountString : `${amountString}.00`,
-								amountType: 'totalAmont',
-							},
-						],
-					},
-				],
-				transactionCurrencyCode: CurrencyDTO[valueJson['DE(49) TRANSACTION CURRENCY CODE'].trim()],
-				currencyExchange: this.formatCurrencyExchange(valueJson['TIPO DE CAMBIO APLICADO'].trim()),
-				totalAmount: Number(this.formatAmounts(valueJson['IMPORTE PAGADO EFECTIVO'].trim())),
+				operationNumberAnnulment: valueJson['DE(37) RETRIEVAL REFERENCE -NUMBER'].trim(),
 				returnType: 'A',
 			};
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
@@ -250,15 +233,14 @@ export class BankScotiabankUseCase implements IBankfactory {
 				currency: payloadMyMRequest.currencyCode,
 				customerId: payloadMyMRequest.customerIdentificationCode,
 				requestId: payloadMyMRequest.requestId,
-				requestPaymentId: payloadMyMRequest.requestId,
-				documentIds: payloadMyMRequest.paidDocuments.map(document => document.documentId),
-				paymentMethod: payloadMyMRequest.paymentType,
-				type: 'PAYMENT',
+				requestPaymentId: payloadMyMRequest.operationNumberAnnulment,
+				documentIds: [valueJson['NUMERO DE DOCUMENTO DE PAG'].trim()],
+				type: 'REVERSAL-PAYMENT',
 				request: valueJson,
 				processId: payloadMyMRequest.processId,
 				serviceId: payloadMyMRequest.serviceId,
 			});
-			const responseMyMAPI = await this.mymRestClient.payment(payloadMyMRequest);
+			const responseMyMAPI = await this.mymRestClient.annulmentPayment(payloadMyMRequest);
 			this.logger.log(`resultado de la consulta ${JSON.stringify(responseMyMAPI)}`);
 			if (ScotiabankErrorCodes.includes(responseMyMAPI?.[0])) {
 				throw new Error(responseMyMAPI?.[0]);
@@ -280,17 +262,34 @@ export class BankScotiabankUseCase implements IBankfactory {
 		let valueJson: ScotiabankReversalAnnulmentRequestDTO = null;
 		try {
 			valueJson = getInputValues(input, InputEnum.EXT_ANNULMENT);
-			const payloadMyMRequest: IAnnulmentRequest = {
+			const amountString = String(Number(this.formatAmounts(valueJson['DE(04) MONTO'].trim())));
+			const payloadMyMRequest: IPaymentRequest = {
 				bankCode: '009',
 				currencyCode: CurrencyDTO[valueJson['DE(49) TRANSACTION CURRENCY CODE']],
 				requestId: valueJson['DE(37) RETRIEVAL REFERENCE -NUMBER'].trim(),
 				channel: valueJson['DE(25) CANAL'].trim(),
 				customerIdentificationCode: valueJson['DATO DE PAGO'].trim(),
 				serviceId: '1001', // TODO validar que mandamos
+				operationId: '001',
 				processId: valueJson['CODIGO DE PRODUCTO/SERVICIO'].trim(),
 				transactionDate: this.processDate(valueJson['DE(07) FECHA Y HORA DE TRANSACCION']),
-				operationId: '000',
-				operationNumberAnnulment: valueJson['DE(37) RETRIEVAL REFERENCE -NUMBER'].trim(),
+				paymentType: PaymentTypeDTO['00'],
+				paidDocuments: [
+					{
+						documentId: valueJson['NUMERO DE DOCUMENTO'].trim(),
+						expirationDate: '',
+						documentReference: valueJson['DATO DE PAGO'].trim(),
+						amounts: [
+							{
+								amount: amountString.includes('.') ? amountString : `${amountString}.00`,
+								amountType: 'totalAmont',
+							},
+						],
+					},
+				],
+				transactionCurrencyCode: CurrencyDTO[valueJson['DE(49) TRANSACTION CURRENCY CODE'].trim()],
+				currencyExchange: this.formatCurrencyExchange('00000000000'),
+				totalAmount: Number(this.formatAmounts(valueJson['DE(04) MONTO'].trim())),
 				returnType: 'A',
 			};
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
@@ -299,14 +298,15 @@ export class BankScotiabankUseCase implements IBankfactory {
 				currency: payloadMyMRequest.currencyCode,
 				customerId: payloadMyMRequest.customerIdentificationCode,
 				requestId: payloadMyMRequest.requestId,
-				requestPaymentId: payloadMyMRequest.operationNumberAnnulment,
-				documentIds: [valueJson['NUMERO DE DOCUMENTO'].trim()],
-				type: 'ANNULMENT',
+				requestPaymentId: payloadMyMRequest.requestId,
+				documentIds: payloadMyMRequest.paidDocuments.map(document => document.documentId),
+				paymentMethod: payloadMyMRequest.paymentType,
+				type: 'REVERSAL-ANNULMENT',
 				request: valueJson,
 				processId: payloadMyMRequest.processId,
 				serviceId: payloadMyMRequest.serviceId,
 			});
-			const responseMyMAPI = await this.mymRestClient.annulmentPayment(payloadMyMRequest);
+			const responseMyMAPI = await this.mymRestClient.payment(payloadMyMRequest);
 			this.logger.log(`resultado de la consulta ${JSON.stringify(responseMyMAPI)}`);
 			if (ScotiabankErrorCodes.includes(responseMyMAPI?.[0])) {
 				throw new Error(responseMyMAPI?.[0]);
