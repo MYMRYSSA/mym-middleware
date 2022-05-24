@@ -9,7 +9,7 @@ export interface IAnnulmentRequest {
 	transactionDate: string;
 	operationId?: string;
 	operationNumberAnnulment: string;
-	ReturnType?: 'M' | 'A';
+	returnType?: 'M' | 'A';
 }
 
 export interface IPaymentResponse {

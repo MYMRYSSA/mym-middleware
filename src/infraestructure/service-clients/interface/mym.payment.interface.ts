@@ -27,7 +27,7 @@ export interface IPaymentRequest {
 	transactionCurrencyCode: string;
 	currencyExchange: number;
 	totalAmount: number;
-	ReturnType?: 'M' | 'A';
+	returnType?: 'M' | 'A';
 }
 
 export interface IPaymentResponse {

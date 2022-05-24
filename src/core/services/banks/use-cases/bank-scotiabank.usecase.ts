@@ -122,7 +122,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 				transactionCurrencyCode: CurrencyDTO[valueJson['TRANSACTION CURRENCY CODE'].trim()],
 				currencyExchange: this.formatCurrencyExchange(valueJson['TIPO DE CAMBIO APLICADO'].trim()),
 				totalAmount: Number(this.formatAmounts(valueJson['IMPORTE PAGADO EFECTIVO'].trim())),
-				ReturnType: 'M',
+				returnType: 'M',
 			};
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
 			const responseGateway = await this.requestGateway.create({
@@ -171,7 +171,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 				transactionDate: this.processDate(valueJson['FECHA Y HORA DE TRANSACCION 1']),
 				operationId: '000',
 				operationNumberAnnulment: valueJson['RETRIEVAL REFERENCE NUMBER'].trim(),
-				ReturnType: 'M',
+				returnType: 'M',
 			};
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
 			const responseGateway = await this.requestGateway.create({
@@ -225,7 +225,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 				processId: valueJson['CODIGO DE PRODUCTO/SERVICIO'].trim(),
 				transactionDate: this.processDate(valueJson['DE(07) FECHA Y HORA DE TRANSACCION']),
 				operationNumberAnnulment: valueJson['DE(37) RETRIEVAL REFERENCE -NUMBER'].trim(),
-				ReturnType: 'A',
+				returnType: 'A',
 			};
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
 			const responseGateway = await this.requestGateway.create({
@@ -290,7 +290,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 				transactionCurrencyCode: CurrencyDTO[valueJson['DE(49) TRANSACTION CURRENCY CODE'].trim()],
 				currencyExchange: this.formatCurrencyExchange('00000000000'),
 				totalAmount: Number(this.formatAmounts(valueJson['DE(04) MONTO'].trim())),
-				ReturnType: 'A',
+				returnType: 'A',
 			};
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
 			const responseGateway = await this.requestGateway.create({
