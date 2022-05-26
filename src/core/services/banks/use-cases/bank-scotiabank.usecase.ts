@@ -65,8 +65,8 @@ export class BankScotiabankUseCase implements IBankfactory {
 			});
 			const responseMyMAPI = await this.mymRestClient.debtInquires(payloadMyMRequest);
 			this.logger.log(`resultado de la consulta ${JSON.stringify(responseMyMAPI)}`);
-			if (ScotiabankErrorCodes.includes(responseMyMAPI?.[0])) {
-				throw new Error(responseMyMAPI?.[0]);
+			if (this.validateError(responseMyMAPI)) {
+				throw new Error(responseMyMAPI?.[0] || 'Error no mapeado');
 			}
 			const result: IScotiabankConsultDebtResponseDTO = setConsultDebtResponse(valueJson, responseMyMAPI);
 			this.logger.log(`Body para retornar al banco ${JSON.stringify(result)}`);
@@ -94,7 +94,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 		try {
 			valueJson = getInputValues(input, InputEnum.PAYMENT);
 			this.logger.log(`valueJson ${JSON.stringify(valueJson)}`);
-			const amountString = String(Number(this.formatAmounts(valueJson['IMPORTE PAGADO EFECTIVO'].trim())));
+			const amountString = String(Number(this.formatAmounts(valueJson['IMPORTE PAGADO DEL DOCUMENTO'].trim())));
 			const payloadMyMRequest: IPaymentRequest = {
 				bankCode: '009',
 				currencyCode: CurrencyDTO[valueJson['TRANSACTION CURRENCY CODE'].trim()],
@@ -121,7 +121,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 				],
 				transactionCurrencyCode: CurrencyDTO[valueJson['TRANSACTION CURRENCY CODE'].trim()],
 				currencyExchange: this.formatCurrencyExchange(valueJson['TIPO DE CAMBIO APLICADO'].trim()),
-				totalAmount: Number(this.formatAmounts(valueJson['IMPORTE PAGADO EFECTIVO'].trim())),
+				totalAmount: Number(this.formatAmounts(valueJson['IMPORTE PAGADO DEL DOCUMENTO'].trim())),
 				returnType: 'M',
 			};
 			this.logger.log(`Body de la consulta ${JSON.stringify(payloadMyMRequest)}`);
@@ -140,8 +140,8 @@ export class BankScotiabankUseCase implements IBankfactory {
 			});
 			const responseMyMAPI = await this.mymRestClient.payment(payloadMyMRequest);
 			this.logger.log(`resultado de la consulta ${JSON.stringify(responseMyMAPI)}`);
-			if (ScotiabankErrorCodes.includes(responseMyMAPI?.[0])) {
-				throw new Error(responseMyMAPI?.[0]);
+			if (this.validateError(responseMyMAPI)) {
+				throw new Error(responseMyMAPI?.[0] || 'Error no mapeado');
 			}
 			const result: IScotiabankPaymentResponseDTO = setPaymentResponse(valueJson, responseMyMAPI);
 			this.logger.log(`Body para retornar al banco ${JSON.stringify(result)}`);
@@ -188,8 +188,8 @@ export class BankScotiabankUseCase implements IBankfactory {
 			});
 			const responseMyMAPI = await this.mymRestClient.annulmentPayment(payloadMyMRequest);
 			this.logger.log(`resultado de la consulta ${JSON.stringify(responseMyMAPI)}`);
-			if (ScotiabankErrorCodes.includes(responseMyMAPI?.[0])) {
-				throw new Error(responseMyMAPI?.[0]);
+			if (this.validateError(responseMyMAPI)) {
+				throw new Error(responseMyMAPI?.[0] || 'Error no mapeado');
 			}
 			const result: IScotiabankAnnulmentResponseDTO = setAnnulmentResponse(valueJson, responseMyMAPI);
 			this.logger.log(`Body para retornar al banco ${JSON.stringify(result)}`);
@@ -242,8 +242,8 @@ export class BankScotiabankUseCase implements IBankfactory {
 			});
 			const responseMyMAPI = await this.mymRestClient.annulmentPayment(payloadMyMRequest);
 			this.logger.log(`resultado de la consulta ${JSON.stringify(responseMyMAPI)}`);
-			if (ScotiabankErrorCodes.includes(responseMyMAPI?.[0])) {
-				throw new Error(responseMyMAPI?.[0]);
+			if (this.validateError(responseMyMAPI)) {
+				throw new Error(responseMyMAPI?.[0] || 'Error no mapeado');
 			}
 			const result: IScotiabankReversalPaymentResponseDTO = setReversalPaymentResponse(valueJson, responseMyMAPI);
 			this.logger.log(`Body para retornar al banco ${JSON.stringify(result)}`);
@@ -290,8 +290,8 @@ export class BankScotiabankUseCase implements IBankfactory {
 			});
 			const responseMyMAPI = await this.mymRestClient.annulmentPayment(payloadMyMRequest);
 			this.logger.log(`resultado de la consulta ${JSON.stringify(responseMyMAPI)}`);
-			if (ScotiabankErrorCodes.includes(responseMyMAPI?.[0])) {
-				throw new Error(responseMyMAPI?.[0]);
+			if (this.validateError(responseMyMAPI)) {
+				throw new Error(responseMyMAPI?.[0] || 'Error no mapeado');
 			}
 			const result: IScotiabankReversalAnnulmentResponseDTO = setReversalAnnulmentResponse(valueJson, responseMyMAPI);
 			this.logger.log(`Body para retornar al banco ${JSON.stringify(result)}`);
@@ -355,5 +355,9 @@ export class BankScotiabankUseCase implements IBankfactory {
 
 	private getMessageTypeIdentification(content: string) {
 		return content.slice(0, 4);
+	}
+
+	private validateError(response) {
+		return typeof response === 'string' || Array.isArray(response) || ScotiabankErrorCodes.includes(response?.[0]);
 	}
 }
