@@ -33,7 +33,11 @@ export enum InputEnum {
 	EXT_ANNULMENT = 'ext_annulment',
 }
 
-export const positions = [410, 475, 540, 605, 670, 735, 800, 865, 930, 995];
+export const positions = [
+	410, 475, 540, 605, 670, 735, 800, 865, 930, 995, 1060, 1125, 1190, 1255, 1320, 1385, 1450, 1515, 1580, 1645, 1710,
+	1775, 1840, 1905, 1970, 2035, 2100, 2165, 2230, 2295, 2360, 2425, 2490, 2555, 2620, 2685, 2750, 2815, 2880, 2945,
+	3010, 3075, 3140, 3205, 3270, 3335, 3400, 3465, 3530, 3595,
+];
 
 export const cutStringResult = (result: string, numberOfDocuments: number): string => {
 	if (numberOfDocuments) return result.slice(0, positions[numberOfDocuments - 1]);
