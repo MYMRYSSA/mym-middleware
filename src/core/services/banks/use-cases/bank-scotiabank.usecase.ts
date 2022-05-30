@@ -358,6 +358,10 @@ export class BankScotiabankUseCase implements IBankfactory {
 	}
 
 	private validateError(response) {
-		return typeof response === 'string' || Array.isArray(response) || ScotiabankErrorCodes.includes(response?.[0]);
+		return (
+			(typeof response === 'string' && response !== 'EXTORNO REALIZADO') ||
+			Array.isArray(response) ||
+			ScotiabankErrorCodes.includes(response?.[0])
+		);
 	}
 }
