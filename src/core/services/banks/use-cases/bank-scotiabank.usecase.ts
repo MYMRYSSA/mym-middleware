@@ -359,7 +359,7 @@ export class BankScotiabankUseCase implements IBankfactory {
 
 	private validateError(response) {
 		return (
-			(typeof response === 'string' && ['EXTORNO REALIZADO', 'ANULACION DE EXTORNO REALIZADA'].includes(response)) ||
+			(typeof response === 'string' && !['EXTORNO REALIZADO', 'ANULACION DE EXTORNO REALIZADA'].includes(response)) ||
 			Array.isArray(response) ||
 			ScotiabankErrorCodes.includes(response?.[0])
 		);
