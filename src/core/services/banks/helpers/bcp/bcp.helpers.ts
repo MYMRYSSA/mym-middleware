@@ -182,7 +182,7 @@ export const generatePaymentResponse = (
 		operationNumberCompany: responseMyMAPI?.operationNumberCompany || '',
 		resultCode: operationStatus.code,
 		resultDescription: operationStatus.description,
-		endorsement: responseMyMAPI?.description || '',
+		// endorsement: responseMyMAPI?.description || '',
 	};
 };
 
